@@ -3,6 +3,7 @@
     "name": "startbootstrap-coming-soon",
     "version": "6.0.6",
     "scripts": {
+        "deploy": "npm run build && npm gh-pages -d dist",
         "build": "npm run clean && npm run build:pug && npm run build:scss && npm run build:scripts && npm run build:assets",
         "build:assets": "node scripts/build-assets.js",
         "build:pug": "node scripts/build-pug.js",
@@ -43,6 +44,7 @@
         "browser-sync": "^1.9.2",
         "chokidar": "3.5.3",
         "concurrently": "6.3.0",
+        "gh-pages": "^3.2.3",
         "postcss": "8.4.12",
         "prettier": "2.6.0",
         "pug": "3.0.2",
