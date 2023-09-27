@@ -224,8 +224,6 @@ export async function ProductList() {
 
   const products = await data?.products.edges;
 
-  console.log(products);
-
   return (
     <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
       <h2 id="products-heading" className="text-3xl py-4">
@@ -251,7 +249,7 @@ export async function ProductList() {
                   />
                 </div>
                 <div className="mt-4 flex items-center justify-between text-base font-medium text-gray-900">
-                  <h3>{product.title}</h3>
+                  <h3 className="text-lg font-bold">{product.title}</h3>
                   <p>
                     {formatPrice(product.priceRange.minVariantPrice.amount)}
                   </p>
