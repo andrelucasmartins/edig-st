@@ -1,3 +1,4 @@
+"use client";
 interface ProductListProps {
   children: React.ReactNode;
 }

@@ -1,3 +1,4 @@
+"use client";
 interface ImageProps {
   src?: string;
   alt?: string;

@@ -1,3 +1,4 @@
+"use client";
 interface FooterProps {}
 
 export const Footer = (props: FooterProps) => {

@@ -9,6 +9,7 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Heart, Package2, ShoppingCart } from "lucide-react";
+import Link from "next/link";
 import { Fragment, useState } from "react";
 
 const navigation = {
@@ -19,7 +20,7 @@ const navigation = {
       featured: [
         {
           name: "New Arrivals",
-          href: "#",
+          href: "/para-ela",
           imageSrc:
             "https://tailwindui.com/img/ecommerce-images/mega-menu-category-01.jpg",
           imageAlt:
@@ -358,10 +359,10 @@ export const Header = (props: HeaderProps) => {
 
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
-                <a href="#">
+                <Link href="/">
                   <span className="sr-only">Your Company</span>
                   <img className="h-8 w-auto" src="/logo.png" alt="" />
-                </a>
+                </Link>
               </div>
 
               {/* Flyout menus */}

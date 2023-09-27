@@ -1,3 +1,4 @@
+"use client";
 interface LabelProps {
   title?: string;
   price?: number | string;
