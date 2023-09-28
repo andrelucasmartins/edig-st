@@ -327,7 +327,7 @@ export const Header = (props: HeaderProps) => {
       </Transition.Root>
 
       <header className="relative bg-white ">
-        <div className="bg-indigo-600">
+        <div className="bg-purple-800/95">
           <p className="flex  items-center  justify-between text-sm font-medium text-white mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8">
             <span className="select-none flex gap-2 items-center  justify-between">
               <ShoppingCart /> Trocas e Devoluções em até 7 dias

@@ -25,7 +25,7 @@ export default async function PoliciesPage({
 
   return (
     <div className="lg:grid lg:grid-cols-1 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
-      <h1 className="text-3xl font-bold">{policy?.title}</h1>
+      <h1 className="text-3xl font-bold text-purple-900">{policy?.title}</h1>
       <p dangerouslySetInnerHTML={{ __html: policy?.body }} />
     </div>
   );
