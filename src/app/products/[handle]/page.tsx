@@ -65,7 +65,7 @@ const SingleProductQuery = `#graphql
 
 `;
 
-export default async function Page({
+export default async function ProductsPage({
   params,
   searchParams,
 }: {

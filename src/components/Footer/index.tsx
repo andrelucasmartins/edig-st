@@ -3,7 +3,7 @@ interface FooterProps {}
 
 export const Footer = (props: FooterProps) => {
   return (
-    <footer className="bg-indigo-600 h-40 py-4 text-white">
+    <footer className="bg-indigo-600 h-40 py-4 text-white bottom-0">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className="text-sm  sm:text-center">
