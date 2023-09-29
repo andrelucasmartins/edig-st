@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FaExpeditedssl, FaWhatsapp } from "react-icons/fa6";
+import { FaLock, FaShieldHalved, FaWhatsapp } from "react-icons/fa6";
 
 interface FooterProps {}
 
@@ -9,10 +9,6 @@ const LINKS_UTIS = [
   {
     name: "Política de Trocas e Devolução ",
     url: "politica-de-trocas-e-devolucao",
-  },
-  {
-    name: "Aviso Legal",
-    url: "aviso-legal",
   },
   {
     name: "Política de Reembolso ",
@@ -25,6 +21,10 @@ const LINKS_UTIS = [
   {
     name: "Terms de Serviço",
     url: "termos-de-servico",
+  },
+  {
+    name: "Aviso Legal",
+    url: "aviso-legal",
   },
 ];
 
@@ -39,18 +39,45 @@ export const Footer = (props: FooterProps) => {
             </h2>
             <ul className="text-gray-100 font-medium text-xs">
               <li className="mb-4">
-                <p className="font-thin flex flex-col">
+                <p className="font-extralight flex flex-col">
                   <span className="font-medium">Fale conosco pelo e-mail:</span>
                   contato@aedigi.com.br <br />
                   ou telefone: (19) 99302-8888
                 </p>
               </li>
               <li className="mb-4">
-                <p className="font-thin flex flex-col">
+                <address className="font-extralight flex flex-col">
                   <span className="font-medium">Horário de atendimento:</span>
                   Segunda a Sexta-feira das 8h às 18hrs
+                </address>
+              </li>
+              <li className="mb-4">
+                <p className="font-extralight flex flex-col">
+                  <span className="font-medium">Endereço:</span>
+                  Av. Dr. Carlos de Campos, 935
+                  <br />
+                  Vila Industrial - Campinas-SP
+                  <span>
+                    Cep: <code>13035-610</code>
+                  </span>
+                  <span>
+                    CNPJ: <code>40.260.166/0001-61</code>
+                  </span>
                 </p>
               </li>
+            </ul>
+          </div>
+
+          <div>
+            <h2 className="mb-6 text-sm font-semibold text-gray-100 uppercase dark:text-white">
+              Links Úteis
+            </h2>
+            <ul className="text-gray-300 font-medium text-sm">
+              {LINKS_UTIS.toReversed().map((item) => (
+                <li className="mb-2" key={item.url}>
+                  <Link href={`/policies/${item.url}`}>{item.name}</Link>
+                </li>
+              ))}
             </ul>
           </div>
           <div>
@@ -81,18 +108,6 @@ export const Footer = (props: FooterProps) => {
           </div>
           <div>
             <h2 className="mb-6 text-sm font-semibold text-gray-100 uppercase dark:text-white">
-              Links Úteis
-            </h2>
-            <ul className="text-gray-300 font-medium text-sm">
-              {LINKS_UTIS.map((item) => (
-                <li className="mb-2" key={item.url}>
-                  <Link href={`/policies/${item.url}`}>{item.name}</Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h2 className="mb-6 text-sm font-semibold text-gray-100 uppercase dark:text-white">
               Site Seguro
             </h2>
             <ul className="text-gray-500 dark:text-gray-400 font-medium text-sm">
@@ -103,7 +118,7 @@ export const Footer = (props: FooterProps) => {
                       type="button"
                       className="bg-gray-100 text-gray-600 px-8 py-1 uppercase text-base flex items-center gap-2 w-[214px]"
                     >
-                      <FaExpeditedssl size={20} />
+                      <FaShieldHalved size={20} />
                       <span className="text-xs"> Ambiente Seguro</span>
                     </button>
                   </li>
@@ -112,7 +127,7 @@ export const Footer = (props: FooterProps) => {
                       type="button"
                       className="bg-gray-100 text-gray-600 px-8 py-1 uppercase text-base flex items-center gap-2 w-[214px]"
                     >
-                      <FaExpeditedssl size={20} />
+                      <FaLock size={20} />
                       <span className="text-xs"> certificado ssl</span>
                     </button>
                   </li>
