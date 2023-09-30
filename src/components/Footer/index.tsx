@@ -7,24 +7,24 @@ interface FooterProps {}
 
 const LINKS_UTIS = [
   {
-    name: "Política de Trocas e Devolução ",
-    url: "politica-de-trocas-e-devolucao",
-  },
-  {
-    name: "Política de Reembolso ",
-    url: "politica-de-reembolso",
-  },
-  {
-    name: "Política de Privacidade",
-    url: "politica-de-privacidade",
+    name: "Aviso Legal",
+    url: "aviso-legal",
   },
   {
     name: "Terms de Serviço",
     url: "termos-de-servico",
   },
   {
-    name: "Aviso Legal",
-    url: "aviso-legal",
+    name: "Política de Privacidade",
+    url: "politica-de-privacidade",
+  },
+  {
+    name: "Política de Reembolso ",
+    url: "politica-de-reembolso",
+  },
+  {
+    name: "Política de Trocas e Devolução ",
+    url: "politica-de-trocas-e-devolucao",
   },
 ];
 
@@ -73,7 +73,7 @@ export const Footer = (props: FooterProps) => {
               Links Úteis
             </h2>
             <ul className="text-gray-300 font-medium text-sm">
-              {LINKS_UTIS.toReversed().map((item) => (
+              {LINKS_UTIS.map((item) => (
                 <li className="mb-2" key={item.url}>
                   <Link href={`/policies/${item.url}`}>{item.name}</Link>
                 </li>
