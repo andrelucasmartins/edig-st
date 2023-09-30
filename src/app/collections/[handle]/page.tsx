@@ -12,7 +12,8 @@ const SingleProductQuery = `#graphql
 	collection(handle: $handle) {
 		id
 		title
-
+    handle
+    description
     image {
       altText
       url
@@ -60,16 +61,20 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const handle = params.handle;
 
-  const collection = await storefront(SingleProductQuery, {
-    handle,
+  const { data } = await storefront(SingleProductQuery, {
+    handle: handle,
   });
 
+  const page = data?.collection;
+
   return {
-    title: collection.title,
+    title: page.title,
+    description: `AE Digi Shop | ${page.description}`,
   };
 }
 
 import { ProductList } from "@/components/ProductList";
+import Link from "next/link";
 
 export default async function Page({
   params,
@@ -82,22 +87,29 @@ export default async function Page({
     handle: params.handle,
   });
 
-  console.log(data);
   const collection = data?.collection;
   const product = data?.collection.product;
   const image = product?.images?.edges[0].node;
   return (
     <>
-      <div className="w-[228px] min-h-min">
+      <div className="w-full min-h-min">
         <Image
-          src={collection.image.url}
+          src={`/collection-banners/${params.handle}.png`}
           alt={collection.image.altText}
-          width={collection.image.width}
-          height={collection.image.height}
+          width={10000}
+          height={10000}
           className="rounded-md object-cover"
         />
       </div>
-      <h1 className="font-bold text-lg text-purple-900">{collection.title}</h1>
+      <div className="uppercase text-xs my-2 text-gray-500">
+        <Link href="/" className="text-gray-700">
+          Home
+        </Link>{" "}
+        / {collection.title}
+      </div>
+      <h1 className="font-bold text-lg text-purple-900 my-2">
+        {collection.title}
+      </h1>
       <ProductList products={product} />
       {/* Product */}
       <div className="lg:grid lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
