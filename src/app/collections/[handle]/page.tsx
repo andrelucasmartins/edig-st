@@ -9,17 +9,27 @@ type Props = {
 
 const SingleProductQuery = `#graphql
   query getProductsInCollection($handle: String!) {
+  shop {
+    name
+  }
 	collection(handle: $handle) {
 		id
 		title
     handle
     description
-    image {
-      altText
-      url
-      width
-      height
-    }
+    metafields(identifiers: {key: "banner", namespace: "custom"}) {
+      id
+      reference {
+        ... on MediaImage {
+          id
+          image {
+            src
+            altText
+          }
+        }
+      }
+    }      
+
 		products(first: 50) {
 			edges {
 				node {
@@ -65,16 +75,19 @@ export async function generateMetadata(
     handle: handle,
   });
 
+  const shop_name = data?.shop.name as string;
+
   const page = data?.collection;
 
   return {
-    title: page.title,
-    description: `AE Digi Shop | ${page.description}`,
+    title: `${shop_name} | ${page?.title}`,
+    description: page?.description,
   };
 }
 
 import { ProductList } from "@/components/ProductList";
-import Link from "next/link";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { Suspense } from "react";
 
 export default async function Page({
   params,
@@ -90,25 +103,28 @@ export default async function Page({
   const collection = data?.collection;
   const product = data?.collection.product;
   const image = product?.images?.edges[0].node;
+  const banner = collection?.metafields[0].reference.image.src;
+
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <div className="w-full min-h-min">
-        <Image
-          src={`/collection-banners/${params.handle}.png`}
-          alt={collection.image.altText}
-          width={10000}
-          height={10000}
-          className="rounded-md object-cover"
-        />
+        <figure className="relative">
+          <Image
+            src={banner}
+            alt={collection?.title}
+            width={10000}
+            height={10000}
+            className="rounded-md object-cover"
+          />
+          <figcaption className="absolute inset-0 z-10 px-8 text-gray-50 font-bold text-xl sm:text-5xl flex justify-start place-items-center py-4 drop-shadow-xl">
+            {collection?.title}
+          </figcaption>
+        </figure>
+        <p className="sr-only">{collection?.description}</p>
       </div>
-      <div className="uppercase text-xs my-2 text-gray-500">
-        <Link href="/" className="text-gray-700">
-          Home
-        </Link>{" "}
-        / {collection.title}
-      </div>
+      <Breadcrumb currentPage={collection?.title} back />
       <h1 className="font-bold text-lg text-purple-900 my-2">
-        {collection.title}
+        {collection?.title}
       </h1>
       <ProductList products={product} />
       {/* Product */}
@@ -127,6 +143,6 @@ export default async function Page({
           </div>
         </div>
       </div>
-    </>
+    </Suspense>
   );
 }

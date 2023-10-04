@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { storefront } from "@/utils/storefront";
 import { format } from "date-fns";
+import { Breadcrumb } from "../../../components/ui/breadcrumb";
 import { formatPrice } from "../../../utils/formatPrice";
 
 import {
@@ -76,12 +77,12 @@ export default async function ProductsPage({
     handle: params.handle,
   });
 
-  console.log(data);
   const product = data?.product;
   const image = product?.images?.edges[0].node;
   return (
     <>
       {/* Product */}
+      <Breadcrumb back />
       <div className="lg:grid lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
         {/* Product image */}
         <div className="lg:col-span-4">

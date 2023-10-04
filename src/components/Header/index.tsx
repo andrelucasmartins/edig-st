@@ -329,13 +329,13 @@ export const Header = (props: HeaderProps) => {
       <header className="relative bg-white ">
         <div className="bg-purple-800/95">
           <p className="flex  items-center  justify-between text-sm font-medium text-white mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8">
-            <span className="select-none flex gap-2 items-center  justify-between">
+            <span className="select-none hidden sm:flex gap-2 items-center  justify-between">
               <ShoppingCart /> Trocas e Devoluções em até 7 dias
             </span>
-            <span className="select-none flex gap-2 items-center  justify-between">
+            <span className="select-none flex gap-2 items-center justify-between">
               <Package2 /> Frete Grátis para todo o Brasil
             </span>
-            <span className="select-none flex gap-2 items-center  justify-between">
+            <span className="select-none hidden sm:flex gap-2 items-center  justify-between">
               <Heart /> Satisfação Garantida ou Dinheiro de Volta
             </span>
           </p>
@@ -490,7 +490,7 @@ export const Header = (props: HeaderProps) => {
               </Popover.Group>
 
               <div className="ml-auto flex items-center">
-                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                {/* <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   <a
                     href="#"
                     className="text-sm font-medium text-gray-700 hover:text-gray-800"
@@ -519,7 +519,7 @@ export const Header = (props: HeaderProps) => {
                     <span className="ml-3 block text-sm font-medium">CAD</span>
                     <span className="sr-only">, change currency</span>
                   </a>
-                </div>
+                </div> */}
 
                 {/* Search */}
                 <div className="flex lg:ml-6">

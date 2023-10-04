@@ -1,3 +1,4 @@
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { storefront } from "@/utils/storefront";
 import { Suspense } from "react";
 
@@ -25,7 +26,8 @@ export default async function PoliciesPage({
   const policy = data?.page;
 
   return (
-    <div className="lg:grid lg:grid-cols-1 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
+    <div className="grid grid-cols-1 gap-y-6 select-none">
+      <Breadcrumb currentPage={policy?.title} back />
       <Suspense fallback={<div>Loading...</div>}>
         <h1 className="text-3xl font-bold text-purple-900">{policy?.title}</h1>
         <p dangerouslySetInnerHTML={{ __html: policy?.body }} />

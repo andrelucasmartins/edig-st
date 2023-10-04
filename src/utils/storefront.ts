@@ -4,6 +4,7 @@ export interface ShopifyFetchProps {
 }
 
 export async function storefront(query: string, variables = {}) {
+  "use serve";
   const endpoint = process.env.SHOPIFY_STORE_DOMAIN as string;
   const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN as string;
 
