@@ -1,9 +1,39 @@
+import { getProductRecommendations } from "@/app/data/get-product-recommendations";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
+import { formatPrice } from "@/utils/formatPrice";
 import { storefront } from "@/utils/storefront";
 import { format } from "date-fns";
-import { Breadcrumb } from "../../../components/ui/breadcrumb";
-import { formatPrice } from "../../../utils/formatPrice";
 
+import type { Metadata, ResolvingMetadata } from "next";
+
+type Props = {
+  params: { handle: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const handle = params.handle;
+
+  const { data } = await storefront(SingleProductQuery, {
+    handle: handle,
+  });
+
+  const shop_name = data?.shop.name as string;
+  const seo = data?.product?.seo;
+
+  const page = data?.collection;
+
+  return {
+    title: `${shop_name} | ${seo?.title}`,
+    description: page?.description,
+  };
+}
+
+import { ProductList } from "@/components/ProductList";
 import {
   Accordion,
   AccordionContent,
@@ -13,11 +43,19 @@ import {
 
 const SingleProductQuery = `#graphql
   query getProductByHandle($handle: String!) {
+    shop {
+      name
+    }
     product(handle: $handle) {
       id
       title
       description
+      handle
       tags
+      seo {
+        title,
+        description
+      }
       updatedAt
       priceRange {
           minVariantPrice {
@@ -79,8 +117,15 @@ export default async function ProductsPage({
 
   const product = data?.product;
   const image = product?.images?.edges[0].node;
+
+  const recommendations = await storefront(getProductRecommendations, {
+    productId: product.id,
+  });
+
+  const productRecommendations = recommendations?.data?.productRecommendations;
+
   return (
-    <>
+    <section className="mx-auto px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8">
       {/* Product */}
       <Breadcrumb back />
       <div className="lg:grid lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
@@ -154,6 +199,12 @@ export default async function ProductsPage({
           </Accordion>
         </div>
       </div>
-    </>
+
+      <ProductList
+        products={productRecommendations}
+        title="Novidades que chegaram pra você"
+        slide
+      />
+    </section>
   );
 }

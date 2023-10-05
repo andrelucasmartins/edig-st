@@ -17,6 +17,10 @@ const SingleProductQuery = `#graphql
 		title
     handle
     description
+    seo {
+      description
+      title
+    }
     metafields(identifiers: {key: "banner", namespace: "custom"}) {
       id
       reference {
@@ -85,6 +89,7 @@ export async function generateMetadata(
   };
 }
 
+import { getProductRecommendations } from "@/app/data/get-product-recommendations";
 import { ProductList } from "@/components/ProductList";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Suspense } from "react";
@@ -104,6 +109,12 @@ export default async function Page({
   const product = data?.collection.product;
   const image = product?.images?.edges[0].node;
   const banner = collection?.metafields[0].reference.image.src;
+
+  const product_recommendations = await storefront(getProductRecommendations, {
+    id: collection.id,
+  });
+
+  console.log(product_recommendations);
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
