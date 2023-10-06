@@ -134,33 +134,70 @@ import "./style.css";
 // import required modules
 import { useState } from "react";
 import { FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules";
+interface Products {
+  node: {
+    id: string;
+    title: string;
+    handle: string;
+    vendor: string;
+    availableForSale: boolean;
+    images: {
+      edges: [
+        {
+          node: {
+            id: string;
+            url: string;
+            width: number | string;
+            height: number | string;
+            altText?: string;
+          };
+        }
+      ];
+    };
+    variants: {
+      edges: [
+        {
+          cursor: string;
+          node: {
+            id: string;
+            title: string;
+            quantityAvailable: number;
+            price: {
+              amount: string;
+              currencyCode: string;
+            };
+          };
+        }
+      ];
+    };
+  };
+}
+interface ProductProps {
+  products: Products;
+}
 
-const Product = ({ products }: { products: string[] }) => {
+const Product = ({ products }: ProductProps) => {
   return (
     <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-8">
       {products?.map((item) => {
-        const product = item || item?.node;
+        const product = item.length === 0 ? item : item?.node;
+        const title = product.title;
+        const handle = product.handle;
         const image = product?.images?.edges[0].node;
-        const price =
-          product?.variants?.edges[0].node.price.amount ||
-          product.priceRange.minVariantPrice.amount;
+        const price = product?.priceRange?.minVariantPrice.amount;
 
         return (
-          <Link
-            key={product.handle}
-            href={`/products/${product.handle}`}
-            legacyBehavior
-          >
+          <Link key={handle} href={`/products/${handle}`} legacyBehavior>
             <a className="group">
               <div className="w-full aspect-w-4 aspect-h-4 rounded-lg overflow-hidden ">
                 <img
-                  src={image.transformedSrc}
-                  alt={image.altText}
+                  src={image?.transformedSrc || image?.url}
+                  alt={image?.altText}
                   className="w-full h-full object-center object-cover group-hover:opacity-75"
                 />
               </div>
               <div className="mt-4 flex flex-col space-y-2 text-base font-medium text-gray-950">
-                <h3 className="text-lg/6  line-clamp-2">{product.title}</h3>
+                <h3 className="text-lg/6  line-clamp-2">{title}</h3>
                 <p className="text-purple-800">
                   <span>Por:</span> {formatPrice(price)}
                 </p>
@@ -182,7 +219,7 @@ const Product = ({ products }: { products: string[] }) => {
                       </Button>
                     </div> */}
               <p className="mt-1 text-sm italic text-gray-500">
-                {product.tags[0]}
+                {product?.tags[0]}
               </p>
             </a>
           </Link>

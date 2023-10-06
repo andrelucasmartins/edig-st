@@ -17,10 +17,6 @@ const SingleProductQuery = `#graphql
 		title
     handle
     description
-    seo {
-      description
-      title
-    }
     metafields(identifiers: {key: "banner", namespace: "custom"}) {
       id
       reference {
@@ -39,32 +35,49 @@ const SingleProductQuery = `#graphql
 				node {
 					id
 					title
+          handle
+          tags
 					vendor
-					availableForSale
-					images(first: 1) {
-						edges {
-							node {
-								id
-								url
-								width
-								height
-								altText
-							}
-						}
-					}
-					priceRange { # Returns range of prices for a product in the shop's currency.
-						minVariantPrice {
-							amount
-							currencyCode
-						}
-						maxVariantPrice {
-							amount
-							currencyCode
-						}
-					}
+					priceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+            maxVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+          images(first: 1) {
+            edges {
+              node {
+                transformedSrc
+                altText
+              }
+            }
+          }
+          variants(first: 3) {
+            edges {
+              cursor
+              node {
+                id
+                title
+                quantityAvailable
+                price {
+                  amount
+                  currencyCode
+                }
+                compareAtPrice {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
 				}
 			}
-		}
+      
+		}    
 	}
 }
 `;
@@ -89,9 +102,10 @@ export async function generateMetadata(
   };
 }
 
-import { getProductRecommendations } from "@/app/data/get-product-recommendations";
-import { ProductList } from "@/components/ProductList";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { Skeleton } from "@/components/ui/skeleton";
+
+import { ProductList } from "@/components/ProductList";
 import { Suspense } from "react";
 
 export default async function Page({
@@ -106,30 +120,32 @@ export default async function Page({
   });
 
   const collection = data?.collection;
-  const product = data?.collection.product;
-  const image = product?.images?.edges[0].node;
+  const products = collection?.products.edges;
+  const image = products?.images?.edges[0].node;
   const banner = collection?.metafields[0].reference.image.src;
 
-  const product_recommendations = await storefront(getProductRecommendations, {
-    id: collection.id,
-  });
-
-  console.log(product_recommendations);
+  // const product_recommendations = await storefront(getProductRecommendations, {
+  //   id: collection?.id,
+  // });
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="w-full min-h-min">
         <figure className="relative">
-          <Image
-            src={banner}
-            alt={collection?.title}
-            width={10000}
-            height={10000}
-            className="rounded-md object-cover"
-          />
-          <figcaption className="absolute inset-0 z-10 px-8 text-gray-50 font-bold text-xl sm:text-5xl flex justify-start place-items-center py-4 drop-shadow-xl">
-            {collection?.title}
-          </figcaption>
+          <Suspense
+            fallback={<Skeleton className="w-full h-[228px] rounded" />}
+          >
+            <Image
+              src={banner}
+              alt={collection?.title}
+              width={10000}
+              height={10000}
+              className="rounded-md object-cover"
+            />
+            <figcaption className="absolute inset-0 z-10 px-8 text-gray-50 font-bold text-xl sm:text-5xl flex justify-start place-items-center py-4 drop-shadow-xl">
+              {collection?.title}
+            </figcaption>
+          </Suspense>
         </figure>
         <p className="sr-only">{collection?.description}</p>
       </div>
@@ -137,7 +153,7 @@ export default async function Page({
       <h1 className="font-bold text-lg text-purple-900 my-2">
         {collection?.title}
       </h1>
-      <ProductList products={product} />
+      <ProductList products={products} />
       {/* Product */}
       <div className="lg:grid lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
         {/* Product image */}

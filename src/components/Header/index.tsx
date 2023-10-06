@@ -149,10 +149,10 @@ function classNames(...classes) {
 export const Header = (props: HeaderProps) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="bg-white">
+    <div className="bg-white relative ">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-10 lg:hidden" onClose={setOpen}>
+        <Dialog as="div" className=" lg:hidden" onClose={setOpen}>
           <Transition.Child
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"
@@ -326,7 +326,7 @@ export const Header = (props: HeaderProps) => {
         </Dialog>
       </Transition.Root>
 
-      <header className="relative bg-white ">
+      <header className="bg-white ">
         <div className="bg-purple-800/95">
           <p className="flex  items-center  justify-between text-sm font-medium text-white mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8">
             <span className="select-none hidden sm:flex gap-2 items-center  justify-between">
@@ -343,7 +343,7 @@ export const Header = (props: HeaderProps) => {
 
         <nav
           aria-label="Top"
-          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 bg-white sticky top-0 left-0 right-0 z-10"
         >
           <div className="border-b border-gray-200">
             <div className="flex h-16 items-center">
