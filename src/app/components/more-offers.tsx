@@ -11,18 +11,18 @@ const collectionsQuery = `#graphql
           title
           handle
           image {
-          altText
-          width
-          height
-          url
-        }
+            altText
+            width
+            height
+            url
+          }
         }
       }
       pageInfo {
         hasNextPage
         hasPreviousPage
       }
-    }
+    }    
   }
 `;
 

@@ -34,6 +34,7 @@ export async function generateMetadata(
 }
 
 import { ProductList } from "@/components/ProductList";
+import { ThumbsGallery } from "@/components/thumbs-gallery";
 import {
   Accordion,
   AccordionContent,
@@ -52,32 +53,29 @@ const SingleProductQuery = `#graphql
       description
       handle
       tags
-      seo {
-        title,
-        description
-      }
+
       updatedAt
       priceRange {
-          minVariantPrice {
-            amount
-            currencyCode  #active local currency
-          }
-          maxVariantPrice {
-            amount
-            currencyCode
-          }
+        minVariantPrice {
+          amount
+          currencyCode  #active local currency
         }
-        compareAtPriceRange {
-          minVariantPrice {
-            amount
-            currencyCode  #active local currency
-          }
-          maxVariantPrice {
-            amount
-            currencyCode
-          }
+        maxVariantPrice {
+          amount
+          currencyCode
         }
-      variants(first: 3) {
+      }
+      compareAtPriceRange {
+        minVariantPrice {
+          amount
+          currencyCode  #active local currency
+        }
+        maxVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+      variants(first: 1) {
         edges {
           cursor
           node {
@@ -91,6 +89,7 @@ const SingleProductQuery = `#graphql
           }
         }
       }
+
       images(first: 1) {
         edges {
           node {
@@ -98,11 +97,126 @@ const SingleProductQuery = `#graphql
             altText
           }
         }
+      }
+
+      media(first: 10) {
+      edges {
+        node {
+          mediaContentType
+          alt
+          ...mediaFieldsByType
+        }
+      }
     }
   }
   }
 
+  fragment mediaFieldsByType on Media {
+  ... on ExternalVideo {
+    id
+    embeddedUrl
+  }
+  ... on MediaImage {
+    image {
+      id
+      url,
+      altText
+    }
+  }
+  ... on Model3d {
+    sources {
+      url
+      mimeType
+      format
+      filesize
+    }
+  }
+  ... on Video {
+    sources {
+      url
+      mimeType
+      format
+      height
+      width
+    }
+  }
+}
+
 `;
+
+const checkoutMutation = `#graphql
+
+  mutation createCart($cartInput: CartInput) {
+    cartCreate(input: $cartInput) {
+      cart {
+        id
+        createdAt
+        updatedAt
+        checkoutUrl
+        lines(first: 100) {
+          edges {
+            node {
+              id
+              merchandise {
+                ... on ProductVariant {
+                  id
+                }
+              }
+            }
+          }
+        }
+        attributes {
+          key
+          value
+        }
+        cost {
+          totalAmount {
+            amount
+            currencyCode
+          }
+          subtotalAmount {
+            amount
+            currencyCode
+          }
+          totalTaxAmount {
+            amount
+            currencyCode
+          }
+          totalDutyAmount {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
+  }
+`;
+
+interface MediaProps {
+  media: {
+    edges: [
+      {
+        node: {
+          mediaContentType: string;
+          alt: string;
+          image: {
+            url: string;
+          };
+        };
+      }
+    ];
+  };
+}
+
+async function checkout(variantId: string) {
+  const { data } = await storefront(checkoutMutation, variantId);
+
+  console.log(variantId);
+
+  const { webUrl } = data?.cartCreate?.checkoutUrl;
+
+  window.location.href = webUrl;
+}
 
 export default async function ProductsPage({
   params,
@@ -117,6 +231,11 @@ export default async function ProductsPage({
 
   const product = data?.product;
   const image = product?.images?.edges[0].node;
+  const medias: MediaProps["media"] = product?.media?.edges;
+
+  const variantId = product.variants.edges[0].node.id as string;
+
+  checkout(variantId);
 
   const recommendations = await storefront(getProductRecommendations, {
     productId: product.id,
@@ -132,11 +251,7 @@ export default async function ProductsPage({
         {/* Product image */}
         <div className="lg:col-span-4">
           <div className="aspect-w-4 aspect-h-3 rounded-lg bg-gray-100 overflow-hidden">
-            <img
-              src={image?.transformedSrc}
-              alt={image?.altText}
-              className="object-center object-cover"
-            />
+            <ThumbsGallery image={image} list={medias} />
           </div>
         </div>
 
