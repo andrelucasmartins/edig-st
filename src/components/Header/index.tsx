@@ -2,14 +2,7 @@
 interface HeaderProps {}
 
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
-import {
-  Bars3Icon,
-  MagnifyingGlassIcon,
-  ShoppingBagIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
-import { Heart, Package2, ShoppingCart } from "lucide-react";
-import Link from "next/link";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Fragment, useState } from "react";
 
 const navigation = {
@@ -327,25 +320,11 @@ export const Header = (props: HeaderProps) => {
       </Transition.Root>
 
       <header className="bg-white ">
-        <div className="bg-purple-800/95">
-          <p className="flex  items-center  justify-between text-sm font-medium text-white mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8">
-            <span className="select-none hidden sm:flex gap-2 items-center  justify-between">
-              <ShoppingCart /> Trocas e Devoluções em até 7 dias
-            </span>
-            <span className="select-none flex gap-2 items-center justify-between">
-              <Package2 /> Frete Grátis para todo o Brasil
-            </span>
-            <span className="select-none hidden sm:flex gap-2 items-center  justify-between">
-              <Heart /> Satisfação Garantida ou Dinheiro de Volta
-            </span>
-          </p>
-        </div>
-
         <nav
           aria-label="Top"
-          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 bg-white sticky top-0 left-0 right-0 z-10"
+          className="mx-auto max-w-screen-2xl px-4 sm:px-16 lg:px-16 bg-white sticky top-0 left-0 right-0 z-10"
         >
-          <div className="border-b border-gray-200">
+          <div className="">
             <div className="flex h-16 items-center">
               <button
                 type="button"
@@ -356,14 +335,6 @@ export const Header = (props: HeaderProps) => {
                 <span className="sr-only">Open menu</span>
                 <Bars3Icon className="h-6 w-6" aria-hidden="true" />
               </button>
-
-              {/* Logo */}
-              <div className="ml-4 flex lg:ml-0">
-                <Link href="/">
-                  <span className="sr-only">Your Company</span>
-                  <img className="h-8 w-auto" src="/logo.png" alt="" />
-                </Link>
-              </div>
 
               {/* Flyout menus */}
               <Popover.Group className="hidden lg:ml-8 lg:block lg:self-stretch">
@@ -520,31 +491,6 @@ export const Header = (props: HeaderProps) => {
                     <span className="sr-only">, change currency</span>
                   </a>
                 </div> */}
-
-                {/* Search */}
-                <div className="flex lg:ml-6">
-                  <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
-                    <span className="sr-only">Search</span>
-                    <MagnifyingGlassIcon
-                      className="h-6 w-6"
-                      aria-hidden="true"
-                    />
-                  </a>
-                </div>
-
-                {/* Cart */}
-                <div className="ml-4 flow-root lg:ml-6">
-                  <a href="#" className="group -m-2 flex items-center p-2">
-                    <ShoppingBagIcon
-                      className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
-                      aria-hidden="true"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      0
-                    </span>
-                    <span className="sr-only">items in cart, view bag</span>
-                  </a>
-                </div>
               </div>
             </div>
           </div>

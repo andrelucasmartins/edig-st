@@ -6,9 +6,8 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { MoreOffers } from "./components/more-offers";
 
-export const runtime = "edge";
-
 export const metadata: Metadata = {
+  metadataBase: new URL("https://aedigi.com.br/"),
   description:
     "High-performance ecommerce store built with Next.js, Vercel, and Shopify.",
   openGraph: {
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main>
+    <>
       <Categories />
       <Suspense>
         <ThreeItemGrid />
@@ -28,6 +27,6 @@ export default function Home() {
       </Suspense>
       <MoreOffers />
       <ProductList />
-    </main>
+    </>
   );
 }
