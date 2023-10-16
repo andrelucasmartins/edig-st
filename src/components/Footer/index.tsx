@@ -1,7 +1,7 @@
-"use client";
-
 import Link from "next/link";
 import { FaLock, FaShieldHalved, FaWhatsapp } from "react-icons/fa6";
+
+const { COMPANY_NAME, SITE_NAME } = process.env;
 
 interface FooterProps {}
 
@@ -28,7 +28,8 @@ const LINKS_UTIS = [
   },
 ];
 
-export const Footer = (props: FooterProps) => {
+export const Footer = async (props: FooterProps) => {
+  const copyrightName = COMPANY_NAME || SITE_NAME || "";
   return (
     <footer className="bg-[#660099]  py-4 text-white ">
       <div className="mx-auto w-full max-w-screen-xl">
@@ -251,10 +252,10 @@ export const Footer = (props: FooterProps) => {
           </div>
         </div>
 
-        <div className="px-4 pb-4 pt-8  md:flex md:items-center md:justify-center mx-auto max-w-7xl border-t border-white/10">
+        <div className="px-4 pb-4 pt-8 h-6  md:flex md:items-center md:justify-center mx-auto max-w-7xl border-t border-white/10">
           <span className="text-sm text-gray-200 dark:text-gray-300 text-center">
             © {new Date().getFullYear()}{" "}
-            <a href="https://aedigi.com.br">AE Digi Solutions</a>. Todos os
+            <a href="https://aedigi.com.br">{copyrightName}</a> Todos os
             direitos reservados.
           </span>
         </div>

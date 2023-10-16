@@ -211,8 +211,6 @@ interface MediaProps {
 async function checkout(variantId: string) {
   const { data } = await storefront(checkoutMutation, variantId);
 
-  console.log(variantId);
-
   const { webUrl } = data?.cartCreate?.checkoutUrl;
 
   window.location.href = webUrl;

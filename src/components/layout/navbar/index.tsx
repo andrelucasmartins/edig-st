@@ -1,11 +1,12 @@
 import Cart from "@/components/cart";
 import OpenCart from "@/components/cart/open-cart";
-import LogoSquare from "@/components/logo-square";
 import { getMenu } from "@/lib/shopify";
 import { Menu } from "@/lib/shopify/types";
+import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
 import MobileMenu from "./mobile-menu";
+
 import Search from "./search";
 const { SITE_NAME } = process.env;
 
@@ -23,8 +24,13 @@ export default async function Navbar() {
             href="/"
             className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
           >
-            <LogoSquare />
-            <div className="ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">
+            <Image
+              src="/logo.png"
+              alt="logo - AE Digi Store"
+              width={100}
+              height={100}
+            />
+            <div className="ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block sr-only">
               {SITE_NAME}
             </div>
           </Link>

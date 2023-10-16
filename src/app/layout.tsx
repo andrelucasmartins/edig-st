@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
+import { Providers } from "./providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,27 +22,29 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body className={inter.className}>
-        <div className="bg-purple-800/95">
-          <p className="flex  items-center  justify-between text-sm font-medium text-white mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8">
-            <span className="select-none hidden sm:flex gap-2 items-center  justify-between">
-              <ShoppingCart /> Trocas e Devoluções em até 7 dias
-            </span>
-            <span className="select-none flex gap-2 items-center justify-between">
-              <Package2 /> Frete Grátis para todo o Brasil
-            </span>
-            <span className="select-none hidden sm:flex gap-2 items-center  justify-between">
-              <Heart /> Satisfação Garantida ou Dinheiro de Volta
-            </span>
-          </p>
-        </div>
-        <Navbar />
-        <Header />
-        <Suspense>
-          <main>{children}</main>
-        </Suspense>
-        <Footer />
+        <Providers>
+          <div className="bg-purple-800/95">
+            <p className="flex  items-center  justify-between text-sm font-medium text-white mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8">
+              <span className="select-none hidden sm:flex gap-2 items-center  justify-between">
+                <ShoppingCart /> Trocas e Devoluções em até 7 dias
+              </span>
+              <span className="select-none flex gap-2 items-center justify-between">
+                <Package2 /> Frete Grátis para todo o Brasil
+              </span>
+              <span className="select-none hidden sm:flex gap-2 items-center  justify-between">
+                <Heart /> Satisfação Garantida ou Dinheiro de Volta
+              </span>
+            </p>
+          </div>
+          <Navbar />
+          <Header />
+          <Suspense>
+            <main>{children}</main>
+          </Suspense>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

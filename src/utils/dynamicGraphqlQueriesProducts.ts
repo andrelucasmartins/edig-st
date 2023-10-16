@@ -42,8 +42,6 @@ export const generateGraphQLQueries = (names: string[]) => {
 
 export const graphqlQueries = generateGraphQLQueries(collectionNames);
 
-console.log(graphqlQueries);
-
 // Exibir as consultas geradas
 // export const searchCollection = graphqlQueries.forEach((query, index) => {
 //   console.log(`Consulta ${index + 1}:`);
