@@ -17,14 +17,17 @@ export const Breadcrumb = ({ currentPage, back = false }: BreadcrumbProps) => {
         <>
           <a
             onClick={() => route.back()}
-            className="text-purple-800 hover:text-purple-500 flex flex-row gap-2 items-center cursor-pointer"
+            className="text-purple-800 hover:text-purple-500 dark:text-purple-500 dark:hover:text-fuchsia-400 flex flex-row gap-2 items-center cursor-pointer"
           >
             <FaArrowLeft /> Voltar
           </a>
-          <span className="text-gray-500">/</span>
+          <span className="text-gray-500 dark:text-gray-50">/</span>
         </>
       )}
-      <Link href="/" className="text-gray-700 hover:text-gray-900">
+      <Link
+        href="/"
+        className="text-gray-700 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white"
+      >
         Home
       </Link>{" "}
       {currentPage && (

@@ -169,10 +169,10 @@ export async function ProductList() {
                   />
                 </div>
                 <div className="mt-4 flex flex-col space-y-2 text-base font-medium text-gray-900">
-                  <h3 className="text-lg font-bold line-clamp-2">
+                  <h3 className="text-lg font-bold line-clamp-2 dark:text-white">
                     {product.title}
                   </h3>
-                  <p>
+                  <p className="text-purple-800 dark:text-purple-500">
                     {formatPrice(product.priceRange.minVariantPrice.amount)}
                   </p>
                 </div>

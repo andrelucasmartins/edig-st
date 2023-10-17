@@ -143,7 +143,7 @@ function classNames(...classes) {
 export const Header = (props: HeaderProps) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="bg-white relative ">
+    <div className="bg-white relative mt-2">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className=" lg:hidden" onClose={setOpen}>

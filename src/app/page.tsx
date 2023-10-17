@@ -18,10 +18,10 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
-      <Categories />
       <Suspense>
         <ThreeItemGrid />
       </Suspense>
+      <Categories />
       <Suspense>
         <Carousel />
       </Suspense>

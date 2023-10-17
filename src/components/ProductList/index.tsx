@@ -197,8 +197,10 @@ const Product = ({ products }: ProductProps) => {
                 />
               </div>
               <div className="mt-4 flex flex-col space-y-2 text-base font-medium text-gray-950">
-                <h3 className="text-lg/6  line-clamp-2">{title}</h3>
-                <p className="text-purple-800">
+                <h3 className="text-lg/6  line-clamp-2 dark:text-white">
+                  {title}
+                </h3>
+                <p className="text-purple-800 dark:text-purple-500">
                   <span>Por:</span> {formatPrice(price)}
                 </p>
               </div>
@@ -282,8 +284,10 @@ const Slider = ({ products }: { products: string[] }) => {
                   />
                 </div>
                 <div className="mt-4 flex flex-col space-y-2 text-base font-medium text-gray-950">
-                  <h3 className="text-lg/6  line-clamp-2">{product.title}</h3>
-                  <p className="text-purple-800">
+                  <h3 className="text-lg/6  line-clamp-2 dark:text-white">
+                    {product.title}
+                  </h3>
+                  <p className="text-purple-800 dark:text-purple-500">
                     <span>Por:</span> {formatPrice(price)}
                   </p>
                 </div>
@@ -308,7 +312,7 @@ export async function ProductList({
   return (
     <>
       {title && (
-        <h2 className="text-xl font-semibold text-gray-900 text-center my-8 uppercase">
+        <h2 className="text-xl font-semibold text-gray-900 text-center my-8 uppercase dark:text-white">
           {title}
         </h2>
       )}

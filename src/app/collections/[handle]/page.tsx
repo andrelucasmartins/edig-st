@@ -130,7 +130,7 @@ export default async function Page({
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div className="w-full min-h-min">
+      <div className="w-full min-h-min mt-4">
         <figure className="relative">
           <Suspense
             fallback={<Skeleton className="w-full h-[228px] rounded" />}
@@ -150,7 +150,7 @@ export default async function Page({
         <p className="sr-only">{collection?.description}</p>
       </div>
       <Breadcrumb currentPage={collection?.title} back />
-      <h1 className="font-bold text-lg text-purple-900 my-2">
+      <h1 className="font-bold text-xl text-purple-900 dark:text-purple-500 my-2">
         {collection?.title}
       </h1>
       <ProductList products={products} />

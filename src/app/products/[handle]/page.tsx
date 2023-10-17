@@ -257,7 +257,7 @@ export default async function ProductsPage({
         <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:col-span-3">
           <div className="flex flex-col-reverse">
             <div>
-              <h1 className="text-2x1 font-extrabold tracking-tight text-gray-900 sm:text-3xl">
+              <h1 className="text-2x1 font-extrabold tracking-tight text-gray-900 sm:text-3xl dark:text-white">
                 {product.title}
               </h1>
 
@@ -273,13 +273,13 @@ export default async function ProductsPage({
               </p>
 
               <div className="flex flex-col mt-4">
-                <small className="line-through text-sm text-gray-500">
+                <small className="line-through text-sm text-gray-500 dark:text-red-400">
                   {formatPrice(product.priceRange.maxVariantPrice.amount)}
                 </small>
-                <h2 className="text-2x1 font-extrabold tracking-tight text-gray-900 sm:text-3xl">
+                <h2 className="text-2x1 font-extrabold tracking-tight text-gray-900 dark:text-purple-500 sm:text-3xl">
                   {formatPrice(product.priceRange.minVariantPrice.amount)}
                 </h2>
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-gray-500 dark:text-gray-50">
                   12x{" "}
                   {formatPrice(product.priceRange.maxVariantPrice.amount / 12)}{" "}
                   sem juros no cartão

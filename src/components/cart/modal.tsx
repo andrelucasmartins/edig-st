@@ -105,7 +105,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                           key={i}
                           className="flex w-full flex-col border-b border-neutral-300 dark:border-neutral-700"
                         >
-                          <div className="relative flex w-full flex-row justify-between px-1 py-4">
+                          <div className="relative w-full grid justify-between px-1 py-4">
                             <div className="absolute z-40 -mt-2 ml-[55px]">
                               <DeleteItemButton item={item} />
                             </div>
@@ -114,7 +114,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                               onClick={closeCart}
                               className="z-30 flex flex-row space-x-4"
                             >
-                              <div className="relative h-16 w-16 cursor-pointer overflow-hidden rounded-md border border-neutral-300 bg-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800">
+                              <div className="relative h-16 w-16 md:h-32 md:w-32 cursor-pointer overflow-hidden rounded-md border border-neutral-300 bg-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800">
                                 <Image
                                   className="h-full w-full object-cover"
                                   width={64}
@@ -140,9 +140,9 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                                 ) : null}
                               </div>
                             </Link>
-                            <div className="flex h-16 flex-col justify-between">
+                            <div className="flex h-16 flex-1 items-center mx-auto flex-row-reverse justify-start gap-8">
                               <Price
-                                className="flex justify-end space-y-2 text-right text-sm"
+                                className="flex space-y-2 text-right text-sm"
                                 amount={item.cost.totalAmount.amount}
                                 currencyCode={
                                   item.cost.totalAmount.currencyCode
