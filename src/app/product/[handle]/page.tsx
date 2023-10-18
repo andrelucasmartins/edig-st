@@ -5,9 +5,11 @@ import { Suspense } from "react";
 import { GridTileImage } from "@/components/grid/tile";
 import { Gallery } from "@/components/product/gallery";
 import { ProductDescription } from "@/components/product/product-description";
+import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { HIDDEN_PRODUCT_TAG } from "@/lib/constants";
 import { getProduct, getProductRecommendations } from "@/lib/shopify";
 import { Image } from "@/lib/shopify/types";
+import { format } from "date-fns";
 import Link from "next/link";
 
 export async function generateMetadata({
@@ -82,25 +84,47 @@ export default async function ProductPage({
           __html: JSON.stringify(productJsonLd),
         }}
       />
-      <div className="mx-auto max-w-screen-2xl px-4">
-        <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 dark:border-neutral-800 dark:bg-black md:p-12 lg:flex-row lg:gap-8">
-          <div className="h-full w-full basis-full lg:basis-4/6">
-            <Gallery
-              images={product.images.map((image: Image) => ({
-                src: image.url,
-                altText: image.altText,
-              }))}
-            />
+      <section className="mx-auto px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8">
+        {/* Product */}
+        <Breadcrumb back />
+        <div className="lg:grid lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
+          {/* Product image */}
+          <div className="lg:col-span-4">
+            <div className="aspect-w-4 aspect-h-3 rounded-lg  overflow-hidden">
+              <Gallery
+                images={product.images.map((image: Image) => ({
+                  src: image.url,
+                  altText: image.altText,
+                }))}
+              />
+            </div>
           </div>
 
-          <div className="basis-full lg:basis-2/6">
-            <ProductDescription product={product} />
+          {/* Product details */}
+          <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:col-span-3">
+            <div className="flex flex-col-reverse">
+              <div>
+                <h1 className="text-2x1 font-extrabold tracking-tight text-gray-900 sm:text-3xl dark:text-white">
+                  {product.title}
+                </h1>
+                <ProductDescription product={product} />
+                <h2 id="information-heading" className="sr-only">
+                  Product information
+                </h2>
+                <p className="text-sm text-gray-500 mt-2">
+                  Version {product.tags[0]} &middot; Updated{" "}
+                  <time dateTime={product.updatedAt}>
+                    {format(new Date(product.updatedAt), "dd MMM yyyy")}
+                  </time>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
         <Suspense>
           <RelatedProducts id={product.id} />
         </Suspense>
-      </div>
+      </section>
     </>
   );
 }

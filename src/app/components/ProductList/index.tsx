@@ -58,7 +58,7 @@ const productsTest = `#graphql
 
 const productsQuery = `#graphql
   query Products {
-    products(first: 8) {
+    products(first: 200) {
       edges {
         node {
           title

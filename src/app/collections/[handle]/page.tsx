@@ -30,7 +30,7 @@ const SingleProductQuery = `#graphql
       }
     }      
 
-		products(first: 50) {
+		products(first: 100) {
 			edges {
 				node {
 					id
@@ -105,6 +105,7 @@ export async function generateMetadata(
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Skeleton } from "@/components/ui/skeleton";
 
+import { getProductRecommendations } from "@/app/data/get-product-recommendations";
 import { ProductList } from "@/components/ProductList";
 import { Suspense } from "react";
 
@@ -123,6 +124,13 @@ export default async function Page({
   const products = collection?.products.edges;
   const image = products?.images?.edges[0].node;
   const banner = collection?.metafields[0].reference.image.src;
+  const recommendations = await storefront(getProductRecommendations, {
+    productId: products[0].node.id,
+  });
+
+  const productRecommendations = recommendations?.data?.productRecommendations;
+
+  console.log(products[0].node.id);
 
   // const product_recommendations = await storefront(getProductRecommendations, {
   //   id: collection?.id,
@@ -170,6 +178,13 @@ export default async function Page({
           </div>
         </div>
       </div>
+      <Suspense>
+        <ProductList
+          products={productRecommendations}
+          title="Novidades que chegaram pra você"
+          slide
+        />
+      </Suspense>
     </Suspense>
   );
 }
