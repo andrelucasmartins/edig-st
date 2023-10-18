@@ -1,6 +1,26 @@
 import { storefront } from "@/utils/storefront";
 import Image from "next/image";
 
+interface CollectionsQueryProps {
+  collections: {
+    edges: [
+      {
+        node: {
+          id: string;
+          title: string;
+          handle: string;
+          image: {
+            altText: string;
+            width: number;
+            height: number;
+            url: string;
+          };
+        };
+      }
+    ];
+  };
+}
+
 const collectionsQuery = `#graphql
   query getCollections {
     collections(first: 10) {

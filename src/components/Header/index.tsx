@@ -143,7 +143,7 @@ function classNames(...classes) {
 export const Header = (props: HeaderProps) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="bg-white relative mt-2">
+    <div className="bg-white dark:bg-gray-800 relative mt-2">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className=" lg:hidden" onClose={setOpen}>
@@ -169,7 +169,7 @@ export const Header = (props: HeaderProps) => {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl">
+              <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white dark:bg-gray-800 pb-12 shadow-xl">
                 <div className="flex px-4 pb-2 pt-5">
                   <button
                     type="button"
@@ -215,7 +215,7 @@ export const Header = (props: HeaderProps) => {
                               key={item.name}
                               className="group relative text-sm"
                             >
-                              <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
+                              <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 group-hover:opacity-75">
                                 <img
                                   src={item.imageSrc}
                                   alt={item.imageAlt}
@@ -320,16 +320,16 @@ export const Header = (props: HeaderProps) => {
         </Dialog>
       </Transition.Root>
 
-      <header className="bg-white ">
+      <header className="bg-white  dark:bg-gray-800">
         <nav
           aria-label="Top"
-          className="mx-auto max-w-screen-2xl px-4 sm:px-16 lg:px-16 bg-white sticky top-0 left-0 right-0 z-10"
+          className="mx-auto max-w-screen-2xl px-4 sm:px-16 lg:px-16 bg-white dark:bg-gray-800  sticky top-0 left-0 right-0 z-10"
         >
           <div className="">
             <div className="flex h-16 items-center">
               <button
                 type="button"
-                className="relative rounded-md bg-white p-2 text-gray-400 lg:hidden"
+                className="relative rounded-md bg-white p-2 text-gray-400 dark:text-gray-50 lg:hidden"
                 onClick={() => setOpen(true)}
               >
                 <span className="absolute -inset-0.5" />
@@ -349,7 +349,7 @@ export const Header = (props: HeaderProps) => {
                               className={classNames(
                                 open
                                   ? "border-sky-600 text-sky-600"
-                                  : "border-transparent text-gray-700 hover:text-gray-800",
+                                  : "border-transparent text-gray-700 dark:text-gray-50 dark:hover:text-gray-400 hover:text-gray-800",
                                 "relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
                               )}
                             >
@@ -366,7 +366,7 @@ export const Header = (props: HeaderProps) => {
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                           >
-                            <Popover.Panel className="absolute inset-x-0 top-full text-sm text-gray-500">
+                            <Popover.Panel className="absolute inset-x-0 top-full text-sm text-gray-500  dark:hover:text-gray-400">
                               {/* Presentational element used to render the bottom shadow, if we put the shadow on the actual panel it pokes out the top, so we use this shorter element to hide the top of the shadow */}
                               <div
                                 className="absolute inset-0 top-1/2 bg-white shadow"
@@ -453,7 +453,7 @@ export const Header = (props: HeaderProps) => {
                     <Link
                       key={page.name}
                       href={page.href}
-                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                      className="flex items-center text-sm font-medium text-gray-700 dark:text-gray-50 dark:hover:text-gray-400 hover:text-gray-800"
                     >
                       {page.name}
                     </Link>

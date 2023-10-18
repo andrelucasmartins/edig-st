@@ -1,5 +1,6 @@
 import { ProductList } from "@/app/components/ProductList";
 import { Categories } from "@/components/Categories";
+import { BannerHome } from "@/components/banner-home";
 import { Carousel } from "@/components/carousel";
 import { ThreeItemGrid } from "@/components/grid/three-items";
 import type { Metadata } from "next";
@@ -18,6 +19,9 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
+      <Suspense>
+        <BannerHome />
+      </Suspense>
       <Suspense>
         <ThreeItemGrid />
       </Suspense>

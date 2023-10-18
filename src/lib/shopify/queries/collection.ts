@@ -1,5 +1,5 @@
-import productFragment from '../fragments/product';
-import seoFragment from '../fragments/seo';
+import productFragment from "../fragments/product";
+import seoFragment from "../fragments/seo";
 
 const collectionFragment = /* GraphQL */ `
   fragment collection on Collection {
@@ -24,7 +24,7 @@ export const getCollectionQuery = /* GraphQL */ `
 `;
 
 export const getCollectionsQuery = /* GraphQL */ `
-  query getCollections {
+  query getCollections @inContext(language: PT_BR) {
     collections(first: 100, sortKey: TITLE) {
       edges {
         node {
