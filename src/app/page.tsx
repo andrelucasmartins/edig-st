@@ -1,5 +1,4 @@
 import { ProductList } from "@/app/components/ProductList";
-import { Categories } from "@/components/Categories";
 import { BannerHome } from "@/components/banner-home";
 import { Carousel } from "@/components/carousel";
 import { CategoriesTop } from "@/components/categories-top";
@@ -29,10 +28,10 @@ export default function Home() {
       <Suspense>
         <ThreeItemGrid />
       </Suspense>
-      <Categories />
       <Suspense>
         <Carousel />
       </Suspense>
+      {/* <Categories /> */}
       <MoreOffers />
       <ProductList />
     </>

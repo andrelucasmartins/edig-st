@@ -13,6 +13,7 @@ import { createUrl } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
+import { GridTileImage } from "../grid/tile";
 
 interface ThumbsGalleryProps {
   image?: {
@@ -54,6 +55,39 @@ export const ThumbsGallery = ({ image, images }: ThumbsGalleryProps) => {
             src={images[imageIndex]?.src as string}
           />
         )}
+      </Suspense>
+      <Suspense>
+        {images.length > 1 ? (
+          <ul className="my-8 flex items-center justify-center gap-2 overflow-auto py-1 lg:mb-0">
+            {images.map((image, index) => {
+              const isActive = index === imageIndex;
+              const imageSearchParams = new URLSearchParams(
+                searchParams.toString()
+              );
+
+              imageSearchParams.set("image", index.toString());
+
+              return (
+                <li key={image.src} className="h-20 w-20">
+                  <Link
+                    aria-label="Enlarge product image"
+                    href={createUrl(pathname, imageSearchParams)}
+                    scroll={false}
+                    className="h-full w-full"
+                  >
+                    <GridTileImage
+                      alt={image.altText}
+                      src={image.src}
+                      width={80}
+                      height={80}
+                      active={isActive}
+                    />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        ) : null}
       </Suspense>
       <Swiper
         onSwiper={(swiper) => console.log(swiper)}

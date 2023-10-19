@@ -35,11 +35,11 @@ export async function MoreOffers() {
     <div className="text-gray-500">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-4">
-          <h2 className="text-2xl font-bold text-gray-900 text-center">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-50 text-center">
             Mais ofertas
           </h2>
 
-          <div className="mt-6 space-y-12 lg:grid lg:grid-cols-5 lg:gap-x-6 lg:space-y-0">
+          <div className="mt-6 space-y-6 lg:grid lg:grid-cols-5 lg:gap-x-6 lg:space-y-0">
             {collections?.map((item) => {
               const collection = item.node;
               return (
@@ -50,10 +50,10 @@ export async function MoreOffers() {
                       alt={collection.image.altText}
                       width={400}
                       height={700}
-                      className="w-full object-cover object-center rounded"
+                      className="w-full object-cover object-center rounded-full"
                     />
                   </div>
-                  <h3 className="mt-6 text-sm text-gray-500 text-center">
+                  <h3 className="mt-0 text-sm text-gray-500 dark:text-gray-50 text-center">
                     <a href={`/collections/${collection.handle}`}>
                       <span className="absolute inset-0" />
                       {collection.title}

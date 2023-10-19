@@ -53,6 +53,7 @@ export async function generateMetadata({
 }
 
 import { ProductList } from "@/components/ProductList";
+import { AddToCart } from "@/components/cart/add-to-cart";
 import Price from "@/components/price";
 import { VariantSelector } from "@/components/product/variant-selector";
 import { ThumbsGallery } from "@/components/thumbs-gallery";
@@ -306,7 +307,7 @@ export default async function ProductsPage({
                 </p>
 
                 <div className="flex flex-col mt-4">
-                  <small className="line-through text-sm text-gray-500 dark:text-red-400">
+                  <small className="line-through text-sm text-gray-500 dark:text-gray-500">
                     <Price
                       amount={product.priceRange.maxVariantPrice.amount}
                       currencyCode={
@@ -338,6 +339,10 @@ export default async function ProductsPage({
             </div>
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 ga´-y-4 sm:grid-cols-1 gap-4">
+              <AddToCart
+                variants={product.variants}
+                availableForSale={product.availableForSale}
+              />
               <Button
                 className="text-green-500 border-2 border-green-500 hover:border-green-500 hover:bg-green-500 hover:text-white py-6 uppercase"
                 size={"lg"}
@@ -356,7 +361,13 @@ export default async function ProductsPage({
             <Accordion type="single" collapsible className="text-gray-500 mt-6">
               <AccordionItem value="item-1">
                 <AccordionTrigger>Especificações</AccordionTrigger>
-                <AccordionContent>{product.description}</AccordionContent>
+                <AccordionContent>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: product.descriptionHtml,
+                    }}
+                  />
+                </AccordionContent>
               </AccordionItem>
             </Accordion>
           </div>

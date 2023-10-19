@@ -237,9 +237,6 @@ const Slider = ({ products }: { products: string[] }) => {
       slidesPerView={1}
       spaceBetween={20}
       navigation={true}
-      pagination={{
-        clickable: true,
-      }}
       breakpoints={{
         520: {
           pagination: true,

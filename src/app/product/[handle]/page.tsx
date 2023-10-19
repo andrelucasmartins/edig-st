@@ -104,9 +104,6 @@ export default async function ProductPage({
           <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:col-span-3">
             <div className="flex flex-col-reverse">
               <div>
-                <h1 className="text-2x1 font-extrabold tracking-tight text-gray-900 sm:text-3xl dark:text-white">
-                  {product.title}
-                </h1>
                 <ProductDescription product={product} />
                 <h2 id="information-heading" className="sr-only">
                   Product information

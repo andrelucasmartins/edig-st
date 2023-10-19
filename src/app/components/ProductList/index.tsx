@@ -18,7 +18,6 @@
 
 // "use client";
 
-import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/utils/formatPrice";
 import { storefront } from "@/utils/storefront";
 import Link from "next/link";
@@ -145,7 +144,7 @@ export async function ProductList() {
   const products = await data?.products.edges;
 
   return (
-    <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div className="max-w-2xl mx-auto pb-16 pt-6 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
       <h2 id="products-heading" className="text-3xl py-4">
         Produtos
       </h2>
@@ -177,7 +176,7 @@ export async function ProductList() {
                   </p>
                 </div>
 
-                <div className="mt-10 grid grid-cols-1 gap-x-6 ga´-y-4 sm:grid-cols-1 gap-4">
+                {/* <div className="mt-10 grid grid-cols-1 gap-x-6 ga´-y-4 sm:grid-cols-1 gap-4">
                   <Button
                     className="text-green-500 border-2 border-green-500 hover:border-green-500 hover:bg-green-500 hover:text-white py-6 uppercase"
                     size={"sm"}
@@ -194,7 +193,7 @@ export async function ProductList() {
                 </div>
                 <p className="mt-1 text-sm italic text-gray-500">
                   {product.tags[0]}
-                </p>
+                </p> */}
               </a>
             </Link>
           );
