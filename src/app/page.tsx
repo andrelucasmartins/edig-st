@@ -2,6 +2,7 @@ import { ProductList } from "@/app/components/ProductList";
 import { Categories } from "@/components/Categories";
 import { BannerHome } from "@/components/banner-home";
 import { Carousel } from "@/components/carousel";
+import { CategoriesTop } from "@/components/categories-top";
 import { ThreeItemGrid } from "@/components/grid/three-items";
 import type { Metadata } from "next";
 import { Suspense } from "react";
@@ -21,6 +22,9 @@ export default function Home() {
     <>
       <Suspense>
         <BannerHome />
+      </Suspense>
+      <Suspense>
+        <CategoriesTop />
       </Suspense>
       <Suspense>
         <ThreeItemGrid />
