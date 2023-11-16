@@ -25,7 +25,6 @@ export function Gallery({
   const previousSearchParams = new URLSearchParams(searchParams.toString());
   const previousImageIndex =
     imageIndex === 0 ? images?.length - 1 : imageIndex - 1;
-  // console.log("Item2: " + imageIndex, "Item1:" + images.length);
   previousSearchParams.set("image", previousImageIndex.toString());
   const previousUrl = createUrl(pathname, previousSearchParams);
 

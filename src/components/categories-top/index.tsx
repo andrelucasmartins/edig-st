@@ -7,22 +7,22 @@ import Link from "next/link";
 const navigation = [
   {
     name: "Para Ela",
-    href: "/collection/para-ela",
+    href: "/collections/para-ela",
     img: "/collection/for-she.png",
   },
   {
     name: "Para Ele",
-    href: "/collection/para-ela",
+    href: "/collections/para-ela",
     img: "/collection/for-she.png",
   },
   {
     name: "Para sua casa",
-    href: "/collection/casa",
+    href: "/collections/casa",
     img: "/collection/home.png",
   },
   {
     name: "Fitness",
-    href: "/collection/casa",
+    href: "/collections/fitness",
     img: "/collection/home.png",
   },
   {

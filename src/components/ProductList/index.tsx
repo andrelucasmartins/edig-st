@@ -5,10 +5,13 @@ import Link from "next/link";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import { Pagination as PaginationList } from "@nextui-org/react";
+
 interface ProductListProps {
   products: string[];
   title?: string;
   slide?: boolean;
+  total?: number;
 }
 
 const productsTest = `#graphql
@@ -132,6 +135,7 @@ import "swiper/css/thumbs";
 import "./style.css";
 
 // import required modules
+import clsx from "clsx";
 import { useState } from "react";
 import { FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules";
 interface Products {
@@ -189,11 +193,13 @@ const Product = ({ products }: ProductProps) => {
         return (
           <Link key={handle} href={`/products/${handle}`} legacyBehavior>
             <a className="group">
-              <div className="w-full aspect-w-4 aspect-h-4 rounded-lg overflow-hidden ">
+              <div className="w-full aspect-w-4 aspect-h-4 rounded-lg overflow-hidden shadow-md shadow-gray-300/40">
                 <img
                   src={image?.transformedSrc || image?.url}
                   alt={image?.altText}
-                  className="w-full h-full object-center object-cover group-hover:opacity-75"
+                  className={clsx(
+                    "w-full h-full group-hover:opacity-75 rounded"
+                  )}
                 />
               </div>
               <div className="mt-4 flex flex-col space-y-2 text-base font-medium text-gray-950">
@@ -270,11 +276,11 @@ const Slider = ({ products }: { products: string[] }) => {
               legacyBehavior
             >
               <a className="group">
-                <div className="w-full aspect-w-4 aspect-h-4 rounded-lg overflow-hidden ">
+                <div className="w-full aspect-w-4 aspect-h-4 rounded-lg overflow-hidden shadow-md shadow-gray-300/40">
                   <img
                     src={image.transformedSrc}
                     alt={image.altText}
-                    className="w-full h-full object-center object-cover group-hover:opacity-75"
+                    className="w-full h-full object-center object-cover group-hover:opacity-75 "
                   />
                 </div>
                 <div className="mt-4 flex flex-col space-y-2 text-base font-medium text-gray-950">
@@ -301,6 +307,7 @@ export async function ProductList({
   products,
   title,
   slide,
+  total,
 }: ProductListProps) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   return (
@@ -315,6 +322,16 @@ export async function ProductList({
         <Product products={products} />
       ) : (
         <Slider products={products} />
+      )}
+
+      {total && (
+        <div className="flex justify-center">
+          <PaginationList
+            showControls
+            total={Math.ceil(total / 10)}
+            initialPage={1}
+          />
+        </div>
       )}
     </>
   );

@@ -1,3 +1,4 @@
+import { CookiesConsent } from "@/components/CookiesConsent";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import Navbar from "@/components/layout/navbar";
@@ -22,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body className={inter.className}>
         <Providers>
           <div className="bg-purple-800/95">
@@ -43,6 +44,7 @@ export default function RootLayout({
           <Suspense>
             <main>{children}</main>
           </Suspense>
+          <CookiesConsent />
           <Footer />
         </Providers>
       </body>

@@ -49,7 +49,7 @@ export const ThumbsGallery = ({ image, images }: ThumbsGalleryProps) => {
       <Suspense fallback={<div>Loading...</div>}>
         {images[imageIndex] && (
           <img
-            className="h-full w-full object-center object-cover rounded"
+            className="h-full w-full object-center object-cover rounded border border-gray-300/40"
             sizes="(min-width: 100%) 66vw, 100vw"
             alt={images[imageIndex]?.altText as string}
             src={images[imageIndex]?.src as string}

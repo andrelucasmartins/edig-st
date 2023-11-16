@@ -3,7 +3,7 @@ import Image from "next/image";
 
 const collectionsQuery = `#graphql
   query getCollections {
-    collections(first: 10) {
+    collections(first: 100) {
       edges {
         cursor
         node {
@@ -30,6 +30,9 @@ export async function MoreOffers() {
   const { data } = await storefront(collectionsQuery);
 
   const collections = data?.collections.edges;
+  const noHiddenCollections = collections.filter(
+    (item: any) => !item.node.handle.includes("hidden")
+  );
 
   return (
     <div className="text-gray-500">
@@ -39,15 +42,15 @@ export async function MoreOffers() {
             Mais ofertas
           </h2>
 
-          <div className="mt-6 space-y-6 lg:grid lg:grid-cols-5 lg:gap-x-6 lg:space-y-0">
-            {collections?.map((item) => {
+          <div className="mt-6 space-y-6 lg:grid lg:grid-cols-12 lg:gap-x-6 lg:space-y-0">
+            {noHiddenCollections?.map((item: any) => {
               const collection = item.node;
               return (
                 <div key={collection.handle} className="group relative">
                   <div className="relative h-80 w-full overflow-hidden rounded-lg  group-hover:opacity-75 sm:h-64 aspect-[3/2]">
                     <Image
-                      src={collection.image.url}
-                      alt={collection.image.altText}
+                      src={collection?.image?.url}
+                      alt={collection?.image?.altText}
                       width={400}
                       height={700}
                       className="w-full object-cover object-center rounded-full"

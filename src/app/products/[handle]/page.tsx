@@ -55,6 +55,7 @@ export async function generateMetadata({
 import { ProductList } from "@/components/ProductList";
 import { AddToCart } from "@/components/cart/add-to-cart";
 import Price from "@/components/price";
+import { ProductReviews } from "@/components/product-reviews";
 import { VariantSelector } from "@/components/product/variant-selector";
 import { ThumbsGallery } from "@/components/thumbs-gallery";
 import {
@@ -372,6 +373,7 @@ export default async function ProductsPage({
             </Accordion>
           </div>
         </div>
+        <ProductReviews productId={product.id} />
 
         <ProductList
           products={productRecommendations}
