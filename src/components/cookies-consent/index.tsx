@@ -2,23 +2,30 @@
 
 import Link from "next/link";
 
-import { hasCookie, setCookie } from "cookies-next";
-import { useEffect, useState } from "react";
+// import { getCookie, hasCookie, setCookie } from "cookies-next";
+import Cookies from "js-cookie";
+import { MouseEvent, useEffect, useState } from "react";
 
-const USER_CONSENT_COOKIE_KEY = "cookie_consent_is_true";
-const USER_CONSENT_COOKIE_EXPIRE_DATE = 1000;
+const USER_CONSENT_COOKIE_KEY = "cookie_consent";
+const USER_CONSENT_COOKIE_EXPIRE_DATE = 365;
 
 export const CookiesConsent = () => {
   const [showConsent, setShowConsent] = useState(true);
 
+  const hasCookies = Cookies.get(USER_CONSENT_COOKIE_KEY) !== undefined;
+
   useEffect(() => {
-    setShowConsent(hasCookie(USER_CONSENT_COOKIE_KEY));
+    setShowConsent(hasCookies);
   }, []);
 
-  const acceptCookie = () => {
+  const acceptCookie = (e: MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+
     setShowConsent(true);
-    setCookie(USER_CONSENT_COOKIE_KEY, "true", {
-      expires: new Date(USER_CONSENT_COOKIE_EXPIRE_DATE),
+    Cookies.set(USER_CONSENT_COOKIE_KEY, "true", {
+      expires: USER_CONSENT_COOKIE_EXPIRE_DATE,
+      secure: true,
+      sameSite: "strict",
     });
   };
 
@@ -33,7 +40,7 @@ export const CookiesConsent = () => {
     >
       <div className="flex flex-col items-start px-5 py-3 space-y-2 bg-gray-200 md:flex-row md:space-y-0 md:items-stretch md:space-x-2 rounded-sm">
         <div className="flex items-center flex-grow text-gray-900">
-          <p className="text-sm font-medium">
+          <p className="text-sm font-medium" data-testid="description-cookie">
             Usamos cookies para garantir que você obtenha a melhor experiência
             em nosso site.{" "}
             <Link href="/privacy-policy" legacyBehavior>
@@ -44,7 +51,7 @@ export const CookiesConsent = () => {
             .
           </p>
         </div>
-        <div className="flex items-center" onClick={() => acceptCookie()}>
+        <div className="flex items-center" onClick={acceptCookie}>
           <button
             className="p-3 text-sm font-bold text-white uppercase bg-gray-700 whitespace-nowrap rounded-md"
             type="button"

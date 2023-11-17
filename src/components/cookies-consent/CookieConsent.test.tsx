@@ -17,12 +17,12 @@ describe("<CookiesConsent>", () => {
   it("Should render paragraph explanation", () => {
     makeSut();
 
-    const paragraphElement = screen.queryAllByRole("paragraph");
-    const paragraphElementText = paragraphElement[0].textContent;
+    const paragraphElement = screen.getByTestId("description-cookie");
+    const paragraphElementText = paragraphElement.textContent;
 
     expect(paragraphElement).toBeInTheDocument();
     expect(paragraphElementText).toBe(
-      "Usamos cookies para garantir que você obtenha a melhor experiência em nosso site."
+      "Usamos cookies para garantir que você obtenha a melhor experiência em nosso site. Política de Privacidade."
     );
   });
 
@@ -38,17 +38,16 @@ describe("<CookiesConsent>", () => {
     });
 
     it("Should called when the button is clicked", () => {
-      const { container, getByTestId } = makeSut();
+      const { getByTestId } = makeSut();
 
-      const buttonElement = container.querySelector(
-        '[id="accept"]'
-      ) as HTMLButtonElement;
+      const buttonElement = screen.getByRole("button", { name: "Aceitar" });
       const DivElement = getByTestId("cookie-consent");
+
+      expect(buttonElement).toBeInTheDocument();
 
       // Act
       fireEvent.click(buttonElement);
 
-      expect(buttonElement).toBeInTheDocument();
       expect(DivElement).not.toBeInTheDocument();
     });
   });

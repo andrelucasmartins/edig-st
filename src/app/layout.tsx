@@ -1,6 +1,6 @@
-import { CookiesConsent } from "@/components/CookiesConsent";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { CookiesConsent } from "@/components/cookies-consent";
 import Navbar from "@/components/layout/navbar";
 import { Heart, Package2, ShoppingCart } from "lucide-react";
 import type { Metadata } from "next";
