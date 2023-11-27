@@ -174,13 +174,13 @@ interface Products {
   };
 }
 interface ProductProps {
-  products: Products;
+  products: Products | Products[];
 }
 
 const Product = ({ products }: ProductProps) => {
   return (
     <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-8">
-      {products?.map((item) => {
+      {products?.map((item: any | any[]) => {
         const product = item.length === 0 ? item : item?.node;
         const title = product.title;
         const handle = product.handle;
@@ -258,7 +258,7 @@ const Slider = ({ products }: { products: string[] }) => {
       modules={[FreeMode, Navigation, Thumbs, Pagination]}
       className="mySwiper2"
     >
-      {products?.map((item) => {
+      {products?.map((item: any[] | any) => {
         const product = item || item?.node;
         const image = product?.images?.edges[0].node;
         const price =
