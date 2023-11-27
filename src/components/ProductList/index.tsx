@@ -5,10 +5,8 @@ import Link from "next/link";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { Pagination as PaginationList } from "@nextui-org/react";
-
 interface ProductListProps {
-  products: string[];
+  products: any[];
   title?: string;
   slide?: boolean;
   total?: number;
@@ -136,7 +134,6 @@ import "./style.css";
 
 // import required modules
 import clsx from "clsx";
-import { useState } from "react";
 import { FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules";
 interface Products {
   node: {
@@ -307,9 +304,7 @@ export async function ProductList({
   products,
   title,
   slide,
-  total,
 }: ProductListProps) {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
   return (
     <>
       {title && (
@@ -322,16 +317,6 @@ export async function ProductList({
         <Product products={products} />
       ) : (
         <Slider products={products} />
-      )}
-
-      {total && (
-        <div className="flex justify-center">
-          <PaginationList
-            showControls
-            total={Math.ceil(total / 10)}
-            initialPage={1}
-          />
-        </div>
       )}
     </>
   );

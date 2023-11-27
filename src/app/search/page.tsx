@@ -6,7 +6,7 @@ import { getProducts } from "@/lib/shopify";
 export const metadata = {
   metadataBase: new URL("https://aedigi.com.br/"),
   title: "Search",
-  description: "Search for products in the store.",
+  description: "Procure produtos na loja",
 };
 
 export default async function SearchPage({
@@ -19,6 +19,7 @@ export default async function SearchPage({
     sorting.find((item) => item.slug === sort) || defaultSort;
 
   const products = await getProducts({ sortKey, reverse, query: searchValue });
+
   const resultsText = products.length > 1 ? "results" : "result";
 
   return (

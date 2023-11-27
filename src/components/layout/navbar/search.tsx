@@ -32,7 +32,7 @@ export default function Search() {
       <input
         type="text"
         name="search"
-        placeholder="Search for products..."
+        placeholder="Pesquisar produtos"
         autoComplete="off"
         defaultValue={searchParams?.get("q") || ""}
         className="w-full rounded-lg  bg-white px-4 py-2 text-sm text-black placeholder:text-neutral-500  dark:bg-transparent dark:text-white dark:placeholder:text-neutral-400 shadow-md border border-neutral-400/20"

@@ -16,6 +16,7 @@ export async function storefront(query: string, variables = {}) {
         "X-Shopify-Storefront-Access-Token": key,
       },
       body: { query, variables } && JSON.stringify({ query, variables }),
+      cache: "force-cache",
     });
 
     return result.json();

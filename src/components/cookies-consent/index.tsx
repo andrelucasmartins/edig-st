@@ -43,7 +43,7 @@ export const CookiesConsent = () => {
           <p className="text-sm font-medium" data-testid="description-cookie">
             Usamos cookies para garantir que você obtenha a melhor experiência
             em nosso site.{" "}
-            <Link href="/privacy-policy" legacyBehavior>
+            <Link href="/policies/privacy-policy" legacyBehavior>
               <a className="text-sm underline hover:text-lightAccent">
                 Política de Privacidade
               </a>

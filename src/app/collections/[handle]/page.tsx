@@ -10,7 +10,7 @@ type Props = {
 };
 
 const SingleProductQuery = `#graphql
-  query getProductsInCollection($handle: String!, $cursor: String) {
+  query getProductsOfProductTypeInCollection($handle: String!, $afterPage: String, $beforePage: String, $first: Int, $last: Int) {
   shop {
     name
   }
@@ -32,14 +32,13 @@ const SingleProductQuery = `#graphql
       }
     }      
 
-		products(first: 10, after: $cursor) {   
-      filters {
-        values {
-          id
-          label
-          count
-        }
-      }   
+		products(first: $first, last: $last, after: $afterPage, before: $beforePage) {    
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+        hasPreviousPage
+      }    
 			edges {
         cursor
 				node {
@@ -86,12 +85,14 @@ const SingleProductQuery = `#graphql
           }
 				}
 			}
-      pageInfo {
-        hasNextPage
-        startCursor
-        endCursor
-        hasPreviousPage
-      }                  
+      filters {
+        values {
+          id
+          label
+          count
+        }
+      } 
+                      
 		}    
 	}
 }
@@ -118,24 +119,58 @@ export async function generateMetadata(
 }
 
 import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { Skeleton } from "@/components/ui/skeleton";
 
 import { getProductRecommendations } from "@/app/data/get-product-recommendations";
 import { ProductList } from "@/components/ProductList";
-import { Suspense } from "react";
+import { revalidatePath } from "next/cache";
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { ActionButtonNext, ActionButtonPrev } from "../ActionButton";
+import { getPageCount, pagePreviousCount } from "../actions";
 
-export default async function Page({
+let collection;
+let pagination: {
+  startCursor: string;
+  endCursor: string;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+};
+
+export default async function PageCollections({
   params,
   searchParams,
 }: {
   params: { handle: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-  const { data } = await storefront(SingleProductQuery, {
+  const { pageCount, page, first, last } = await getPageCount();
+
+  const paramsFetch = {
+    next: {
+      first: 10,
+      afterPage: pagination?.endCursor,
+    },
+    prev: {
+      last: 10,
+      beforePage: pagination?.startCursor,
+    },
+  };
+
+  const res = await await storefront(SingleProductQuery, {
     handle: params.handle,
+    ...paramsFetch[page ? "next" : "prev"],
   });
 
-  const collection = data?.collection;
+  collection = res.data?.collection;
+  pagination = collection?.products.pageInfo;
+
+  const handlePagePrevious = async () => {
+    "use server";
+
+    await pagePreviousCount();
+
+    revalidatePath(`/collections/${params.handle}`);
+  };
+
   const products = collection?.products.edges;
   const image = products?.images?.edges[0]?.node;
   const banner = collection?.metafields[0]?.reference.image.src;
@@ -144,15 +179,6 @@ export default async function Page({
   });
 
   const productRecommendations = recommendations?.data?.productRecommendations;
-  const pagination = collection.products.pageInfo;
-
-  const page = searchParams["page"] ?? "1";
-  const per_page = searchParams["per_page"] ?? "5";
-
-  const start = (Number(page) - 1) * Number(per_page);
-  const end = start + Number(per_page);
-
-  // const entries = data.slice(start, end);
 
   const productsCount = collection?.products.filters[0]?.values[0]?.count;
 
@@ -161,27 +187,23 @@ export default async function Page({
   // });
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <>
       <div className="w-full min-h-min mt-4">
         <figure className="relative h-[228px] ">
-          <Suspense
-            fallback={<Skeleton className="w-full h-[228px] rounded" />}
-          >
-            <div
-              className="w-full h-[228px] rounded bg-gradient-to-r from-purple-500/80 from-10% 
+          <div
+            className="w-full h-[228px] rounded bg-gradient-to-r from-purple-500/80 from-10% 
               via-transparent to-sky-400/20 to-80%"
-            >
-              <Image
-                src={banner}
-                alt={collection?.title}
-                fill
-                className="rounded-md object-cover -z-10"
-              />
-            </div>
-            <figcaption className="absolute inset-0 z-10 px-8 text-white font-bold text-xl sm:text-5xl flex justify-start place-items-center py-4 drop-shadow-xl">
-              {collection?.title}
-            </figcaption>
-          </Suspense>
+          >
+            <Image
+              src={banner}
+              alt={collection?.title}
+              fill
+              className="rounded-md object-cover -z-10"
+            />
+          </div>
+          <figcaption className="absolute inset-0 z-10 px-8 text-white font-bold text-xl sm:text-5xl flex justify-start place-items-center py-4 drop-shadow-xl">
+            {collection?.title}
+          </figcaption>
         </figure>
         <p className="sr-only">{collection?.description}</p>
       </div>
@@ -193,7 +215,44 @@ export default async function Page({
 
         <span>{productsCount} Produto(s)</span>
       </div>
-      <ProductList products={products} total={productsCount} />
+      <ProductList products={products} />
+      {productsCount && (
+        <div className="flex justify-center items-end gap-4">
+          {/* <Pagination
+            showControls
+            total={Math.ceil(productsCount / 10)}
+            initialPage={1}
+            renderItem={renderItem}
+          /> */}
+          <form className="flex justify-center gap-2">
+            {/* <Button
+              formAction={handlePagePrevious}
+              disabled={!pagination?.hasPreviousPage}
+            >
+              <LuChevronLeft />
+            </Button> */}
+            <ActionButtonPrev
+              formAction={handlePagePrevious}
+              // link={`/collections/${params.handle}?beforepage=${pagination?.startCursor}`}
+              disabled={!pagination?.hasPreviousPage}
+            >
+              <LuChevronLeft />
+            </ActionButtonPrev>
+            <ActionButtonNext
+              link={`/collections/${params.handle}?afterpage=${pagination?.endCursor}`}
+              disabled={!pagination?.hasNextPage}
+            >
+              <LuChevronRight />
+            </ActionButtonNext>
+            {/* <Button formAction={handleNext} disabled={!pagination?.hasNextPage}>
+              <LuChevronRight />
+            </Button> */}
+          </form>{" "}
+          <div>
+            {pageCount} / {Math.ceil(productsCount / 10)} - {page}
+          </div>
+        </div>
+      )}
 
       {/* Product */}
       <div className="lg:grid lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
@@ -211,13 +270,11 @@ export default async function Page({
           </div>
         </div>
       </div>
-      <Suspense>
-        <ProductList
-          products={productRecommendations}
-          title="Novidades que chegaram pra você"
-          slide
-        />
-      </Suspense>
-    </Suspense>
+      <ProductList
+        products={productRecommendations}
+        title="Novidades que chegaram pra você"
+        slide
+      />
+    </>
   );
 }

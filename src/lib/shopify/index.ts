@@ -304,10 +304,12 @@ export async function getCollectionProducts({
   collection,
   reverse,
   sortKey,
+  after,
 }: {
   collection: string;
   reverse?: boolean;
   sortKey?: string;
+  after?: string;
 }): Promise<Product[]> {
   const res = await shopifyFetch<ShopifyCollectionProductsOperation>({
     query: getCollectionProductsQuery,
@@ -316,6 +318,7 @@ export async function getCollectionProducts({
       handle: collection,
       reverse,
       sortKey: sortKey === "CREATED_AT" ? "CREATED" : sortKey,
+      after,
     },
   });
 
@@ -338,11 +341,11 @@ export async function getCollections(): Promise<Collection[]> {
   const collections = [
     {
       handle: "",
-      title: "All",
-      description: "All products",
+      title: "Todas",
+      description: "Todos os produtos",
       seo: {
-        title: "All",
-        description: "All products",
+        title: "Todas",
+        description: "Todos os produtos",
       },
       path: "/search",
       updatedAt: new Date().toISOString(),

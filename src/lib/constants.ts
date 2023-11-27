@@ -6,8 +6,8 @@ export type SortFilterItem = {
 };
 
 export const defaultSort: SortFilterItem = {
-  title: "",
-  slug: null,
+  title: "Relevantes",
+  slug: "latest-desc",
   sortKey: "RELEVANCE",
   reverse: false,
 };

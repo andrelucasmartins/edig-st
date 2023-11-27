@@ -1,3 +1,7 @@
+export const viewport = {
+  colorScheme: "dark",
+};
+
 export default function ShopLayout({
   children,
   params,
