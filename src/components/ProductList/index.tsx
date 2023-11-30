@@ -134,6 +134,7 @@ import "./style.css";
 
 // import required modules
 import clsx from "clsx";
+import { Suspense } from "react";
 import { FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules";
 interface Products {
   node: {
@@ -174,13 +175,13 @@ interface Products {
   };
 }
 interface ProductProps {
-  products: Products | Products[];
+  products: Products | any[];
 }
 
 const Product = ({ products }: ProductProps) => {
   return (
     <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-8">
-      {products?.map((item: any | any[]) => {
+      {products?.map((item) => {
         const product = item.length === 0 ? item : item?.node;
         const title = product.title;
         const handle = product.handle;
@@ -314,9 +315,13 @@ export async function ProductList({
       )}
 
       {!slide ? (
-        <Product products={products} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Product products={products} />
+        </Suspense>
       ) : (
-        <Slider products={products} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Slider products={products} />
+        </Suspense>
       )}
     </>
   );

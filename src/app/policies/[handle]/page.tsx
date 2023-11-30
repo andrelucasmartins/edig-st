@@ -27,10 +27,12 @@ export default async function PoliciesPage({
 
   return (
     <div className="grid grid-cols-1 gap-y-6 select-none">
-      <Breadcrumb currentPage={policy?.title} back />
       <Suspense fallback={<div>Loading...</div>}>
+        <Breadcrumb currentPage={policy?.title} back />
         <h1 className="text-3xl font-bold text-purple-900">{policy?.title}</h1>
-        <p dangerouslySetInnerHTML={{ __html: policy?.body }} />
+      </Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
+        <div dangerouslySetInnerHTML={{ __html: policy?.body }} />
       </Suspense>
     </div>
   );

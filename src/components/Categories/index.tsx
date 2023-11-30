@@ -58,7 +58,7 @@ export async function Categories() {
           <h2 className="text-2xl font-bold text-gray-900">Categorias</h2>
 
           <div className="mt-6 space-y-12 lg:grid lg:grid-cols-5 lg:gap-x-6 lg:space-y-0">
-            {collections?.map((item) => {
+            {collections?.map((item: any) => {
               const collection = item.node;
               return (
                 <div key={collection.handle} className="group relative">

@@ -1,10 +1,9 @@
 "use server";
 
 import { storefront } from "@/utils/storefront";
-import { revalidatePath } from "next/cache";
 
-const SingleProductQuery = `#graphql
-  query getProductsOfProductTypeInCollection($handle: String!, $afterPage: String, $beforePage: String) {
+const SingleProductQueryNextPage = `#graphql
+  query getProductsOfProductTypeInCollection($handle: String!, $afterPage: String) {
   shop {
     name
   }
@@ -26,7 +25,95 @@ const SingleProductQuery = `#graphql
       }
     }      
 
-		products(first: 10, after: $afterPage, before: $beforePage) {    
+		products(first: 10, after: $afterPage) {    
+      pageInfo {
+        hasNextPage
+        startCursor
+        endCursor
+        hasPreviousPage
+      }    
+			edges {
+        cursor
+				node {
+					id
+					title
+          handle
+          tags
+					vendor
+					priceRange {
+            minVariantPrice {
+              amount
+              currencyCode
+            }
+            maxVariantPrice {
+              amount
+              currencyCode
+            }
+          }
+          images(first: 1) {
+            edges {
+              node {
+                transformedSrc
+                altText
+              }
+            }
+          }
+          variants(first: 3) {
+            edges {
+              cursor
+              node {
+                id
+                title
+                quantityAvailable
+                price {
+                  amount
+                  currencyCode
+                }
+                compareAtPrice {
+                  amount
+                  currencyCode
+                }
+              }
+            }            
+          }
+				}
+			}
+      filters {
+        values {
+          id
+          label
+          count
+        }
+      } 
+                      
+		}    
+	}
+}
+`;
+const SingleProductQueryPrevPage = `#graphql
+  query getProductsOfProductTypeInCollection($handle: String!,  $beforePage: String) {
+  shop {
+    name
+  }
+	collection(handle: $handle) {
+		id
+		title
+    handle
+    description
+    metafields(identifiers: {key: "banner", namespace: "custom"}) {
+      id
+      reference {
+        ... on MediaImage {
+          id
+          image {
+            src
+            altText
+          }
+        }
+      }
+    }      
+
+		products(last: 10, before: $beforePage) {    
       pageInfo {
         hasNextPage
         startCursor
@@ -93,36 +180,53 @@ const SingleProductQuery = `#graphql
 `;
 
 let pageCount = 1;
-let page = "next";
-let first: number | null = 10;
-let last: number | null;
-let afterPage = "";
+let page = "";
+let cursor: string | string[] | undefined;
+
 export async function pageNextCount(afterPage: string) {
+  cursor = afterPage;
   pageCount++;
   page = "next";
-  afterPage = afterPage;
-  last = null;
-  first = 10;
-  revalidatePath(`/`);
-  //pageCount;
+
+  return await pageCount;
 }
 
-export async function pagePreviousCount() {
+export async function pagePrevCount(beforePage: string) {
+  cursor = beforePage;
   pageCount--;
   page = "prev";
-  first = null;
-  last = 10;
   return pageCount;
 }
 
-export const getPageCount = async () =>
-  await { pageCount, page, first, last, afterPage };
+export async function getCollectionData(
+  handle: string,
+  cursor?: string | string[] | undefined
+) {
+  if (page === "") {
+    pageCount = 1;
+    const res = await await storefront(SingleProductQueryNextPage, {
+      handle,
+    });
 
-export async function pageNext(handle: string, after: string) {
-  afterPage = after;
-  const { data } = await storefront(SingleProductQuery, {
-    handle,
-    afterPage,
-  });
-  return afterPage;
+    return res;
+  }
+  if (page === "next") {
+    const res = await await storefront(SingleProductQueryNextPage, {
+      handle,
+      afterPage: cursor,
+    });
+
+    return res;
+  }
+
+  if (page === "prev") {
+    const prevPage = await await storefront(SingleProductQueryPrevPage, {
+      handle,
+      beforePage: cursor,
+    });
+
+    return prevPage;
+  }
 }
+
+export const getPageCount = async () => await { pageCount };

@@ -1,35 +1,36 @@
-"use client";
-
+import { getConsent, setConsent } from "@/app/actions";
 import Link from "next/link";
 
 // import { getCookie, hasCookie, setCookie } from "cookies-next";
-import Cookies from "js-cookie";
-import { MouseEvent, useEffect, useState } from "react";
+// import Cookies from "js-cookie";
+// import { MouseEvent, useEffect, useState } from "react";
 
-const USER_CONSENT_COOKIE_KEY = "cookie_consent";
-const USER_CONSENT_COOKIE_EXPIRE_DATE = 365;
+// const USER_CONSENT_COOKIE_KEY = "cookie_consent";
+// const USER_CONSENT_COOKIE_EXPIRE_DATE = 365;
 
-export const CookiesConsent = () => {
-  const [showConsent, setShowConsent] = useState(true);
+export async function CookiesConsent() {
+  const consent = await getConsent();
+  // const [showConsent, setShowConsent] = useState(true);
 
-  const hasCookies = Cookies.get(USER_CONSENT_COOKIE_KEY) !== undefined;
+  // const hasCookies = Cookies.get(USER_CONSENT_COOKIE_KEY) !== undefined;
 
-  useEffect(() => {
-    setShowConsent(hasCookies);
-  }, []);
+  // useEffect(() => {
+  //   setShowConsent(hasCookies);
+  // }, []);
 
-  const acceptCookie = (e: MouseEvent<HTMLElement>) => {
-    e.preventDefault();
+  async function acceptCookie() {
+    // setShowConsent(true);
+    // cookies().set(USER_CONSENT_COOKIE_KEY, "true", {
+    //   expires: USER_CONSENT_COOKIE_EXPIRE_DATE,
+    // });
+    // Cookies.set(USER_CONSENT_COOKIE_KEY, "true", {
+    //   expires: USER_CONSENT_COOKIE_EXPIRE_DATE,
+    //   secure: true,
+    //   sameSite: "strict",
+    // });
+  }
 
-    setShowConsent(true);
-    Cookies.set(USER_CONSENT_COOKIE_KEY, "true", {
-      expires: USER_CONSENT_COOKIE_EXPIRE_DATE,
-      secure: true,
-      sameSite: "strict",
-    });
-  };
-
-  if (showConsent) {
+  if (consent) {
     return null;
   }
 
@@ -43,7 +44,7 @@ export const CookiesConsent = () => {
           <p className="text-sm font-medium" data-testid="description-cookie">
             Usamos cookies para garantir que você obtenha a melhor experiência
             em nosso site.{" "}
-            <Link href="/policies/privacy-policy" legacyBehavior>
+            <Link href="/policies/politica-de-privacidade" legacyBehavior>
               <a className="text-sm underline hover:text-lightAccent">
                 Política de Privacidade
               </a>
@@ -51,16 +52,16 @@ export const CookiesConsent = () => {
             .
           </p>
         </div>
-        <div className="flex items-center" onClick={acceptCookie}>
+        <form className="flex items-center" action={setConsent}>
           <button
             className="p-3 text-sm font-bold text-white uppercase bg-gray-700 whitespace-nowrap rounded-md"
-            type="button"
+            type="submit"
             id="accept"
           >
             Aceitar
           </button>
-        </div>
+        </form>
       </div>
     </section>
   );
-};
+}

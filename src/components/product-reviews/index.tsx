@@ -39,7 +39,7 @@ export const ProductReviews = async ({ productId }: ProductReviewsProps) => {
       <h2>Reviews</h2>
       <h3>{product.title}</h3>
       <ul>
-        {product.reviews?.edges.map(({ node }) => (
+        {product.reviews?.edges.map(({ node }: any) => (
           <li key={node.id}>
             <h3>{node.title}</h3>
             <p>Rating: {node.rating}/5</p>

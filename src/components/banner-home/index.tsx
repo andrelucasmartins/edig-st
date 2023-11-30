@@ -17,7 +17,7 @@ export const BannerHome = (props: BannerHomeProps) => {
               dynamicBullets: true,
             }}
             modules={[Pagination]}
-            className="mySwiper"
+            className="mySwiper h-72"
           >
             <SwiperSlide>
               <Link href="/para-ela">

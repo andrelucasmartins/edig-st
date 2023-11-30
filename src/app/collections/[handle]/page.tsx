@@ -122,69 +122,43 @@ import { Breadcrumb } from "@/components/ui/breadcrumb";
 
 import { getProductRecommendations } from "@/app/data/get-product-recommendations";
 import { ProductList } from "@/components/ProductList";
-import { revalidatePath } from "next/cache";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import { ActionButtonNext, ActionButtonPrev } from "../ActionButton";
-import { getPageCount, pagePreviousCount } from "../actions";
+import { getCollectionData, getPageCount } from "../actions";
 
-let collection;
-let pagination: {
-  startCursor: string;
-  endCursor: string;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-};
+// let collection;
+// let pagination: {
+//   startCursor: string;
+//   endCursor: string;
+//   hasPreviousPage: boolean;
+//   hasNextPage: boolean;
+// };
 
 export default async function PageCollections({
   params,
   searchParams,
 }: {
   params: { handle: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string | string[] };
 }) {
-  const { pageCount, page, first, last } = await getPageCount();
+  const { pageCount } = await getPageCount();
 
-  const paramsFetch = {
-    next: {
-      first: 10,
-      afterPage: pagination?.endCursor,
-    },
-    prev: {
-      last: 10,
-      beforePage: pagination?.startCursor,
-    },
-  };
+  const { data } = await getCollectionData(params.handle, searchParams.page);
 
-  const res = await await storefront(SingleProductQuery, {
-    handle: params.handle,
-    ...paramsFetch[page ? "next" : "prev"],
-  });
-
-  collection = res.data?.collection;
-  pagination = collection?.products.pageInfo;
-
-  const handlePagePrevious = async () => {
-    "use server";
-
-    await pagePreviousCount();
-
-    revalidatePath(`/collections/${params.handle}`);
-  };
+  const collection = data?.collection;
+  const pagination = collection?.products.pageInfo;
 
   const products = collection?.products.edges;
   const image = products?.images?.edges[0]?.node;
   const banner = collection?.metafields[0]?.reference.image.src;
+  const productId = pagination && products[0]?.node.id;
   const recommendations = await storefront(getProductRecommendations, {
-    productId: products[0]?.node.id,
+    productId: productId,
   });
 
   const productRecommendations = recommendations?.data?.productRecommendations;
 
   const productsCount = collection?.products.filters[0]?.values[0]?.count;
-
-  // const product_recommendations = await storefront(getProductRecommendations, {
-  //   id: collection?.id,
-  // });
 
   return (
     <>
@@ -218,39 +192,25 @@ export default async function PageCollections({
       <ProductList products={products} />
       {productsCount && (
         <div className="flex justify-center items-end gap-4">
-          {/* <Pagination
-            showControls
-            total={Math.ceil(productsCount / 10)}
-            initialPage={1}
-            renderItem={renderItem}
-          /> */}
           <form className="flex justify-center gap-2">
-            {/* <Button
-              formAction={handlePagePrevious}
-              disabled={!pagination?.hasPreviousPage}
-            >
-              <LuChevronLeft />
-            </Button> */}
             <ActionButtonPrev
-              formAction={handlePagePrevious}
-              // link={`/collections/${params.handle}?beforepage=${pagination?.startCursor}`}
+              link={`/collections/${params.handle}?page=${pagination?.startCursor}`}
+              cursor={pagination?.startCursor}
               disabled={!pagination?.hasPreviousPage}
             >
               <LuChevronLeft />
             </ActionButtonPrev>
+            {/* <div className="flex self-center">
+              {pageCount ?? pageCount} / {Math.ceil(productsCount / 10)}
+            </div> */}
             <ActionButtonNext
-              link={`/collections/${params.handle}?afterpage=${pagination?.endCursor}`}
+              link={`/collections/${params.handle}?page=${pagination?.endCursor}`}
+              cursor={pagination?.endCursor}
               disabled={!pagination?.hasNextPage}
             >
               <LuChevronRight />
             </ActionButtonNext>
-            {/* <Button formAction={handleNext} disabled={!pagination?.hasNextPage}>
-              <LuChevronRight />
-            </Button> */}
           </form>{" "}
-          <div>
-            {pageCount} / {Math.ceil(productsCount / 10)} - {page}
-          </div>
         </div>
       )}
 

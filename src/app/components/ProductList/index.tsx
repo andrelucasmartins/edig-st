@@ -150,7 +150,7 @@ export async function ProductList() {
       </h2>
 
       <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-8">
-        {products?.map((item) => {
+        {products?.map((item: any) => {
           const product = item.node;
           const image = product.images.edges[0].node;
           return (
