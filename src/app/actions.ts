@@ -3,7 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 const USER_CONSENT_COOKIE_KEY = "cookie_consent";
-const USER_CONSENT_COOKIE_EXPIRE_DATE = 365;
 export const getConsent = async () => {
   const result = cookies().get(USER_CONSENT_COOKIE_KEY);
   return result;

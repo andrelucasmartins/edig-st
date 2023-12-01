@@ -122,6 +122,16 @@ import { Breadcrumb } from "@/components/ui/breadcrumb";
 
 import { getProductRecommendations } from "@/app/data/get-product-recommendations";
 import { ProductList } from "@/components/ProductList";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Divider } from "@nextui-org/divider";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import { ActionButtonNext, ActionButtonPrev } from "../ActionButton";
 import { getCollectionData, getPageCount } from "../actions";
@@ -163,7 +173,7 @@ export default async function PageCollections({
   return (
     <>
       <div className="w-full min-h-min mt-4">
-        <figure className="relative h-[228px] ">
+        <figure className="relative h-[228px]">
           <div
             className="w-full h-[228px] rounded bg-gradient-to-r from-purple-500/80 from-10% 
               via-transparent to-sky-400/20 to-80%"
@@ -181,13 +191,28 @@ export default async function PageCollections({
         </figure>
         <p className="sr-only">{collection?.description}</p>
       </div>
+      <h1 className="font-bold text-xl text-purple-900 dark:text-purple-500 my-2">
+        {collection?.title}
+      </h1>
+      <Divider className="my-4 h-[1px] bg-gray-300" />
       <Breadcrumb currentPage={collection?.title} back />
-      <div className="flex justify-between items-center">
-        <h1 className="font-bold text-xl text-purple-900 dark:text-purple-500 my-2">
-          {collection?.title}
-        </h1>
-
-        <span>{productsCount} Produto(s)</span>
+      <div className="flex justify-between items-center my-6">
+        <Select>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select a fruit" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectLabel>Fruits</SelectLabel>
+              <SelectItem value="apple">Apple</SelectItem>
+              <SelectItem value="banana">Banana</SelectItem>
+              <SelectItem value="blueberry">Blueberry</SelectItem>
+              <SelectItem value="grapes">Grapes</SelectItem>
+              <SelectItem value="pineapple">Pineapple</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>{" "}
+        <span>{productsCount} Item(s)</span>
       </div>
       <ProductList products={products} />
       {productsCount && (

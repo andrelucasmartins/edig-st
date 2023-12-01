@@ -191,13 +191,11 @@ const Product = ({ products }: ProductProps) => {
         return (
           <Link key={handle} href={`/products/${handle}`} legacyBehavior>
             <a className="group">
-              <div className="w-full aspect-w-4 aspect-h-4 rounded-lg overflow-hidden shadow-md shadow-gray-300/40">
+              <div className="w-full aspect-w-4 aspect-h-4 rounded-lg overflow-hidden shadow-lg shadow-gray-950/20">
                 <img
                   src={image?.transformedSrc || image?.url}
                   alt={image?.altText}
-                  className={clsx(
-                    "w-full h-full group-hover:opacity-75 rounded"
-                  )}
+                  className={clsx("w-full h-full group-hover:opacity-75")}
                 />
               </div>
               <div className="mt-4 flex flex-col space-y-2 text-base font-medium text-gray-950">
@@ -205,7 +203,7 @@ const Product = ({ products }: ProductProps) => {
                   {title}
                 </h3>
                 <p className="text-purple-800 dark:text-purple-500">
-                  <span>Por:</span> {formatPrice(price)}
+                  {formatPrice(price)}
                 </p>
               </div>
 
@@ -274,7 +272,7 @@ const Slider = ({ products }: { products: string[] }) => {
               legacyBehavior
             >
               <a className="group">
-                <div className="w-full aspect-w-4 aspect-h-4 rounded-lg overflow-hidden shadow-md shadow-gray-300/40">
+                <div className="w-full aspect-w-4 aspect-h-4 rounded-lg overflow-hidden shadow-lg shadow-gray-950/20">
                   <img
                     src={image.transformedSrc}
                     alt={image.altText}

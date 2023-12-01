@@ -26,8 +26,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
-          <div className="bg-purple-800/95">
-            <p className="flex  items-center  justify-between text-sm font-medium text-white mx-auto max-w-7xl py-4 px-4 sm:px-6 lg:px-8">
+          <div className="bg-gray-900">
+            <p className="flex  items-center  justify-between text-sm font-medium text-white mx-auto max-w-7xl py-2 px-4 sm:px-6 lg:px-8">
               <span className="select-none hidden sm:flex gap-2 items-center  justify-between">
                 <ShoppingCart /> Trocas e Devoluções em até 7 dias
               </span>

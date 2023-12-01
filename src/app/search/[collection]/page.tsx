@@ -40,8 +40,6 @@ export default async function CategoryPage({
     reverse,
   });
 
-  console.log("products", products);
-
   return (
     <section>
       {products.length === 0 ? (
