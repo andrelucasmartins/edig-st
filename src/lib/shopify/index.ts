@@ -16,6 +16,7 @@ import {
 } from "./mutations/cart";
 import { getCartQuery } from "./queries/cart";
 import {
+  getCollectionProductsCarouselQuery,
   getCollectionProductsQuery,
   getCollectionQuery,
   getCollectionsQuery,
@@ -139,7 +140,7 @@ const reshapeCart = (cart: ShopifyCart): Cart => {
 };
 
 const reshapeCollection = (
-  collection: ShopifyCollection
+  collection: ShopifyCollection,
 ): Collection | undefined => {
   if (!collection) {
     return undefined;
@@ -181,7 +182,7 @@ const reshapeImages = (images: Connection<Image>, productTitle: string) => {
 
 const reshapeProduct = (
   product: ShopifyProduct,
-  filterHiddenProducts: boolean = true
+  filterHiddenProducts: boolean = true,
 ) => {
   if (
     !product ||
@@ -226,7 +227,7 @@ export async function createCart(): Promise<Cart> {
 
 export async function addToCart(
   cartId: string,
-  lines: { merchandiseId: string; quantity: number }[]
+  lines: { merchandiseId: string; quantity: number }[],
 ): Promise<Cart> {
   const res = await shopifyFetch<ShopifyAddToCartOperation>({
     query: addToCartMutation,
@@ -241,7 +242,7 @@ export async function addToCart(
 
 export async function removeFromCart(
   cartId: string,
-  lineIds: string[]
+  lineIds: string[],
 ): Promise<Cart> {
   const res = await shopifyFetch<ShopifyRemoveFromCartOperation>({
     query: removeFromCartMutation,
@@ -257,7 +258,7 @@ export async function removeFromCart(
 
 export async function updateCart(
   cartId: string,
-  lines: { id: string; merchandiseId: string; quantity: number }[]
+  lines: { id: string; merchandiseId: string; quantity: number }[],
 ): Promise<Cart> {
   const res = await shopifyFetch<ShopifyUpdateCartOperation>({
     query: editCartItemsMutation,
@@ -287,7 +288,7 @@ export async function getCart(cartId: string): Promise<Cart | undefined> {
 }
 
 export async function getCollection(
-  handle: string
+  handle: string,
 ): Promise<Collection | undefined> {
   const res = await shopifyFetch<ShopifyCollectionOperation>({
     query: getCollectionQuery,
@@ -299,18 +300,20 @@ export async function getCollection(
 
   return reshapeCollection(res.body.data.collection);
 }
-
+interface getCollectionProductsProps {
+  collection: any;
+  reverse?: boolean;
+  sortKey?: string;
+  after?: string;
+  first: number;
+}
 export async function getCollectionProducts({
   collection,
   reverse,
   sortKey,
   after,
-}: {
-  collection: string;
-  reverse?: boolean;
-  sortKey?: string;
-  after?: string;
-}): Promise<Product[]> {
+  first = 10,
+}: getCollectionProductsProps): Promise<Product[]> {
   const res = await shopifyFetch<ShopifyCollectionProductsOperation>({
     query: getCollectionProductsQuery,
     tags: [TAGS.collections, TAGS.products],
@@ -319,6 +322,7 @@ export async function getCollectionProducts({
       reverse,
       sortKey: sortKey === "CREATED_AT" ? "CREATED" : sortKey,
       after,
+      first,
     },
   });
 
@@ -328,7 +332,41 @@ export async function getCollectionProducts({
   }
 
   return reshapeProducts(
-    removeEdgesAndNodes(res.body.data.collection.products)
+    removeEdgesAndNodes(res.body.data.collection.products),
+  );
+}
+export async function getCollectionCarouselProducts({
+  collection,
+  reverse,
+  sortKey,
+  after,
+  first = 15,
+}: {
+  collection: string;
+  reverse?: boolean;
+  sortKey?: string;
+  after?: string;
+  first?: number;
+}): Promise<Product[]> {
+  const res = await shopifyFetch<ShopifyCollectionProductsOperation>({
+    query: getCollectionProductsCarouselQuery,
+    tags: [TAGS.collections, TAGS.products],
+    variables: {
+      handle: collection,
+      reverse,
+      sortKey: sortKey === "CREATED_AT" ? "CREATED" : sortKey,
+      after,
+      first,
+    },
+  });
+
+  if (!res.body.data.collection) {
+    console.log(`No collection found for \`${collection}\``);
+    return [];
+  }
+
+  return reshapeProducts(
+    removeEdgesAndNodes(res.body.data.collection.products),
   );
 }
 
@@ -353,7 +391,7 @@ export async function getCollections(): Promise<Collection[]> {
     // Filter out the `hidden` collections.
     // Collections that start with `hidden-*` need to be hidden on the search page.
     ...reshapeCollections(shopifyCollections).filter(
-      (collection) => !collection.handle.startsWith("hidden")
+      (collection) => !collection.handle.startsWith("hidden"),
     ),
   ];
 
@@ -410,7 +448,7 @@ export async function getProduct(handle: string): Promise<Product | undefined> {
 }
 
 export async function getProductRecommendations(
-  productId: string
+  productId: string,
 ): Promise<Product[]> {
   const res = await shopifyFetch<ShopifyProductRecommendationsOperation>({
     query: getProductRecommendationsQuery,

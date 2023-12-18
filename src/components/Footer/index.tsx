@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { FaLock, FaShieldHalved, FaWhatsapp } from "react-icons/fa6";
 
-const { COMPANY_NAME, SITE_NAME } = process.env;
-
-interface FooterProps {}
+// const { COMPANY_NAME, SITE_NAME } = process.env;
 
 const LINKS_UTIS = [
   {
@@ -28,32 +26,32 @@ const LINKS_UTIS = [
   },
 ];
 
-export const Footer = (props: FooterProps) => {
-  const copyrightName = COMPANY_NAME || SITE_NAME || "";
+export const Footer = () => {
+  // const copyrightName = COMPANY_NAME || SITE_NAME || "";
   return (
     <footer className="bg-[#660099]  py-4 text-white ">
       <div className="mx-auto w-full max-w-screen-xl">
-        <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 gap-8 px-4 py-6 lg:py-8">
+        <div className="xs:grid-cols-2 grid gap-8 px-4 py-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:py-8">
           <div>
-            <h2 className="mb-6 text-sm font-semibold text-gray-100 uppercase">
+            <h2 className="mb-6 text-sm font-semibold uppercase text-gray-100">
               Contato
             </h2>
-            <ul className="text-gray-100 font-medium text-xs">
+            <ul className="text-xs font-medium text-gray-100">
               <li className="mb-4">
-                <p className="font-extralight flex flex-col">
+                <p className="flex flex-col font-extralight">
                   <span className="font-medium">Fale conosco pelo e-mail:</span>
                   contato@aedigi.com.br <br />
                   ou telefone: (19) 99302-8888
                 </p>
               </li>
               <li className="mb-4">
-                <address className="font-extralight flex flex-col">
+                <address className="flex flex-col font-extralight">
                   <span className="font-medium">Horário de atendimento:</span>
                   Segunda a Sexta-feira das 8h às 18hrs
                 </address>
               </li>
               <li className="mb-4">
-                <p className="font-extralight flex flex-col">
+                <p className="flex flex-col font-extralight">
                   <span className="font-medium">Endereço:</span>
                   Av. Dr. Carlos de Campos, 935
                   <br />
@@ -70,10 +68,10 @@ export const Footer = (props: FooterProps) => {
           </div>
 
           <div>
-            <h2 className="mb-6 text-sm font-semibold text-gray-100 uppercase dark:text-white">
+            <h2 className="mb-6 text-sm font-semibold uppercase text-gray-100 dark:text-white">
               Links Úteis
             </h2>
-            <ul className="text-gray-300 font-medium text-sm">
+            <ul className="text-sm font-medium text-gray-300">
               {LINKS_UTIS.map((item) => (
                 <li className="mb-2" key={item.url}>
                   <Link href={`/policies/${item.url}`}>{item.name}</Link>
@@ -82,14 +80,14 @@ export const Footer = (props: FooterProps) => {
             </ul>
           </div>
           <div>
-            <h2 className="mb-6 text-sm font-semibold text-gray-100 uppercase dark:text-white">
+            <h2 className="mb-6 text-sm font-semibold uppercase text-gray-100 dark:text-white">
               Precisa de ajuda?
             </h2>
-            <ul className="text-gray-100 font-semibold text-xs">
+            <ul className="text-xs font-semibold text-gray-100">
               <li className="mb-4 font-thin ">
                 <Link
                   type="button"
-                  className=" w-[210px] flex flex-row gap-2 items-center font-normal"
+                  className=" flex w-[210px] flex-row items-center gap-2 font-normal"
                   href="https://api.whatsapp.com/send?phone=5519993028888&text=Olá, sou André, da equipe AE Digi Store?"
                 >
                   <FaWhatsapp size={20} className="text-green-600" />
@@ -108,16 +106,16 @@ export const Footer = (props: FooterProps) => {
             </ul>
           </div>
           <div>
-            <h2 className="mb-6 text-sm font-semibold text-gray-100 uppercase dark:text-white">
+            <h2 className="mb-6 text-sm font-semibold uppercase text-gray-100 dark:text-white">
               Site Seguro
             </h2>
-            <ul className="text-gray-500 dark:text-gray-400 font-medium text-sm">
+            <ul className="text-sm font-medium text-gray-500 dark:text-gray-400">
               <li className="mb-4">
                 <ul>
                   <li className="mb-2">
                     <button
                       type="button"
-                      className="bg-gray-100 text-gray-600 px-8 py-1 uppercase text-base flex items-center gap-2 w-[214px]"
+                      className="flex w-[214px] items-center gap-2 bg-gray-100 px-8 py-1 text-base uppercase text-gray-600"
                     >
                       <FaShieldHalved size={20} />
                       <span className="text-xs"> Ambiente Seguro</span>
@@ -126,7 +124,7 @@ export const Footer = (props: FooterProps) => {
                   <li>
                     <button
                       type="button"
-                      className="bg-gray-100 text-gray-600 px-8 py-1 uppercase text-base flex items-center gap-2 w-[214px]"
+                      className="flex w-[214px] items-center gap-2 bg-gray-100 px-8 py-1 text-base uppercase text-gray-600"
                     >
                       <FaLock size={20} />
                       <span className="text-xs"> certificado ssl</span>
@@ -137,7 +135,7 @@ export const Footer = (props: FooterProps) => {
               <li className="mb-4 ">
                 <span className="visually-hidden sr-only">Payment methods</span>
                 <ul
-                  className="list list-payment flex flex-row gap-2 justify-start items-center"
+                  className="list list-payment flex flex-row items-center justify-start gap-2"
                   role="list"
                 >
                   <li className="list-payment__item">
@@ -252,9 +250,9 @@ export const Footer = (props: FooterProps) => {
           </div>
         </div>
 
-        <div className="px-4 pb-4 pt-8 h-6  md:flex md:items-center md:justify-center mx-auto max-w-7xl border-t border-white/10">
+        <div className="mx-auto h-6 max-w-7xl border-t  border-white/10 px-4 pb-4 pt-8 md:flex md:items-center md:justify-center">
           <span
-            className="text-sm text-gray-200 dark:text-gray-300 text-center"
+            className="text-center text-sm text-gray-200 dark:text-gray-300"
             data-testid="info-business"
           >
             © {new Date().getFullYear()} AE Digi Solutions Inc. Todos os

@@ -14,7 +14,7 @@ export default async function Navbar() {
   const menu = await getMenu("next-js-frontend-header-menu");
 
   return (
-    <nav className="relative flex items-center justify-between p-4 lg:px-16 mx-auto max-w-screen-2xl">
+    <nav className="relative mx-auto flex max-w-screen-2xl items-center justify-between p-4 lg:px-16">
       <div className="block flex-none md:hidden">
         <MobileMenu menu={menu} />
       </div>
@@ -30,7 +30,7 @@ export default async function Navbar() {
               width={100}
               height={100}
             />
-            <div className="ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block sr-only">
+            <div className="sr-only ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">
               {SITE_NAME}
             </div>
           </Link>

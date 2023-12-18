@@ -20,7 +20,7 @@ export default function OpenCart({
         className={clsx(
           "h-4 transition-all ease-in-out hover:scale-110 ",
           "h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500",
-          className
+          className,
         )}
       />
       <span className="sr-only">Search</span>

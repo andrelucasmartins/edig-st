@@ -77,7 +77,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                   <ShoppingCartIcon className="h-16" />
                   <p className="mt-6 text-center text-2xl font-bold">
-                    Your cart is empty.
+                    Seu carrinho está vazio
                   </p>
                 </div>
               ) : (
@@ -92,12 +92,12 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                           if (value !== DEFAULT_OPTION) {
                             merchandiseSearchParams[name.toLowerCase()] = value;
                           }
-                        }
+                        },
                       );
 
                       const merchandiseUrl = createUrl(
                         `/product/${item.merchandise.product.handle}`,
-                        new URLSearchParams(merchandiseSearchParams)
+                        new URLSearchParams(merchandiseSearchParams),
                       );
 
                       return (
@@ -105,7 +105,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                           key={i}
                           className="flex w-full flex-col border-b border-neutral-300 dark:border-neutral-700"
                         >
-                          <div className="relative w-full grid justify-between px-1 py-4">
+                          <div className="relative grid w-full justify-between px-1 py-4">
                             <div className="absolute z-40 -mt-2 ml-[55px]">
                               <DeleteItemButton item={item} />
                             </div>
@@ -114,7 +114,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                               onClick={closeCart}
                               className="z-30 flex flex-row space-x-4"
                             >
-                              <div className="relative h-16 w-16 md:h-32 md:w-32 cursor-pointer overflow-hidden rounded-md border border-neutral-300 bg-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800">
+                              <div className="relative h-16 w-16 cursor-pointer overflow-hidden rounded-md border border-neutral-300 bg-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800 md:h-32 md:w-32">
                                 <Image
                                   className="h-full w-full object-cover"
                                   width={64}
@@ -140,7 +140,7 @@ export default function CartModal({ cart }: { cart: Cart | undefined }) {
                                 ) : null}
                               </div>
                             </Link>
-                            <div className="flex h-16 flex-1 items-center mx-auto flex-row-reverse justify-start gap-8">
+                            <div className="mx-auto flex h-16 flex-1 flex-row-reverse items-center justify-start gap-8">
                               <Price
                                 className="flex space-y-2 text-right text-sm"
                                 amount={item.cost.totalAmount.amount}

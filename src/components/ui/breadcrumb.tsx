@@ -7,7 +7,7 @@ interface BreadcrumbProps {
   back?: boolean;
 }
 
-export const Breadcrumb = ({ currentPage, back = false }: BreadcrumbProps) => {
+export const Breadcrumb = ({ currentPage }: BreadcrumbProps) => {
   return (
     // <div className="uppercase text-xs my-2 text-gray-500 space-x-2 flex flex-wrap sm:flex-row">
     //   {back && (
@@ -38,7 +38,7 @@ export const Breadcrumb = ({ currentPage, back = false }: BreadcrumbProps) => {
       itemClasses={{
         separator: "px-2",
       }}
-      className="uppercase text-xs my-2 text-gray-500"
+      className="my-2 text-xs uppercase text-gray-500"
     >
       <BreadcrumbItem
         href="/"

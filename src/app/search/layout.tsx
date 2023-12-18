@@ -1,16 +1,12 @@
 import Collections from "@/components/layout/search/collections";
 import FilterList from "@/components/layout/search/filter";
 import { sorting } from "@/lib/constants";
-import { Suspense } from "react";
+import { ReactNode, Suspense } from "react";
 
-export default function SearchLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function SearchLayout({ children }: { children: ReactNode }) {
   return (
     <Suspense>
-      <div className="mx-auto flex max-w-screen-2xl flex-col gap-8 px-4 pb-4 mt-6 text-black dark:text-white md:flex-row">
+      <div className="mx-auto mt-6 flex max-w-screen-2xl flex-col gap-8 px-4 pb-4 text-black dark:text-white md:flex-row">
         <div className="order-first w-full flex-none md:max-w-[125px]">
           <Collections />
         </div>

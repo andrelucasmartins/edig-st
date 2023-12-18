@@ -42,7 +42,7 @@ export default async function Page({ params }: { params: { page: string } }) {
             year: "numeric",
             month: "long",
             day: "numeric",
-          }
+          },
         ).format(new Date(page.updatedAt))}.`}
       </p>
     </>

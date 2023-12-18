@@ -23,6 +23,13 @@
     }
   },
   "types": ["node", "jest", "@testing-library/jest-dom"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "./jest.setup.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "jest.setup.ts",
+    "src/components/cookies-consent/CookieConsent.test.tsxs"
+  ],
   "exclude": ["node_modules"]
 }

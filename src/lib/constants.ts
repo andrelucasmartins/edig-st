@@ -1,13 +1,13 @@
 export type SortFilterItem = {
   title: string;
-  slug: string | null;
-  sortKey: "RELEVANCE" | "BEST_SELLING" | "CREATED_AT" | "PRICE";
+  slug: string;
+  sortKey: "RELEVANCE" | "BEST_SELLING" | "CREATED" | "PRICE";
   reverse: boolean;
 };
 
 export const defaultSort: SortFilterItem = {
   title: "Relevantes",
-  slug: "latest-desc",
+  slug: "relevance-desc",
   sortKey: "RELEVANCE",
   reverse: false,
 };
@@ -23,7 +23,7 @@ export const sorting: SortFilterItem[] = [
   {
     title: "Últimas novidades",
     slug: "latest-desc",
-    sortKey: "CREATED_AT",
+    sortKey: "CREATED",
     reverse: true,
   },
   {

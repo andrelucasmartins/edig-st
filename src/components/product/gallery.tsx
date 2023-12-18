@@ -37,7 +37,8 @@ export function Gallery({
         {images[imageIndex] && (
           <Image
             className="h-full w-full object-contain"
-            fill
+            width={100}
+            height={100}
             sizes="(min-width: 1024px) 66vw, 100vw"
             alt={images[imageIndex]?.altText as string}
             src={images[imageIndex]?.src as string}
@@ -75,7 +76,7 @@ export function Gallery({
           {images.map((image, index) => {
             const isActive = index === imageIndex;
             const imageSearchParams = new URLSearchParams(
-              searchParams.toString()
+              searchParams.toString(),
             );
 
             imageSearchParams.set("image", index.toString());

@@ -1,22 +1,48 @@
 {
   "root": true,
-  "extends": ["next/core-web-vitals", "plugin:jest/recommended", "plugin:jest-dom/recommended", "eslint:recommended"],
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "jest": true
+  },
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:testing-library/react",
+    "plugin:jest/recommended",
+    "plugin:jest-dom/recommended",
+    "eslint:recommended",
+    "next",
+    "prettier",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
   "plugins": ["testing-library", "jest"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
   "rules": {
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",
     "jest/prefer-to-have-length": "warn",
-    "jest/valid-expect": "error"
+    "jest/valid-expect": "error",
+    "no-undef": "off",
+    "react/react-in-jsx-scope": "off"
   },
   "overrides": [
     {
-      "files": ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[tj]s?(x)"],
+      "files": [
+        "**/__tests__/**/*.[jt]s?(x)",
+        "**/?(*.)+(spec|test).[tj]s?(x)"
+      ],
       "extends": ["plugin:testing-library/react"],
       "env": {
         "jest": true
       }
     }
   ]
-
 }

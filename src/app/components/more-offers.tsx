@@ -31,14 +31,14 @@ export async function MoreOffers() {
 
   const collections = data?.collections.edges;
   const noHiddenCollections = collections.filter(
-    (item: any) => !item.node.handle.includes("hidden")
+    (item: any) => !item.node.handle.includes("hidden"),
   );
 
   return (
     <div className="text-gray-500">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-4">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-50 text-center">
+          <h2 className="text-center text-2xl font-bold text-gray-900 dark:text-gray-50">
             Mais ofertas
           </h2>
 
@@ -47,16 +47,16 @@ export async function MoreOffers() {
               const collection = item.node;
               return (
                 <div key={collection.handle} className="group relative">
-                  <div className="relative h-80 w-full overflow-hidden rounded-lg  group-hover:opacity-75 sm:h-64 aspect-[3/2]">
+                  <div className="relative aspect-[3/2] h-80 w-full overflow-hidden  rounded-lg group-hover:opacity-75 sm:h-64">
                     <Image
                       src={collection?.image?.url}
                       alt={collection?.image?.altText}
                       width={400}
                       height={700}
-                      className="w-full object-cover object-center rounded-full"
+                      className="w-full rounded-full object-cover object-center"
                     />
                   </div>
-                  <h3 className="mt-0 text-sm text-gray-500 dark:text-gray-50 text-center">
+                  <h3 className="mt-0 text-center text-sm text-gray-500 dark:text-gray-50">
                     <a href={`/collections/${collection.handle}`}>
                       <span className="absolute inset-0" />
                       {collection.title}

@@ -48,7 +48,7 @@ export default function EditItemQuantityButton({
         {
           "cursor-not-allowed": isPending,
           "ml-auto": type === "minus",
-        }
+        },
       )}
     >
       {isPending ? (

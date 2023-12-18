@@ -1,5 +1,7 @@
+/* eslint-disable jsx-a11y/alt-text */
 import clsx from "clsx";
 import Image from "next/image";
+import { ComponentProps } from "react";
 import Label from "../label";
 
 export function GridTileImage({
@@ -16,22 +18,25 @@ export function GridTileImage({
     currencyCode: string;
     position?: "bottom" | "center";
   };
-} & React.ComponentProps<typeof Image>) {
+} & ComponentProps<typeof Image>) {
   return (
     <div>
       {" "}
       {props.src ? (
         // eslint-disable-next-line jsx-a11y/alt-text -- `alt` is inherited from `props`, which is being enforced with TypeScript
         <div
-          className={clsx("shadow-md shadow-gray-300/40 rounded", {
+          className={clsx("rounded shadow-md shadow-gray-300/40", {
             "border-2 border-purple-600": active,
           })}
         >
           <Image
             className={clsx("relative h-full w-full object-contain", {
-              "transition duration-300 ease-in-out group-hover:scale-105 shadow-md ":
+              "shadow-md transition duration-300 ease-in-out group-hover:scale-105 ":
                 isInteractive,
             })}
+            width={100}
+            height={100}
+            sizes="(100%, 100%)"
             {...props}
           />
         </div>

@@ -4,7 +4,6 @@ export const viewport = {
 
 export default function ShopLayout({
   children,
-  params,
 }: {
   children: React.ReactNode;
   params: {
@@ -15,7 +14,7 @@ export default function ShopLayout({
   // URL -> /shop/shoes/nike-air-max-97
   // `params` -> { tag: 'shoes', item: 'nike-air-max-97' }
   return (
-    <section className="mx-auto  px-4 sm:pb-6 sm:px-6 lg:max-w-7xl lg:px-8">
+    <section className="mx-auto  px-4 sm:px-6 sm:pb-6 lg:max-w-7xl lg:px-8">
       {children}
     </section>
   );

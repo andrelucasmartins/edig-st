@@ -1,17 +1,17 @@
 "use client";
 
-interface BannerHomeProps {}
+import { Image } from "@nextui-org/react";
 import Link from "next/link";
 import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-export const BannerHome = (props: BannerHomeProps) => {
+export const BannerHome = () => {
   return (
     <>
       <div>
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 my-6">
+        <div className="mx-auto my-6 max-w-7xl px-4 sm:px-6 lg:px-8">
           <Swiper
             pagination={{
               dynamicBullets: true,
@@ -21,9 +21,12 @@ export const BannerHome = (props: BannerHomeProps) => {
           >
             <SwiperSlide>
               <Link href="/para-ela">
-                <img
+                <Image
                   src="/banner-home/desktop_large.webp"
                   alt="Para Ela"
+                  width={100}
+                  height={100}
+                  sizes="(100%, auto)"
                   className="rounded"
                 />
               </Link>

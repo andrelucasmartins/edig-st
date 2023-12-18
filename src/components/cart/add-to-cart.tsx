@@ -1,12 +1,12 @@
 "use client";
 
 import { addItem } from "@/components/cart/actions";
-import LoadingDots from "@/components/loading-dots";
 import { ProductVariant } from "@/lib/shopify/types";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTransition } from "react";
+import LoadingDots from "../loading-dots";
 
 export function AddToCart({
   variants,
@@ -21,19 +21,19 @@ export function AddToCart({
   const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined;
   const variant = variants.find((variant: ProductVariant) =>
     variant.selectedOptions.every(
-      (option) => option.value === searchParams.get(option.name.toLowerCase())
-    )
+      (option) => option.value === searchParams.get(option.name.toLowerCase()),
+    ),
   );
   const selectedVariantId = variant?.id || defaultVariantId;
   const title = !availableForSale
     ? "Out of stock"
     : !selectedVariantId
-    ? "Please select options"
-    : undefined;
+      ? "Please select options"
+      : undefined;
 
   return (
     <button
-      aria-label="Add item to cart"
+      aria-label="Adicionar item ao carrinho"
       disabled={isPending || !availableForSale || !selectedVariantId}
       title={title}
       onClick={() => {
@@ -52,22 +52,24 @@ export function AddToCart({
         });
       }}
       className={clsx(
-        "relative flex w-full items-center justify-center rounded-full bg-purple-600 p-4 tracking-wide text-white hover:opacity-90",
+        "relative flex w-full items-center justify-center rounded-md border-2 border-green-500 py-4 uppercase text-green-500 hover:border-green-500 hover:bg-green-500 hover:text-white",
         {
           "cursor-not-allowed opacity-60 hover:opacity-60":
             !availableForSale || !selectedVariantId,
           "cursor-not-allowed": isPending,
-        }
+        },
       )}
     >
       <div className="absolute left-0 ml-4">
         {!isPending ? (
           <PlusIcon className="h-5" />
         ) : (
-          <LoadingDots className="mb-3 bg-white" />
+          <>
+            <LoadingDots className="mb-3 bg-white" />
+          </>
         )}
       </div>
-      <span>{availableForSale ? "Add To Cart" : "Out Of Stock"}</span>
+      <span>{availableForSale ? "Adicionar ao carrinho" : "Out Of Stock"}</span>
     </button>
   );
 }

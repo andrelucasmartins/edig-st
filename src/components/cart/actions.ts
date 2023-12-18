@@ -11,7 +11,7 @@ import { Cart } from "@/lib/shopify/types";
 import { cookies } from "next/headers";
 
 export const addItem = async (
-  variantId: string | undefined
+  variantId: string | undefined,
 ): Promise<String | undefined> => {
   let cartId = cookies().get("cartId")?.value;
   var cart: Cart | undefined;
@@ -38,7 +38,7 @@ export const addItem = async (
 };
 
 export const removeItem = async (
-  lineId: string
+  lineId: string,
 ): Promise<String | undefined> => {
   const cartId = cookies().get("cartId")?.value;
 

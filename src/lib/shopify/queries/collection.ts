@@ -42,9 +42,46 @@ export const getCollectionProductsQuery = /* GraphQL */ `
     $sortKey: ProductCollectionSortKeys
     $reverse: Boolean
     $after: String
+    $first: Int!
   ) {
     collection(handle: $handle) {
-      products(sortKey: $sortKey, reverse: $reverse, first: 10, after: $after) {
+      products(
+        sortKey: $sortKey
+        reverse: $reverse
+        first: $first
+        after: $after
+      ) {
+        pageInfo {
+          hasNextPage
+          startCursor
+          endCursor
+          hasPreviousPage
+        }
+        edges {
+          node {
+            ...product
+          }
+        }
+      }
+    }
+  }
+  ${productFragment}
+`;
+export const getCollectionProductsCarouselQuery = /* GraphQL */ `
+  query getCollectionProducts(
+    $handle: String!
+    $sortKey: ProductCollectionSortKeys
+    $reverse: Boolean
+    $after: String
+    $first: Int!
+  ) {
+    collection(handle: $handle) {
+      products(
+        sortKey: $sortKey
+        reverse: $reverse
+        first: $first
+        after: $after
+      ) {
         pageInfo {
           hasNextPage
           startCursor

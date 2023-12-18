@@ -22,7 +22,7 @@ const FooterMenuItem = ({ item }: { item: Menu }) => {
           "block p-2 text-lg underline-offset-4 hover:text-black hover:underline dark:hover:text-neutral-300 md:inline-block md:text-sm",
           {
             "text-black dark:text-neutral-300": active,
-          }
+          },
         )}
       >
         {item.title}

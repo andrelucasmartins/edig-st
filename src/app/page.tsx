@@ -1,4 +1,3 @@
-import { ProductList } from "@/app/components/ProductList";
 import { BannerHome } from "@/components/banner-home";
 import { Carousel } from "@/components/carousel";
 import { CategoriesTop } from "@/components/categories-top";
@@ -16,24 +15,24 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export default async function Home() {
   return (
     <>
-      <Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
         <BannerHome />
       </Suspense>
-      <Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
         <CategoriesTop />
       </Suspense>
-      <Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
         <ThreeItemGrid />
       </Suspense>
-      <Suspense>
-        <Carousel />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Carousel collection="hidden-homepage-carousel-main" />
       </Suspense>
       {/* <Categories /> */}
       <MoreOffers />
-      <ProductList />
+      {/* <ProductList /> */}
     </>
   );
 }

@@ -1,11 +1,11 @@
 "use client";
-interface HeaderProps {}
 
+import { MenuNavigation } from "@/components/categories-top";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import Image from "next/image";
 import Link from "next/link";
 import { Fragment, useState } from "react";
-import { MenuNavigation } from "../categories-top";
 
 const navigation = {
   categories: [
@@ -141,10 +141,10 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const Header = (props: HeaderProps) => {
+export const Header = () => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="bg-gray-50 dark:bg-gray-800 relative mt-2 ">
+    <div className="relative mt-2 bg-gray-50 dark:bg-gray-800 ">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className=" lg:hidden" onClose={setOpen}>
@@ -170,7 +170,7 @@ export const Header = (props: HeaderProps) => {
               leaveFrom="translate-x-0"
               leaveTo="-translate-x-full"
             >
-              <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white dark:bg-gray-800 pb-12 shadow-xl">
+              <Dialog.Panel className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl dark:bg-gray-800">
                 <div className="flex px-4 pb-2 pt-5">
                   <button
                     type="button"
@@ -195,7 +195,7 @@ export const Header = (props: HeaderProps) => {
                               selected
                                 ? "border-indigo-600 text-indigo-600"
                                 : "border-transparent text-gray-900",
-                              "flex-1 whitespace-nowrap border-b-2 px-1 py-4 text-base font-medium"
+                              "flex-1 whitespace-nowrap border-b-2 px-1 py-4 text-base font-medium",
                             )
                           }
                         >
@@ -216,10 +216,13 @@ export const Header = (props: HeaderProps) => {
                               key={item.name}
                               className="group relative text-sm"
                             >
-                              <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 group-hover:opacity-75">
-                                <img
+                              <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75 dark:bg-gray-800">
+                                <Image
                                   src={item.imageSrc}
                                   alt={item.imageAlt}
+                                  width={100}
+                                  height={100}
+                                  sizes="(100%, auto)"
                                   className="object-cover object-center"
                                 />
                               </div>
@@ -304,9 +307,12 @@ export const Header = (props: HeaderProps) => {
 
                 <div className="border-t border-gray-200 px-4 py-6">
                   <Link href="#" className="-m-2 flex items-center p-2">
-                    <img
+                    <Image
                       src="https://tailwindui.com/img/flags/flag-canada.svg"
                       alt=""
+                      width={100}
+                      height={100}
+                      sizes="(100%, auto)"
                       className="block h-auto w-5 flex-shrink-0"
                     />
                     <span className="ml-3 block text-base font-medium text-gray-900">
@@ -324,7 +330,7 @@ export const Header = (props: HeaderProps) => {
       <header className="bg-purple-800/90  dark:bg-gray-800">
         <nav
           aria-label="Top"
-          className="mx-auto max-w-screen-2xl px-4 sm:px-16 lg:px-16  dark:bg-gray-800  sticky top-0 left-0 right-0 z-10"
+          className="sticky left-0 right-0 top-0 z-10  mx-auto  max-w-screen-2xl px-4 dark:bg-gray-800 sm:px-16 lg:px-16"
         >
           <div className="">
             <div className="flex h-16 items-center">
@@ -339,9 +345,9 @@ export const Header = (props: HeaderProps) => {
               </button>
 
               {/* Flyout menus */}
-              <Popover.Group className="hidden  lg:self-stretch md:flex justify-center  mx-auto w-full">
+              <Popover.Group className="mx-auto  hidden w-full justify-center  md:flex lg:self-stretch">
                 <div className="flex  h-full space-x-12">
-                  <div className="flex justify-between gap-12 sr-only">
+                  <div className="sr-only flex justify-between gap-12">
                     {navigation.categories.map((category) => (
                       <Popover key={category.name} className="flex">
                         {({ open }) => (
@@ -351,8 +357,8 @@ export const Header = (props: HeaderProps) => {
                                 className={classNames(
                                   open
                                     ? "border-sky-600 text-sky-600"
-                                    : "border-transparent text-gray-700 dark:text-gray-50 dark:hover:text-gray-400 hover:text-gray-800",
-                                  "relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out"
+                                    : "border-transparent text-gray-700 hover:text-gray-800 dark:text-gray-50 dark:hover:text-gray-400",
+                                  "relative z-10 -mb-px flex items-center border-b-2 pt-px text-sm font-medium transition-colors duration-200 ease-out",
                                 )}
                               >
                                 {category.name}
@@ -385,9 +391,12 @@ export const Header = (props: HeaderProps) => {
                                             className="group relative text-base sm:text-sm"
                                           >
                                             <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 group-hover:opacity-75">
-                                              <img
+                                              <Image
                                                 src={item.imageSrc}
                                                 alt={item.imageAlt}
+                                                width={100}
+                                                height={100}
+                                                sizes="(min-width: 640px) 50vw, 100vw"
                                                 className="object-cover object-center"
                                               />
                                             </div>
@@ -453,7 +462,7 @@ export const Header = (props: HeaderProps) => {
                   </div>
                   <Link
                     href="/"
-                    className="flex items-center text-sm font-medium text-gray-50 dark:text-gray-50 dark:hover:text-gray-400 hover:text-gray-300 transition-all ease-in-out"
+                    className="flex items-center text-sm font-medium text-gray-50 transition-all ease-in-out hover:text-gray-300 dark:text-gray-50 dark:hover:text-gray-400"
                   >
                     Home
                   </Link>
@@ -462,7 +471,7 @@ export const Header = (props: HeaderProps) => {
                     <Link
                       key={page.name}
                       href={page.href}
-                      className="flex items-center text-sm font-medium text-gray-50 dark:text-gray-50 dark:hover:text-gray-400 hover:text-gray-300 transition-all ease-in-out"
+                      className="flex items-center text-sm font-medium text-gray-50 transition-all ease-in-out hover:text-gray-300 dark:text-gray-50 dark:hover:text-gray-400"
                     >
                       {page.name}
                     </Link>

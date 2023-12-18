@@ -22,7 +22,7 @@ export const ActionButtonNext = ({
   disabled,
   ...props
 }: ActionButtonProps) => {
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
 
   return (
     <Button
@@ -35,7 +35,7 @@ export const ActionButtonNext = ({
       }
       color="primary"
       variant="solid"
-      className={cn("p-2 rounded hover:opacity-80", disabled && "opacity-50")}
+      className={cn("rounded p-2 hover:opacity-80", disabled && "opacity-50")}
     >
       {children}
     </Button>
@@ -48,7 +48,7 @@ export const ActionButtonPrev = ({
   disabled,
   ...props
 }: ActionButtonProps) => {
-  const [isPending, startTransition] = useTransition();
+  const [, startTransition] = useTransition();
   return (
     <Button
       {...props}
@@ -57,7 +57,7 @@ export const ActionButtonPrev = ({
       as={Link}
       color="primary"
       variant="solid"
-      className={cn("p-2 rounded hover:opacity-80", disabled && "opacity-50")}
+      className={cn("rounded p-2 hover:opacity-80", disabled && "opacity-50")}
       onClick={() =>
         startTransition(async () => void (await pagePrevCount(cursor)))
       }

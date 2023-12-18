@@ -1,5 +1,5 @@
 import { storefront } from "@/utils/storefront";
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 import Image from "next/image";
 
 export const dynamic = "force-dynamic";
@@ -98,10 +98,7 @@ const SingleProductQuery = `#graphql
 }
 `;
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const handle = params.handle;
 
   const { data } = await storefront(SingleProductQuery, {
@@ -131,18 +128,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Divider } from "@nextui-org/divider";
+import { sorting } from "@/lib/constants";
+import { Divider } from "@nextui-org/react";
+import { revalidatePath } from "next/cache";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import { ActionButtonNext, ActionButtonPrev } from "../ActionButton";
-import { getCollectionData, getPageCount } from "../actions";
-
-// let collection;
-// let pagination: {
-//   startCursor: string;
-//   endCursor: string;
-//   hasPreviousPage: boolean;
-//   hasNextPage: boolean;
-// };
+import { filterType, getCollectionData } from "../actions";
 
 export default async function PageCollections({
   params,
@@ -151,7 +142,7 @@ export default async function PageCollections({
   params: { handle: string };
   searchParams: { [key: string]: string | string[] };
 }) {
-  const { pageCount } = await getPageCount();
+  // const { pageCount } = await getPageCount();
 
   const { data } = await getCollectionData(params.handle, searchParams.page);
 
@@ -170,53 +161,63 @@ export default async function PageCollections({
 
   const productsCount = collection?.products.filters[0]?.values[0]?.count;
 
+  async function actionHandleSelect(e: any) {
+    "use server";
+    await filterType(e);
+
+    revalidatePath(`/collections/${params.handle}`);
+  }
+
   return (
     <>
-      <div className="w-full min-h-min mt-4">
+      <div className="mt-4 min-h-min w-full">
         <figure className="relative h-[228px]">
           <div
-            className="w-full h-[228px] rounded bg-gradient-to-r from-purple-500/80 from-10% 
+            className="h-[228px] w-full rounded bg-gradient-to-r from-purple-500/80 from-10% 
               via-transparent to-sky-400/20 to-80%"
           >
             <Image
               src={banner}
               alt={collection?.title}
+              sizes="(max-width: 768px) 100vw, 33vw"
               fill
-              className="rounded-md object-cover -z-10"
+              quality="90"
+              className="-z-10 rounded-md object-cover"
             />
           </div>
-          <figcaption className="absolute inset-0 z-10 px-8 text-white font-bold text-xl sm:text-5xl flex justify-start place-items-center py-4 drop-shadow-xl">
+          <figcaption className="absolute inset-0 z-10 flex place-items-center justify-start px-8 py-4 text-xl font-bold text-white drop-shadow-xl sm:text-5xl">
             {collection?.title}
           </figcaption>
         </figure>
         <p className="sr-only">{collection?.description}</p>
       </div>
-      <h1 className="font-bold text-xl text-purple-900 dark:text-purple-500 my-2">
+      <h1 className="my-2 text-xl font-bold text-purple-900 dark:text-purple-500">
         {collection?.title}
       </h1>
       <Divider className="my-4 h-[1px] bg-gray-300" />
       <Breadcrumb currentPage={collection?.title} back />
-      <div className="flex justify-between items-center my-6">
-        <Select>
+      <form className="my-6 flex items-center justify-between">
+        <Select onValueChange={actionHandleSelect}>
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select a fruit" />
+            <SelectValue placeholder="Filtrar por" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent position={"item-aligned"}>
             <SelectGroup>
-              <SelectLabel>Fruits</SelectLabel>
-              <SelectItem value="apple">Apple</SelectItem>
-              <SelectItem value="banana">Banana</SelectItem>
-              <SelectItem value="blueberry">Blueberry</SelectItem>
-              <SelectItem value="grapes">Grapes</SelectItem>
-              <SelectItem value="pineapple">Pineapple</SelectItem>
+              <SelectLabel>filtro</SelectLabel>
+              {sorting &&
+                sorting?.map((item) => (
+                  <SelectItem value={item.slug} key={item.slug}>
+                    {item.title}
+                  </SelectItem>
+                ))}
             </SelectGroup>
           </SelectContent>
         </Select>{" "}
         <span>{productsCount} Item(s)</span>
-      </div>
+      </form>
       <ProductList products={products} />
       {productsCount && (
-        <div className="flex justify-center items-end gap-4">
+        <div className="flex items-end justify-center gap-4">
           <form className="flex justify-center gap-2">
             <ActionButtonPrev
               link={`/collections/${params.handle}?page=${pagination?.startCursor}`}
@@ -244,13 +245,13 @@ export default async function PageCollections({
         {/* Product image */}
 
         <div className="lg:col-span-4">
-          <div className="aspect-w-4 aspect-h-3 rounded-lg bg-gray-100 overflow-hidden">
-            <img
+          <div className="aspect-w-4 aspect-h-3 overflow-hidden rounded-lg bg-gray-100">
+            <Image
               src={image?.transformedSrc}
               alt={image?.altText}
               width={image?.width}
               height={image?.height}
-              className="object-center object-cover"
+              className="object-cover object-center"
             />
           </div>
         </div>

@@ -1,9 +1,10 @@
 "use server";
 
+import { sorting } from "@/lib/constants";
 import { storefront } from "@/utils/storefront";
 
 const SingleProductQueryNextPage = `#graphql
-  query getProductsOfProductTypeInCollection($handle: String!, $afterPage: String) {
+  query getProductsOfProductTypeInCollection($handle: String!, $afterPage: String, $sortKey: ProductCollectionSortKeys, $reverse: Boolean) {
   shop {
     name
   }
@@ -25,7 +26,7 @@ const SingleProductQueryNextPage = `#graphql
       }
     }      
 
-		products(first: 10, after: $afterPage) {    
+		products(first: 10, after: $afterPage, sortKey: $sortKey, reverse: $reverse) {    
       pageInfo {
         hasNextPage
         startCursor
@@ -91,7 +92,7 @@ const SingleProductQueryNextPage = `#graphql
 }
 `;
 const SingleProductQueryPrevPage = `#graphql
-  query getProductsOfProductTypeInCollection($handle: String!,  $beforePage: String) {
+  query getProductsOfProductTypeInCollection($handle: String!,  $beforePage: String, $sortKey: ProductCollectionSortKeys, $reverse: Boolean) {
   shop {
     name
   }
@@ -113,7 +114,7 @@ const SingleProductQueryPrevPage = `#graphql
       }
     }      
 
-		products(last: 10, before: $beforePage) {    
+		products(last: 10, before: $beforePage, sortKey: $sortKey, reverse: $reverse) {    
       pageInfo {
         hasNextPage
         startCursor
@@ -181,7 +182,13 @@ const SingleProductQueryPrevPage = `#graphql
 
 let pageCount = 1;
 let page = "";
+// eslint-disable-next-line no-unused-vars
 let cursor: string | string[] | undefined;
+let sortKey = "RELEVANCE";
+let reverse = false;
+
+const filterData = (itemType: string) =>
+  sorting.filter((item) => item.slug === itemType);
 
 export async function pageNextCount(afterPage: string) {
   cursor = afterPage;
@@ -198,14 +205,26 @@ export async function pagePrevCount(beforePage: string) {
   return pageCount;
 }
 
+export async function filterType(type: string) {
+  let newFilterData = filterData(type);
+  sortKey = newFilterData[0]?.sortKey;
+  reverse = newFilterData[0]?.reverse;
+}
+
 export async function getCollectionData(
   handle: string,
-  cursor?: string | string[] | undefined
+  cursor?: string | string[] | undefined,
 ) {
+  // let newFilterData = filterData(sortKey);
+  // sortKey = newFilterData[0]?.sortKey;
+  // reverse = newFilterData[0]?.reverse;
+
   if (page === "") {
     pageCount = 1;
     const res = await await storefront(SingleProductQueryNextPage, {
       handle,
+      sortKey,
+      reverse,
     });
 
     return res;
@@ -214,6 +233,8 @@ export async function getCollectionData(
     const res = await await storefront(SingleProductQueryNextPage, {
       handle,
       afterPage: cursor,
+      sortKey,
+      reverse,
     });
 
     return res;
@@ -223,6 +244,8 @@ export async function getCollectionData(
     const prevPage = await await storefront(SingleProductQueryPrevPage, {
       handle,
       beforePage: cursor,
+      sortKey,
+      reverse,
     });
 
     return prevPage;

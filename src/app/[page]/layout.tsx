@@ -1,7 +1,7 @@
 import Footer from "@/components/layout/footer";
-import { Suspense } from "react";
+import { ReactNode, Suspense } from "react";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: ReactNode }) {
   return (
     <Suspense>
       <div className="w-full">

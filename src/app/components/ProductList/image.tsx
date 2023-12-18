@@ -1,16 +1,16 @@
 "use client";
-interface ImageProps {
-  src?: string;
-  alt?: string;
-}
+import Image, { ImageProps } from "next/image";
+interface ImageCustomProps extends ImageProps {}
 
-export const Image = ({ src, alt }: ImageProps) => {
+export const ImageCustom = ({ src, alt }: ImageCustomProps) => {
   return (
-    <div className="w-full aspect-w-4 aspect-h-4 rounded-lg overflow-hidden ">
-      <img
+    <div className="aspect-w-4 aspect-h-4 w-full overflow-hidden rounded-lg ">
+      <Image
         src={src}
         alt={alt}
-        className="w-full h-full object-center object-cover group-hover:opacity-75"
+        fill
+        sizes="(100%, auto)"
+        className="h-full w-full object-cover object-center group-hover:opacity-75"
       />
     </div>
   );

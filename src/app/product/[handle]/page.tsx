@@ -84,13 +84,13 @@ export default async function ProductPage({
           __html: JSON.stringify(productJsonLd),
         }}
       />
-      <section className="mx-auto px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8">
+      <section className="mx-auto px-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">
         {/* Product */}
         <Breadcrumb back />
         <div className="lg:grid lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
           {/* Product image */}
           <div className="lg:col-span-4">
-            <div className="aspect-w-4 aspect-h-3 rounded-lg  overflow-hidden">
+            <div className="aspect-w-4 aspect-h-3 overflow-hidden  rounded-lg">
               <Gallery
                 images={product.images.map((image: Image) => ({
                   src: image.url,
@@ -101,14 +101,14 @@ export default async function ProductPage({
           </div>
 
           {/* Product details */}
-          <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:col-span-3">
+          <div className="mx-auto mt-14 max-w-2xl sm:mt-16 lg:col-span-3 lg:mt-0 lg:max-w-none">
             <div className="flex flex-col-reverse">
               <div>
                 <ProductDescription product={product} />
                 <h2 id="information-heading" className="sr-only">
                   Product information
                 </h2>
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="mt-2 text-sm text-gray-500">
                   Version {product.tags[0]} &middot; Updated{" "}
                   <time dateTime={product.updatedAt}>
                     {format(new Date(product.updatedAt), "dd MMM yyyy")}
@@ -133,7 +133,7 @@ async function RelatedProducts({ id }: { id: string }) {
 
   return (
     <div className="py-8">
-      <h2 className="text-xl font-semibold text-gray-900 text-center my-8 uppercase">
+      <h2 className="my-8 text-center text-xl font-semibold uppercase text-gray-900">
         Novidades que chegaram pra você
       </h2>
       <ul className="flex w-full gap-4 overflow-x-auto pt-1">
@@ -154,7 +154,8 @@ async function RelatedProducts({ id }: { id: string }) {
                   currencyCode: product.priceRange.maxVariantPrice.currencyCode,
                 }}
                 src={product.featuredImage?.url}
-                fill
+                width={100}
+                height={100}
                 sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, (min-width: 475px) 50vw, 100vw"
               />
             </Link>

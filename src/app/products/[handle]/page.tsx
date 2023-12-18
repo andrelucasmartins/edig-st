@@ -1,5 +1,4 @@
 import { getProductRecommendations } from "@/app/data/get-product-recommendations";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { HIDDEN_PRODUCT_TAG } from "@/lib/constants";
 import { getProduct } from "@/lib/shopify";
@@ -9,10 +8,10 @@ import { format } from "date-fns";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-type Props = {
-  params: { handle: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
+// type Props = {
+//   params: { handle: string };
+//   searchParams: { [key: string]: string | string[] | undefined };
+// };
 
 export async function generateMetadata({
   params,
@@ -53,6 +52,7 @@ export async function generateMetadata({
 }
 
 import { ProductList } from "@/components/ProductList";
+import { Carousel } from "@/components/carousel";
 import { AddToCart } from "@/components/cart/add-to-cart";
 import Price from "@/components/price";
 import { ProductReviews } from "@/components/product-reviews";
@@ -65,177 +65,179 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Image } from "@/lib/shopify/types";
+import { Suspense } from "react";
 
-const SingleProductQuery = `#graphql
-  query getProductByHandle($handle: String!) {
-    shop {
-      name
-    }
-    product(handle: $handle) {
-      id
-      title
-      description
-      handle
-      tags
+// const SingleProductQuery = `#graphql
+//   query getProductByHandle($handle: String!) {
+//     shop {
+//       name
+//     }
+//     product(handle: $handle) {
+//       id
+//       title
+//       description
+//       handle
+//       tags
 
-      updatedAt
-      priceRange {
-        minVariantPrice {
-          amount
-          currencyCode  #active local currency
-        }
-        maxVariantPrice {
-          amount
-          currencyCode
-        }
-      }
-      compareAtPriceRange {
-        minVariantPrice {
-          amount
-          currencyCode  #active local currency
-        }
-        maxVariantPrice {
-          amount
-          currencyCode
-        }
-      }
-      variants(first: 1) {
-        edges {
-          cursor
-          node {
-            id
-            title
-            quantityAvailable
-            price {
-              amount
-              currencyCode
-            }
-          }
-        }
-      }
+//       updatedAt
+//       priceRange {
+//         minVariantPrice {
+//           amount
+//           currencyCode  #active local currency
+//         }
+//         maxVariantPrice {
+//           amount
+//           currencyCode
+//         }
+//       }
+//       compareAtPriceRange {
+//         minVariantPrice {
+//           amount
+//           currencyCode  #active local currency
+//         }
+//         maxVariantPrice {
+//           amount
+//           currencyCode
+//         }
+//       }
+//       variants(first: 1) {
+//         edges {
+//           cursor
+//           node {
+//             id
+//             title
+//             quantityAvailable
+//             price {
+//               amount
+//               currencyCode
+//             }
+//           }
+//         }
+//       }
 
-      images(first: 1) {
-        edges {
-          node {
-            transformedSrc
-            altText
-          }
-        }
-      }
+//       images(first: 1) {
+//         edges {
+//           node {
+//             transformedSrc
+//             altText
+//           }
+//         }
+//       }
 
-      media(first: 10) {
-      edges {
-        node {
-          mediaContentType
-          alt
-          ...mediaFieldsByType
-        }
-      }
-    }
-  }
-  }
+//       media(first: 10) {
+//       edges {
+//         node {
+//           mediaContentType
+//           alt
+//           ...mediaFieldsByType
+//         }
+//       }
+//     }
+//   }
+//   }
 
-  fragment mediaFieldsByType on Media {
-  ... on ExternalVideo {
-    id
-    embeddedUrl
-  }
-  ... on MediaImage {
-    image {
-      id
-      url,
-      altText
-    }
-  }
-  ... on Model3d {
-    sources {
-      url
-      mimeType
-      format
-      filesize
-    }
-  }
-  ... on Video {
-    sources {
-      url
-      mimeType
-      format
-      height
-      width
-    }
-  }
-}
+//   fragment mediaFieldsByType on Media {
+//   ... on ExternalVideo {
+//     id
+//     embeddedUrl
+//   }
+//   ... on MediaImage {
+//     image {
+//       id
+//       url,
+//       altText
+//     }
+//   }
+//   ... on Model3d {
+//     sources {
+//       url
+//       mimeType
+//       format
+//       filesize
+//     }
+//   }
+//   ... on Video {
+//     sources {
+//       url
+//       mimeType
+//       format
+//       height
+//       width
+//     }
+//   }
+// }
 
-`;
+// `;
 
-const checkoutMutation = `#graphql
+// const checkoutMutation = `#graphql
 
-  mutation createCart($cartInput: CartInput) {
-    cartCreate(input: $cartInput) {
-      cart {
-        id
-        createdAt
-        updatedAt
-        checkoutUrl
-        lines(first: 100) {
-          edges {
-            node {
-              id
-              merchandise {
-                ... on ProductVariant {
-                  id
-                }
-              }
-            }
-          }
-        }
-        attributes {
-          key
-          value
-        }
-        cost {
-          totalAmount {
-            amount
-            currencyCode
-          }
-          subtotalAmount {
-            amount
-            currencyCode
-          }
-          totalTaxAmount {
-            amount
-            currencyCode
-          }
-          totalDutyAmount {
-            amount
-            currencyCode
-          }
-        }
-      }
-    }
-  }
-`;
+//   mutation createCart($cartInput: CartInput) {
+//     cartCreate(input: $cartInput) {
+//       cart {
+//         id
+//         createdAt
+//         updatedAt
+//         checkoutUrl
+//         lines(first: 100) {
+//           edges {
+//             node {
+//               id
+//               merchandise {
+//                 ... on ProductVariant {
+//                   id
+//                 }
+//               }
+//             }
+//           }
+//         }
+//         attributes {
+//           key
+//           value
+//         }
+//         cost {
+//           totalAmount {
+//             amount
+//             currencyCode
+//           }
+//           subtotalAmount {
+//             amount
+//             currencyCode
+//           }
+//           totalTaxAmount {
+//             amount
+//             currencyCode
+//           }
+//           totalDutyAmount {
+//             amount
+//             currencyCode
+//           }
+//         }
+//       }
+//     }
+//   }
+// `;
 
-interface MediaProps {
-  media: {
-    edges: [
-      {
-        node: {
-          mediaContentType: string;
-          alt: string;
-          image: {
-            url: string;
-          };
-        };
-      }
-    ];
-  };
-}
+// interface MediaProps {
+//   media: {
+//     edges: [
+//       {
+//         node: {
+//           mediaContentType: string;
+//           alt: string;
+//           image: {
+//             url: string;
+//           };
+//         };
+//       },
+//     ];
+//   };
+// }
 
 export default async function ProductsPage({
   params,
 }: {
   params: { handle: string };
+  searchParams: { [key: string]: string | string[] };
 }) {
   const product = await getProduct(params.handle);
 
@@ -272,13 +274,13 @@ export default async function ProductsPage({
           __html: JSON.stringify(productJsonLd),
         }}
       />
-      <section className="mx-auto px-4 sm:py-4 sm:px-6 lg:max-w-7xl lg:px-8">
+      <section className="mx-auto px-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">
         {/* Product */}
-        <Breadcrumb back />
+
         <div className="lg:grid lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
           {/* Product image */}
           <div className="lg:col-span-4">
-            <div className="aspect-w-4 aspect-h-3 rounded-lg  overflow-hidden">
+            <div className="aspect-w-4 aspect-h-3 overflow-hidden  rounded-lg">
               <ThumbsGallery
                 images={product.images.map((image: Image) => ({
                   src: image.url,
@@ -289,10 +291,10 @@ export default async function ProductsPage({
           </div>
 
           {/* Product details */}
-          <div className="max-w-2xl mx-auto mt-14 sm:mt-16 lg:max-w-none lg:mt-0 lg:col-span-3">
+          <div className="mx-auto mt-14 max-w-2xl sm:mt-16 lg:col-span-3 lg:mt-0 lg:max-w-none">
             <div className="flex flex-col-reverse">
               <div>
-                <h1 className="text-2x1 font-extrabold tracking-tight text-gray-900 sm:text-3xl dark:text-white">
+                <h1 className="text-2x1 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
                   {product.title}
                 </h1>
 
@@ -300,15 +302,15 @@ export default async function ProductsPage({
                   Product information
                 </h2>
 
-                <p className="text-sm text-gray-500 mt-2">
+                <p className="mt-2 text-sm text-gray-500">
                   Version {product.tags[0]} &middot; Updated{" "}
                   <time dateTime={product.updatedAt}>
                     {format(new Date(product.updatedAt), "dd MMM yyyy")}
                   </time>
                 </p>
 
-                <div className="flex flex-col mt-4">
-                  <small className="line-through text-sm text-gray-500 dark:text-gray-500">
+                <div className="mt-4 flex flex-col">
+                  <small className="text-sm text-gray-500 line-through dark:text-gray-500">
                     <Price
                       amount={product.priceRange.maxVariantPrice.amount}
                       currencyCode={
@@ -339,29 +341,29 @@ export default async function ProductsPage({
               </div>
             </div>
 
-            <div className="mt-10 grid grid-cols-1 gap-x-6 ga´-y-4 sm:grid-cols-1 gap-4">
+            <div className="ga´-y-4 mt-10 grid grid-cols-1 gap-4 gap-x-6 sm:grid-cols-1">
               <AddToCart
                 variants={product.variants}
                 availableForSale={product.availableForSale}
               />
-              <Button
+              {/* <Button
                 className="text-green-500 border-2 border-green-500 hover:border-green-500 hover:bg-green-500 hover:text-white py-6 uppercase"
                 size={"lg"}
                 variant={"outline"}
               >
                 Adicionar ao carrinho
-              </Button>
+              </Button> */}
               <Button
-                className="bg-green-500 hover:bg-green-600 hover:text-white py-6 uppercase"
+                className="bg-green-500 py-6 uppercase hover:bg-green-600 hover:text-white"
                 size={"lg"}
               >
                 Comprar Agora
               </Button>
             </div>
 
-            <Accordion type="single" collapsible className="text-gray-500 mt-6">
+            <Accordion type="single" collapsible className="mt-6 text-gray-500">
               <AccordionItem value="item-1">
-                <AccordionTrigger>Especificações</AccordionTrigger>
+                <AccordionTrigger>Informações Gerais</AccordionTrigger>
                 <AccordionContent>
                   <div
                     dangerouslySetInnerHTML={{
@@ -380,6 +382,12 @@ export default async function ProductsPage({
           title="Novidades que chegaram pra você"
           slide
         />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Carousel
+            title="Mais vendidos"
+            collection="hidden-homepage-carousel-main"
+          />
+        </Suspense>
       </section>
     </>
   );

@@ -38,7 +38,7 @@ export function VariantSelector({
         ...accumulator,
         [option.name.toLowerCase()]: option.value,
       }),
-      {}
+      {},
     ),
   }));
 
@@ -51,7 +51,7 @@ export function VariantSelector({
 
           // Base option params on current params so we can preserve any other param state in the url.
           const optionSearchParams = new URLSearchParams(
-            searchParams.toString()
+            searchParams.toString(),
           );
 
           // Update the option params using the current option to reflect how the url *would* change,
@@ -73,14 +73,14 @@ export function VariantSelector({
               options.find(
                 (option) =>
                   option.name.toLowerCase() === key &&
-                  option.values.includes(value)
-              )
+                  option.values.includes(value),
+              ),
           );
           const isAvailableForSale = combinations.find((combination) =>
             filtered.every(
               ([key, value]) =>
-                combination[key] === value && combination.availableForSale
-            )
+                combination[key] === value && combination.availableForSale,
+            ),
           );
 
           // The option is active if it's in the url params.
@@ -105,7 +105,7 @@ export function VariantSelector({
                     !isActive && isAvailableForSale,
                   "relative z-10 cursor-not-allowed overflow-hidden bg-neutral-100 text-neutral-500 ring-1 ring-neutral-300 before:absolute before:inset-x-0 before:-z-10 before:h-px before:-rotate-45 before:bg-neutral-300 before:transition-transform dark:bg-neutral-900 dark:text-neutral-400 dark:ring-neutral-700 before:dark:bg-neutral-700":
                     !isAvailableForSale,
-                }
+                },
               )}
             >
               {value}

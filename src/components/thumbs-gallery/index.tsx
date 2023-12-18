@@ -10,10 +10,10 @@ import "swiper/css/thumbs";
 import "swiper/css/zoom";
 
 import { createUrl } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { FreeMode, Navigation, Thumbs } from "swiper/modules";
-import { GridTileImage } from "../grid/tile";
 
 interface ThumbsGalleryProps {
   image?: {
@@ -26,7 +26,7 @@ interface ThumbsGalleryProps {
   }[];
 }
 
-export const ThumbsGallery = ({ image, images }: ThumbsGalleryProps) => {
+export const ThumbsGallery = ({ images }: ThumbsGalleryProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const imageSearchParam = searchParams.get("image");
@@ -35,34 +35,36 @@ export const ThumbsGallery = ({ image, images }: ThumbsGalleryProps) => {
   const nextSearchParams = new URLSearchParams(searchParams.toString());
   const nextImageIndex = imageIndex + 1 < images.length ? imageIndex + 1 : 0;
   nextSearchParams.set("image", nextImageIndex.toString());
-  const nextUrl = createUrl(pathname, nextSearchParams);
+  // const nextUrl = createUrl(pathname, nextSearchParams);
 
   const previousSearchParams = new URLSearchParams(searchParams.toString());
   const previousImageIndex =
     imageIndex === 0 ? images?.length - 1 : imageIndex - 1;
   // console.log("Item2: " + imageIndex, "Item1:" + images.length);
   previousSearchParams.set("image", previousImageIndex.toString());
-  const previousUrl = createUrl(pathname, previousSearchParams);
+  // const previousUrl = createUrl(pathname, previousSearchParams);
 
   return (
     <div className="space-y-4 bg-transparent">
       <Suspense fallback={<div>Loading...</div>}>
         {images[imageIndex] && (
-          <img
-            className="h-full w-full object-center object-cover rounded border border-gray-300/40"
+          <Image
+            className="h-full w-full rounded border border-gray-300/40 object-cover object-center"
             sizes="(min-width: 100%) 66vw, 100vw"
+            width={100}
+            height={100}
             alt={images[imageIndex]?.altText as string}
             src={images[imageIndex]?.src as string}
           />
         )}
       </Suspense>
-      <Suspense>
+      {/* <Suspense>
         {images.length > 1 ? (
-          <ul className="my-8 flex items-center justify-center gap-2 overflow-auto py-1 lg:mb-0">
+          <ul className="flex flex-wrap items-center justify-start gap-4 gap-x-4 overflow-auto py-1 lg:mb-0">
             {images.map((image, index) => {
               const isActive = index === imageIndex;
               const imageSearchParams = new URLSearchParams(
-                searchParams.toString()
+                searchParams.toString(),
               );
 
               imageSearchParams.set("image", index.toString());
@@ -88,22 +90,24 @@ export const ThumbsGallery = ({ image, images }: ThumbsGalleryProps) => {
             })}
           </ul>
         ) : null}
-      </Suspense>
+      </Suspense> */}
       <Swiper
         onSwiper={(swiper) => console.log(swiper)}
         loop={true}
         spaceBetween={10}
-        slidesPerView={4}
+        slidesPerView={7}
+        grabCursor={true}
         freeMode={true}
+        navigation={true}
         watchSlidesProgress={true}
         modules={[FreeMode, Navigation, Thumbs]}
         className="mySwiper"
       >
         {images.length > 1
           ? images.map((image, index) => {
-              const isActive = index === imageIndex;
+              // const isActive = index === imageIndex;
               const imageSearchParams = new URLSearchParams(
-                searchParams.toString()
+                searchParams.toString(),
               );
 
               imageSearchParams.set("image", index.toString());
@@ -115,10 +119,13 @@ export const ThumbsGallery = ({ image, images }: ThumbsGalleryProps) => {
                     scroll={false}
                     className="h-full w-full"
                   >
-                    <img
-                      src={image?.url}
-                      alt={image?.alt}
-                      className="object-center object-cover cursor-pointer ring-1 ring-black ring-opacity-5"
+                    <Image
+                      src={image?.src}
+                      alt={image?.altText}
+                      width={100}
+                      height={100}
+                      sizes="(min-width: 100%) 66vw, 100vw"
+                      className="cursor-pointer object-cover object-center ring-1 ring-black ring-opacity-5"
                       // active={isActive}
                     />
                   </Link>

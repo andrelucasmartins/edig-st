@@ -10,42 +10,22 @@ import Link from "next/link";
 
 export async function CookiesConsent() {
   const consent = await getConsent();
-  // const [showConsent, setShowConsent] = useState(true);
-
-  // const hasCookies = Cookies.get(USER_CONSENT_COOKIE_KEY) !== undefined;
-
-  // useEffect(() => {
-  //   setShowConsent(hasCookies);
-  // }, []);
-
-  async function acceptCookie() {
-    // setShowConsent(true);
-    // cookies().set(USER_CONSENT_COOKIE_KEY, "true", {
-    //   expires: USER_CONSENT_COOKIE_EXPIRE_DATE,
-    // });
-    // Cookies.set(USER_CONSENT_COOKIE_KEY, "true", {
-    //   expires: USER_CONSENT_COOKIE_EXPIRE_DATE,
-    //   secure: true,
-    //   sameSite: "strict",
-    // });
-  }
-
   if (consent) {
     return null;
   }
 
   return (
     <section
-      className="fixed bottom-0 left-0 w-full py-2 md:py-4 mx-auto pl-5 pr-5 z-20"
+      className="fixed bottom-0 left-0 z-20 mx-auto w-full py-2 pl-5 pr-5 md:py-4"
       data-testid="cookie-consent"
     >
-      <div className="flex flex-col items-start px-5 py-3 space-y-2 bg-gray-200 md:flex-row md:space-y-0 md:items-stretch md:space-x-2 rounded-sm">
-        <div className="flex items-center flex-grow text-gray-900">
+      <div className="flex flex-col items-start space-y-2 rounded-sm bg-gray-200 px-5 py-3 md:flex-row md:items-stretch md:space-x-2 md:space-y-0">
+        <div className="flex flex-grow items-center text-gray-900">
           <p className="text-sm font-medium" data-testid="description-cookie">
             Usamos cookies para garantir que você obtenha a melhor experiência
             em nosso site.{" "}
             <Link href="/policies/politica-de-privacidade" legacyBehavior>
-              <a className="text-sm underline hover:text-lightAccent">
+              <a className="hover:text-lightAccent text-sm underline">
                 Política de Privacidade
               </a>
             </Link>
@@ -54,7 +34,7 @@ export async function CookiesConsent() {
         </div>
         <form className="flex items-center" action={setConsent}>
           <button
-            className="p-3 text-sm font-bold text-white uppercase bg-gray-700 whitespace-nowrap rounded-md"
+            className="whitespace-nowrap rounded-md bg-gray-700 p-3 text-sm font-bold uppercase text-white"
             type="submit"
             id="accept"
           >

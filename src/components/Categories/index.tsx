@@ -1,25 +1,25 @@
 import { storefront } from "@/utils/storefront";
 import Image from "next/image";
 
-interface CollectionsQueryProps {
-  collections: {
-    edges: [
-      {
-        node: {
-          id: string;
-          title: string;
-          handle: string;
-          image: {
-            altText: string;
-            width: number;
-            height: number;
-            url: string;
-          };
-        };
-      }
-    ];
-  };
-}
+// interface CollectionsQueryProps {
+//   collections: {
+//     edges: [
+//       {
+//         node: {
+//           id: string;
+//           title: string;
+//           handle: string;
+//           image: {
+//             altText: string;
+//             width: number;
+//             height: number;
+//             url: string;
+//           };
+//         };
+//       },
+//     ];
+//   };
+// }
 
 const collectionsQuery = `#graphql
   query getCollections {
@@ -62,16 +62,16 @@ export async function Categories() {
               const collection = item.node;
               return (
                 <div key={collection.handle} className="group relative">
-                  <div className="relative h-80 w-full overflow-hidden rounded-lg  sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 group-hover:opacity-75 sm:h-64">
+                  <div className="sm:aspect-h-1 sm:aspect-w-2 lg:aspect-h-1 lg:aspect-w-1 relative  h-80 w-full overflow-hidden rounded-lg group-hover:opacity-75 sm:h-64">
                     <Image
-                      src={collection.image.url}
-                      alt={collection.image.altText}
-                      width={collection.image.width}
-                      height={collection.image.height}
-                      className="w-full object-cover object-center rounded-full"
+                      src={collection.image?.url}
+                      alt={collection.image?.altText}
+                      width={collection.image?.width}
+                      height={collection.image?.height}
+                      className="w-full rounded-full object-cover object-center"
                     />
                   </div>
-                  <h3 className="mt-6 text-sm text-gray-500 text-center">
+                  <h3 className="mt-6 text-center text-sm text-gray-500">
                     <a href={`/collections/${collection.handle}`}>
                       <span className="absolute inset-0" />
                       {collection.title}

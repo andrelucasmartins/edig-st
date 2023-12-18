@@ -1,11 +1,12 @@
 "use client";
+import { ReactNode } from "react";
 interface TitleProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export const Title = ({ children }: TitleProps) => {
   return (
-    <h2 id="products-heading" className="text-3xl py-4">
+    <h2 id="products-heading" className="py-4 text-3xl">
       {children}
     </h2>
   );

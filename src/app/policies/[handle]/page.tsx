@@ -14,7 +14,6 @@ query getPageByHandle($handle: String!) {
 
 export default async function PoliciesPage({
   params,
-  searchParams,
 }: {
   params: { handle: string };
   searchParams: { [key: string]: string | string[] | undefined };
@@ -26,7 +25,7 @@ export default async function PoliciesPage({
   const policy = data?.page;
 
   return (
-    <div className="grid grid-cols-1 gap-y-6 select-none">
+    <div className="grid select-none grid-cols-1 gap-y-6">
       <Suspense fallback={<div>Loading...</div>}>
         <Breadcrumb currentPage={policy?.title} back />
         <h1 className="text-3xl font-bold text-purple-900">{policy?.title}</h1>

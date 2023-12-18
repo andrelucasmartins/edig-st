@@ -1,6 +1,9 @@
 "use client";
+
+import { ReactNode } from "react";
+
 interface DescriptionProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export const Description = ({ children }: DescriptionProps) => {
