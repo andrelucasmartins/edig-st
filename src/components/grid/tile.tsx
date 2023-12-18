@@ -34,8 +34,7 @@ export function GridTileImage({
               "shadow-md transition duration-300 ease-in-out group-hover:scale-105 ":
                 isInteractive,
             })}
-            width={100}
-            height={100}
+            fill
             sizes="(100%, 100%)"
             {...props}
           />

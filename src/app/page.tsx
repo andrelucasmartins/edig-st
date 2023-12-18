@@ -4,7 +4,6 @@ import { CategoriesTop } from "@/components/categories-top";
 import { ThreeItemGrid } from "@/components/grid/three-items";
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { MoreOffers } from "./components/more-offers";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://aedigi.com.br/"),
@@ -31,7 +30,7 @@ export default async function Home() {
         <Carousel collection="hidden-homepage-carousel-main" />
       </Suspense>
       {/* <Categories /> */}
-      <MoreOffers />
+      {/* <MoreOffers /> */}
       {/* <ProductList /> */}
     </>
   );

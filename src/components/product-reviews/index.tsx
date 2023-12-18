@@ -61,7 +61,7 @@ export const ProductReviews = async ({ productId }: ProductReviewsProps) => {
 
   // const product = productData.data?.product;
 
-  const { body } = await aliexpressFetch(1005005628926370);
+  const { body } = await aliexpressFetch<any>(1005005628926370);
   const previews: PreviewProps[] = body?.data?.evaViewList;
   const productEvaluationStatistic = body?.data?.productEvaluationStatistic;
 

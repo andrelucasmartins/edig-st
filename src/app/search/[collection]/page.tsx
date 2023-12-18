@@ -38,6 +38,7 @@ export default async function CategoryPage({
     collection: params.collection,
     sortKey,
     reverse,
+    first: 100,
   });
 
   return (

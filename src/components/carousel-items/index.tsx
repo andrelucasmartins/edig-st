@@ -28,7 +28,7 @@ type Product = {
 
 interface CarouselItemsProps {
   title?: string;
-  products: Product[] | Product;
+  products: Product[] | Product | any;
 }
 export const CarouselItems = ({ title, products }: CarouselItemsProps) => {
   return (
