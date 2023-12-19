@@ -30,6 +30,6 @@
     ".next/types/**/*.ts",
     "jest.setup.ts",
     "src/components/cookies-consent/CookieConsent.test.tsxs"
-  ],
+, "src/app/opengraph-image.tsxs"  ],
   "exclude": ["node_modules"]
 }
