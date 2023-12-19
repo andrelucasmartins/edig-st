@@ -58,11 +58,11 @@ jobs:
         with:
           node-version: "20"
 
-      - uses: pnpm/action-setup@v2
+      - uses: pnpm/action-setup@v2.4.0
         name: Install pnpm
         with:
           version: 7
-          run_install: true
+          run_install: false
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
