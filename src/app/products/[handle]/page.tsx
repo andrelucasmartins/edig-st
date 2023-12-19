@@ -1,29 +1,26 @@
-import { getProductRecommendations } from "@/app/data/get-product-recommendations";
-import { Button } from "@/components/ui/button";
-import { HIDDEN_PRODUCT_TAG } from "@/lib/constants";
-import { getProduct } from "@/lib/shopify";
-import { storefront } from "@/utils/storefront";
-import { format } from "date-fns";
+import { getProductRecommendations } from '@/app/data/get-product-recommendations'
+import { Button } from '@/components/ui/button'
+import { HIDDEN_PRODUCT_TAG } from '@/lib/constants'
+import { getProduct } from '@/lib/shopify'
+import { storefront } from '@/utils/storefront'
+import { format } from 'date-fns'
 
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+export const dynamic = 'force-dynamic'
 
 // type Props = {
 //   params: { handle: string };
 //   searchParams: { [key: string]: string | string[] | undefined };
 // };
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { handle: string };
-}): Promise<Metadata> {
-  const product = await getProduct(params.handle);
+export async function generateMetadata({ params }: { params: { handle: string } }): Promise<Metadata> {
+  const product = await getProduct(params.handle)
 
-  if (!product) return notFound();
+  if (!product) return notFound()
 
-  const { url, width, height, altText: alt } = product.featuredImage || {};
-  const indexable = !product.tags.includes(HIDDEN_PRODUCT_TAG);
+  const { url, width, height, altText: alt } = product.featuredImage || {}
+  const indexable = !product.tags.includes(HIDDEN_PRODUCT_TAG)
 
   return {
     title: product.seo.title || product.title,
@@ -48,24 +45,19 @@ export async function generateMetadata({
           ],
         }
       : null,
-  };
+  }
 }
 
-import { ProductList } from "@/components/ProductList";
-import { Carousel } from "@/components/carousel";
-import { AddToCart } from "@/components/cart/add-to-cart";
-import Price from "@/components/price";
-import { ProductReviews } from "@/components/product-reviews";
-import { VariantSelector } from "@/components/product/variant-selector";
-import { ThumbsGallery } from "@/components/thumbs-gallery";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Image } from "@/lib/shopify/types";
-import { Suspense } from "react";
+import { ProductList } from '@/components/ProductList'
+import { Carousel } from '@/components/carousel'
+import { AddToCart } from '@/components/cart/add-to-cart'
+import Price from '@/components/price'
+import { ProductReviews } from '@/components/product-reviews'
+import { VariantSelector } from '@/components/product/variant-selector'
+import { ThumbsGallery } from '@/components/thumbs-gallery'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Image } from '@/lib/shopify/types'
+import { Suspense } from 'react'
 
 // const SingleProductQuery = `#graphql
 //   query getProductByHandle($handle: String!) {
@@ -233,38 +225,31 @@ import { Suspense } from "react";
 //   };
 // }
 
-export default async function ProductsPage({
-  params,
-}: {
-  params: { handle: string };
-  searchParams: { [key: string]: string | string[] };
-}) {
-  const product = await getProduct(params.handle);
+export default async function ProductsPage({ params }: { params: { handle: string }; searchParams: { [key: string]: string | string[] } }) {
+  const product = await getProduct(params.handle)
 
-  if (!product) return notFound();
+  if (!product) return notFound()
 
   const recommendations = await storefront(getProductRecommendations, {
     productId: product.id,
-  });
+  })
 
-  const productRecommendations = recommendations?.data?.productRecommendations;
+  const productRecommendations = recommendations?.data?.productRecommendations
 
   const productJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
+    '@context': 'https://schema.org',
+    '@type': 'Product',
     name: product.title,
     description: product.description,
     image: product.featuredImage.url,
     offers: {
-      "@type": "AggregateOffer",
-      availability: product.availableForSale
-        ? "https://schema.org/InStock"
-        : "https://schema.org/OutOfStock",
+      '@type': 'AggregateOffer',
+      availability: product.availableForSale ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       priceCurrency: product.priceRange.minVariantPrice.currencyCode,
       highPrice: product.priceRange.maxVariantPrice.amount,
       lowPrice: product.priceRange.minVariantPrice.amount,
     },
-  };
+  }
 
   return (
     <>
@@ -294,36 +279,28 @@ export default async function ProductsPage({
           <div className="mx-auto mt-14 max-w-2xl sm:mt-16 lg:col-span-3 lg:mt-0 lg:max-w-none">
             <div className="flex flex-col-reverse">
               <div>
-                <h1 className="text-2x1 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
-                  {product.title}
-                </h1>
+                <h1 className="text-2x1 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-3xl">{product.title}</h1>
 
                 <h2 id="information-heading" className="sr-only">
                   Product information
                 </h2>
 
                 <p className="mt-2 text-sm text-gray-500">
-                  Version {product.tags[0]} &middot; Updated{" "}
-                  <time dateTime={product.updatedAt}>
-                    {format(new Date(product.updatedAt), "dd MMM yyyy")}
-                  </time>
+                  Version {product.tags[0]} &middot; Updated{' '}
+                  <time dateTime={product.updatedAt}>{format(new Date(product.updatedAt), 'dd MMM yyyy')}</time>
                 </p>
 
                 <div className="mt-4 flex flex-col">
                   <small className="text-sm text-gray-500 line-through dark:text-gray-500">
                     <Price
                       amount={product.priceRange.maxVariantPrice.amount}
-                      currencyCode={
-                        product.priceRange.maxVariantPrice.currencyCode
-                      }
+                      currencyCode={product.priceRange.maxVariantPrice.currencyCode}
                     />
                   </small>
                   <h2 className="text-2x1 font-extrabold tracking-tight text-gray-900 dark:text-purple-500 sm:text-3xl">
                     <Price
                       amount={product.priceRange.minVariantPrice.amount}
-                      currencyCode={
-                        product.priceRange.minVariantPrice.currencyCode
-                      }
+                      currencyCode={product.priceRange.minVariantPrice.currencyCode}
                     />
                   </h2>
                   {/* <span className="text-sm text-gray-500 dark:text-gray-50">
@@ -333,19 +310,13 @@ export default async function ProductsPage({
                     )}{" "}
                     sem juros no cartão
                   </span> */}
-                  <VariantSelector
-                    options={product.options}
-                    variants={product.variants}
-                  />
+                  <VariantSelector options={product.options} variants={product.variants} />
                 </div>
               </div>
             </div>
 
             <div className="ga´-y-4 mt-10 grid grid-cols-1 gap-4 gap-x-6 sm:grid-cols-1">
-              <AddToCart
-                variants={product.variants}
-                availableForSale={product.availableForSale}
-              />
+              <AddToCart variants={product.variants} availableForSale={product.availableForSale} />
               {/* <Button
                 className="text-green-500 border-2 border-green-500 hover:border-green-500 hover:bg-green-500 hover:text-white py-6 uppercase"
                 size={"lg"}
@@ -353,10 +324,7 @@ export default async function ProductsPage({
               >
                 Adicionar ao carrinho
               </Button> */}
-              <Button
-                className="bg-green-500 py-6 uppercase hover:bg-green-600 hover:text-white"
-                size={"lg"}
-              >
+              <Button className="bg-green-500 py-6 uppercase hover:bg-green-600 hover:text-white" size={'lg'}>
                 Comprar Agora
               </Button>
             </div>
@@ -377,18 +345,11 @@ export default async function ProductsPage({
         </div>
         <ProductReviews productId={product.id} />
 
-        <ProductList
-          products={productRecommendations}
-          title="Novidades que chegaram pra você"
-          slide
-        />
+        <ProductList products={productRecommendations} title="Novidades que chegaram pra você" slide />
         <Suspense fallback={<div>Loading...</div>}>
-          <Carousel
-            title="Mais vendidos"
-            collection="hidden-homepage-carousel-main"
-          />
+          <Carousel title="Mais vendidos" collection="hidden-homepage-carousel-main" />
         </Suspense>
       </section>
     </>
-  );
+  )
 }

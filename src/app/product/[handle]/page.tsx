@@ -1,28 +1,26 @@
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { Suspense } from "react";
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
 
-import { GridTileImage } from "@/components/grid/tile";
-import { Gallery } from "@/components/product/gallery";
-import { ProductDescription } from "@/components/product/product-description";
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { HIDDEN_PRODUCT_TAG } from "@/lib/constants";
-import { getProduct, getProductRecommendations } from "@/lib/shopify";
-import { Image } from "@/lib/shopify/types";
-import { format } from "date-fns";
-import Link from "next/link";
+import { GridTileImage } from '@/components/grid/tile'
+import { Gallery } from '@/components/product/gallery'
+import { ProductDescription } from '@/components/product/product-description'
+import { Breadcrumb } from '@/components/ui/breadcrumb'
+import { HIDDEN_PRODUCT_TAG } from '@/lib/constants'
+import { getProduct, getProductRecommendations } from '@/lib/shopify'
+import { Image } from '@/lib/shopify/types'
+import { format } from 'date-fns'
+import Link from 'next/link'
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { handle: string };
-}): Promise<Metadata> {
-  const product = await getProduct(params.handle);
+export const dynamic = 'force-dynamic'
 
-  if (!product) return notFound();
+export async function generateMetadata({ params }: { params: { handle: string } }): Promise<Metadata> {
+  const product = await getProduct(params.handle)
 
-  const { url, width, height, altText: alt } = product.featuredImage || {};
-  const indexable = !product.tags.includes(HIDDEN_PRODUCT_TAG);
+  if (!product) return notFound()
+
+  const { url, width, height, altText: alt } = product.featuredImage || {}
+  const indexable = !product.tags.includes(HIDDEN_PRODUCT_TAG)
 
   return {
     title: product.seo.title || product.title,
@@ -47,34 +45,28 @@ export async function generateMetadata({
           ],
         }
       : null,
-  };
+  }
 }
 
-export default async function ProductPage({
-  params,
-}: {
-  params: { handle: string };
-}) {
-  const product = await getProduct(params.handle);
+export default async function ProductPage({ params }: { params: { handle: string } }) {
+  const product = await getProduct(params.handle)
 
-  if (!product) return notFound();
+  if (!product) return notFound()
 
   const productJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
+    '@context': 'https://schema.org',
+    '@type': 'Product',
     name: product.title,
     description: product.description,
     image: product.featuredImage.url,
     offers: {
-      "@type": "AggregateOffer",
-      availability: product.availableForSale
-        ? "https://schema.org/InStock"
-        : "https://schema.org/OutOfStock",
+      '@type': 'AggregateOffer',
+      availability: product.availableForSale ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       priceCurrency: product.priceRange.minVariantPrice.currencyCode,
       highPrice: product.priceRange.maxVariantPrice.amount,
       lowPrice: product.priceRange.minVariantPrice.amount,
     },
-  };
+  }
 
   return (
     <>
@@ -109,10 +101,8 @@ export default async function ProductPage({
                   Product information
                 </h2>
                 <p className="mt-2 text-sm text-gray-500">
-                  Version {product.tags[0]} &middot; Updated{" "}
-                  <time dateTime={product.updatedAt}>
-                    {format(new Date(product.updatedAt), "dd MMM yyyy")}
-                  </time>
+                  Version {product.tags[0]} &middot; Updated{' '}
+                  <time dateTime={product.updatedAt}>{format(new Date(product.updatedAt), 'dd MMM yyyy')}</time>
                 </p>
               </div>
             </div>
@@ -123,29 +113,21 @@ export default async function ProductPage({
         </Suspense>
       </section>
     </>
-  );
+  )
 }
 
 async function RelatedProducts({ id }: { id: string }) {
-  const relatedProducts = await getProductRecommendations(id);
+  const relatedProducts = await getProductRecommendations(id)
 
-  if (!relatedProducts.length) return null;
+  if (!relatedProducts.length) return null
 
   return (
     <div className="py-8">
-      <h2 className="my-8 text-center text-xl font-semibold uppercase text-gray-900">
-        Novidades que chegaram pra você
-      </h2>
+      <h2 className="my-8 text-center text-xl font-semibold uppercase text-gray-900">Novidades que chegaram pra você</h2>
       <ul className="flex w-full gap-4 overflow-x-auto pt-1">
         {relatedProducts.map((product) => (
-          <li
-            key={product.handle}
-            className="aspect-square w-full flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5"
-          >
-            <Link
-              className="relative h-full w-full"
-              href={`/product/${product.handle}`}
-            >
+          <li key={product.handle} className="aspect-square w-full flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5">
+            <Link className="relative h-full w-full" href={`/product/${product.handle}`}>
               <GridTileImage
                 alt={product.title}
                 label={{
@@ -163,5 +145,5 @@ async function RelatedProducts({ id }: { id: string }) {
         ))}
       </ul>
     </div>
-  );
+  )
 }
