@@ -1,6 +1,6 @@
-import { Breadcrumb } from "@/components/ui/breadcrumb";
-import { storefront } from "@/utils/storefront";
-import { Suspense } from "react";
+import { Breadcrumb } from '@/components/ui/breadcrumb'
+import { storefront } from '@/utils/storefront'
+import { Suspense } from 'react'
 
 const PoliciesQuery = `#graphql
 query getPageByHandle($handle: String!) {
@@ -10,19 +10,21 @@ query getPageByHandle($handle: String!) {
     body # The description of the page, complete with HTML formatting.
 	}
 }
-`;
+`
+
+export const dynamic = 'force-dynamic'
 
 export default async function PoliciesPage({
   params,
 }: {
-  params: { handle: string };
-  searchParams: { [key: string]: string | string[] | undefined };
+  params: { handle: string }
+  searchParams: { [key: string]: string | string[] | undefined }
 }) {
   const { data } = await storefront(PoliciesQuery, {
     handle: params.handle,
-  });
+  })
 
-  const policy = data?.page;
+  const policy = data?.page
 
   return (
     <div className="grid select-none grid-cols-1 gap-y-6">
@@ -34,5 +36,5 @@ export default async function PoliciesPage({
         <div dangerouslySetInnerHTML={{ __html: policy?.body }} />
       </Suspense>
     </div>
-  );
+  )
 }
