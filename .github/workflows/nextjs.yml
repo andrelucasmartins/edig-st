@@ -58,7 +58,7 @@ jobs:
         with:
           node-version: "20"
 
-      - uses: pnpm/action-setup@v2.4.0
+      - uses: pnpm/action-setup@v2
         name: Install pnpm
         with:
           version: 7
