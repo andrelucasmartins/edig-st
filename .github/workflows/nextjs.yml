@@ -54,10 +54,13 @@ jobs:
             exit 1
           fi
       - name: Install Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
           node-version: 20
           cache: "pnpm"
+          run: |
+            pnpm --version #version pnpm
+            node --version #version node
 
       - uses: pnpm/action-setup@v2
         name: Install pnpm
