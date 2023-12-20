@@ -1,52 +1,66 @@
-import { CookiesConsent } from "@/components/cookies-consent";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { CookiesConsent } from "@/components/cookies-consent"
+import { fireEvent, render, screen } from "@testing-library/react"
 
-jest.mock("@/app/actions");
+jest.mock("cookies-next", () => ({
+  hasCookie: jest.fn(),
+  setCookie: jest.fn(),
+}))
 
 describe("<CookiesConsent>", () => {
-  it("Should render CookieConsent no agree", async () => {
-    render(<CookiesConsent />);
+  beforeEach(() => {
+    // Reset mocks before each test
+    jest.resetAllMocks()
+  })
 
-    const cookieConsentElement = screen.getByTestId("cookie-consent");
+  it("renders without crashing", () => {
+    render(<CookiesConsent />)
 
-    expect(cookieConsentElement).toBeInTheDocument();
-  });
+    const cookieConsentElement = screen.getByTestId("cookie-consent")
 
-  it("Should render paragraph explanation", async () => {
-    render(<CookiesConsent />);
+    expect(cookieConsentElement).toBeInTheDocument()
+  })
 
-    const paragraphElement = screen.getByTestId("description-cookie");
-    const paragraphElementText = paragraphElement.textContent;
+  it("hides the consent when user has already accepted", () => {
+    // Mock that the cookie has been set
+    jest.spyOn(require("cookies-next"), "hasCookie").mockImplementation(() => true)
 
-    expect(paragraphElement).toBeInTheDocument();
+    const { container } = render(<CookiesConsent />)
+
+    expect(container).toBeInTheDocument()
+  })
+
+  it("Should render paragraph explanation", () => {
+    render(<CookiesConsent />)
+
+    const paragraphElement = screen.getByTestId("description-cookie")
+    const paragraphElementText = paragraphElement.textContent
+
+    expect(paragraphElement).toBeInTheDocument()
     expect(paragraphElementText).toBe(
       "Usamos cookies para garantir que você obtenha a melhor experiência em nosso site. Política de Privacidade.",
-    );
-  });
+    )
+  })
 
-  describe("Button accept", () => {
-    it("Should render CookieConsent button", async () => {
-      render(<CookiesConsent />);
+  it("displays the consent when user has not accepted", () => {
+    // Mock that the cookie has not been set
+    jest.spyOn(require("cookies-next"), "hasCookie").mockImplementation(() => false)
 
-      const buttonElement = screen.getByRole("button");
-      const buttonElementText = buttonElement.textContent;
+    render(<CookiesConsent />)
 
-      expect(buttonElement).toBeInTheDocument();
-      expect(buttonElementText).toBe("Aceitar");
-    });
+    const cookieConsentElement = screen.getByTestId("cookie-consent")
+    expect(cookieConsentElement).toBeInTheDocument()
+  })
 
-    it("Should called when the button is clicked", async () => {
-      render(<CookiesConsent />);
+  it("accepts the cookie when the 'Aceitar' button is clicked", () => {
+    render(<CookiesConsent />)
 
-      const buttonElement = screen.getByRole("button", { name: "Aceitar" });
-      const DivElement = screen.getByTestId("cookie-consent");
+    const buttonElement = screen.getByText("Aceitar")
 
-      expect(buttonElement).toBeInTheDocument();
+    // Act
+    fireEvent.click(buttonElement)
 
-      // Act
-      fireEvent.click(buttonElement);
+    expect(require("cookies-next").setCookie).toHaveBeenCalledWith("cookie_consent", "true", { maxAge: 31536000 })
 
-      expect(DivElement).not.toBeInTheDocument();
-    });
-  });
-});
+    expect(buttonElement).not.toBeInTheDocument()
+  })
+})

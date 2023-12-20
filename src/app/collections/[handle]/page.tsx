@@ -1,13 +1,13 @@
-import { storefront } from "@/utils/storefront";
-import type { Metadata } from "next";
-import Image from "next/image";
+import { storefront } from "@/utils/storefront"
+import type { Metadata } from "next"
+import Image from "next/image"
 
-export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic"
 
 type Props = {
-  params: { handle: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
+  params: { handle: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
 
 const SingleProductQuery = `#graphql
   query getProductsOfProductTypeInCollection($handle: String!, $afterPage: String, $beforePage: String, $first: Int, $last: Int) {
@@ -96,76 +96,67 @@ const SingleProductQuery = `#graphql
 		}    
 	}
 }
-`;
+`
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const handle = params.handle;
+  const handle = params.handle
 
   const { data } = await storefront(SingleProductQuery, {
     handle: handle,
-  });
+  })
 
-  const shop_name = data?.shop.name as string;
+  const shop_name = data?.shop.name as string
 
-  const page = data?.collection;
+  const page = data?.collection
 
   return {
     title: `${shop_name} | ${page?.title}`,
     description: page?.description,
-  };
+  }
 }
 
-import { Breadcrumb } from "@/components/ui/breadcrumb";
+import { Breadcrumb } from "@/components/ui/breadcrumb"
 
-import { getProductRecommendations } from "@/app/data/get-product-recommendations";
-import { ProductList } from "@/components/ProductList";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { sorting } from "@/lib/constants";
-import { Divider } from "@nextui-org/react";
-import { revalidatePath } from "next/cache";
-import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
-import { ActionButtonNext, ActionButtonPrev } from "../ActionButton";
-import { filterType, getCollectionData } from "../actions";
+import { getProductRecommendations } from "@/app/data/get-product-recommendations"
+import { ProductList } from "@/components/ProductList"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { sorting } from "@/lib/constants"
+import { Divider } from "@nextui-org/react"
+import { revalidatePath } from "next/cache"
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu"
+import { ActionButtonNext, ActionButtonPrev } from "../ActionButton"
+import { filterType, getCollectionData } from "../actions"
 
 export default async function PageCollections({
   params,
   searchParams,
 }: {
-  params: { handle: string };
-  searchParams: { [key: string]: string | string[] };
+  params: { handle: string }
+  searchParams: { [key: string]: string | string[] }
 }) {
   // const { pageCount } = await getPageCount();
 
-  const { data } = await getCollectionData(params.handle, searchParams.page);
+  const { data } = await getCollectionData(params.handle, searchParams.page)
 
-  const collection = data?.collection;
-  const pagination = collection?.products.pageInfo;
+  const collection = data?.collection
+  const pagination = collection?.products.pageInfo
 
-  const products = collection?.products.edges;
-  const image = products?.images?.edges[0]?.node;
-  const banner = collection?.metafields[0]?.reference.image.src;
-  const productId = pagination && products[0]?.node.id;
+  const products = collection?.products.edges
+  const image = products?.images?.edges[0]?.node
+  const banner = collection?.metafields[0]?.reference.image.src
+  const productId = pagination && products[0]?.node.id
   const recommendations = await storefront(getProductRecommendations, {
     productId: productId,
-  });
+  })
 
-  const productRecommendations = recommendations?.data?.productRecommendations;
+  const productRecommendations = recommendations?.data?.productRecommendations
 
-  const productsCount = collection?.products.filters[0]?.values[0]?.count;
+  const productsCount = collection?.products.filters[0]?.values[0]?.count
 
   async function actionHandleSelect(e: any) {
-    "use server";
-    await filterType(e);
+    await filterType(e)
 
-    revalidatePath(`/collections/${params.handle}`);
+    revalidatePath(`/collections/${params.handle}`)
   }
 
   return (
@@ -191,9 +182,7 @@ export default async function PageCollections({
         </figure>
         <p className="sr-only">{collection?.description}</p>
       </div>
-      <h1 className="my-2 text-xl font-bold text-purple-900 dark:text-purple-500">
-        {collection?.title}
-      </h1>
+      <h1 className="my-2 text-xl font-bold text-purple-900 dark:text-purple-500">{collection?.title}</h1>
       <Divider className="my-4 h-[1px] bg-gray-300" />
       <Breadcrumb currentPage={collection?.title} back />
       <form className="my-6 flex items-center justify-between">
@@ -256,11 +245,7 @@ export default async function PageCollections({
           </div>
         </div>
       </div>
-      <ProductList
-        products={productRecommendations}
-        title="Novidades que chegaram pra você"
-        slide
-      />
+      <ProductList products={productRecommendations} title="Novidades que chegaram pra você" slide />
     </>
-  );
+  )
 }
