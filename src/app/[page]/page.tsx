@@ -6,8 +6,8 @@ import { notFound } from "next/navigation"
 
 export const revalidate = 43200 // 12 hours in seconds
 
-export async function generateStaticParams({ params: { page } }: { params: { page: string } }) {
-  const pages = await getPage(page)
+export async function generateStaticParams({ params }: { params: { page: string } }) {
+  const pages = await getPage(params.page)
   return pages.map((page: string) => ({
     page: page,
   }))
