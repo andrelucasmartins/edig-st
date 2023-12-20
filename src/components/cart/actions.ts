@@ -1,9 +1,9 @@
 import { addToCart, createCart, getCart, removeFromCart, updateCart } from "@/lib/shopify"
 import { Cart } from "@/lib/shopify/types"
-import { getCookies, setCookies } from "cookies-next"
+import { getCookie, setCookie } from "cookies-next"
 
 export const addItem = async (variantId: string | undefined): Promise<String | undefined> => {
-  let cartId = getCookies("cartId")
+  let cartId = getCookie("cartId")
   var cart: Cart | undefined
 
   if (cartId) {
@@ -13,7 +13,7 @@ export const addItem = async (variantId: string | undefined): Promise<String | u
   if (!cartId || !cart) {
     cart = await createCart()
     cartId = cart.id
-    setCookies("cartId", cartId)
+    setCookie("cartId", cartId)
   }
 
   if (!variantId) {
@@ -28,7 +28,7 @@ export const addItem = async (variantId: string | undefined): Promise<String | u
 }
 
 export const removeItem = async (lineId: string): Promise<String | undefined> => {
-  const cartId = getCookies("cartId")
+  const cartId = getCookie("cartId")
 
   if (!cartId) {
     return "Missing cart ID"
@@ -49,7 +49,7 @@ export const updateItemQuantity = async ({
   variantId: string
   quantity: number
 }): Promise<String | undefined> => {
-  const cartId = getCookies("cartId")
+  const cartId = getCookie("cartId")
 
   if (!cartId) {
     return "Missing cart ID"
