@@ -1,25 +1,22 @@
-import { BannerHome } from "@/components/banner-home";
-import { Carousel } from "@/components/carousel";
-import { CategoriesTop } from "@/components/categories-top";
-import { ThreeItemGrid } from "@/components/grid/three-items";
-import type { Metadata } from "next";
-import { Suspense } from "react";
+import { BannerHome } from "@/components/banner-home"
+import { Carousel } from "@/components/carousel"
+import { CategoriesTop } from "@/components/categories-top"
+import { ThreeItemGrid } from "@/components/grid/three-items"
+import type { Metadata } from "next"
+import { Suspense } from "react"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://aedigi.com.br/"),
-  description:
-    "High-performance ecommerce store built with Next.js, Vercel, and Shopify.",
+  description: "High-performance ecommerce store built with Next.js, Vercel, and Shopify.",
   openGraph: {
     type: "website",
   },
-};
+}
 
 export default async function Home() {
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
-        <BannerHome />
-      </Suspense>
+      <BannerHome />
       <Suspense fallback={<div>Loading...</div>}>
         <CategoriesTop />
       </Suspense>
@@ -33,5 +30,5 @@ export default async function Home() {
       {/* <MoreOffers /> */}
       {/* <ProductList /> */}
     </>
-  );
+  )
 }

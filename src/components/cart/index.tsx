@@ -1,14 +1,14 @@
-import { getCart } from "@/lib/shopify";
-import { cookies } from "next/headers";
-import CartModal from "./modal";
+import { getCart } from "@/lib/shopify"
+import CartModal from "./modal"
+
+import { getCookie } from "cookies-next"
 
 export default async function Cart() {
-  const cookieStore = cookies();
-  const cartId = cookieStore?.get("cartId")?.value;
-  let cart;
+  const cartId = getCookie("cartId")
+  let cart
   if (cartId) {
-    cart = await getCart(cartId);
+    cart = await getCart(cartId)
   }
 
-  return <CartModal cart={cart} />;
+  return <CartModal cart={cart} />
 }

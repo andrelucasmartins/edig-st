@@ -1,12 +1,17 @@
-import type { Metadata } from 'next'
+import type { Metadata } from "next"
 
-import Prose from '@/components/prose'
-import { getPage } from '@/lib/shopify'
-import { notFound } from 'next/navigation'
-
-export const dynamic = 'force-dynamic'
+import Prose from "@/components/prose"
+import { getPage } from "@/lib/shopify"
+import { notFound } from "next/navigation"
 
 export const revalidate = 43200 // 12 hours in seconds
+
+export async function generateStaticParams({ params: { page } }: { params: { page: string } }) {
+  const pages = await getPage(page)
+  return pages.map((page: string) => ({
+    page: page,
+  }))
+}
 
 export async function generateMetadata({ params }: { params: { page: string } }): Promise<Metadata> {
   const page = await getPage(params.page)
@@ -19,7 +24,7 @@ export async function generateMetadata({ params }: { params: { page: string } })
     openGraph: {
       publishedTime: page.createdAt,
       modifiedTime: page.updatedAt,
-      type: 'article',
+      type: "article",
     },
   }
 }
@@ -35,9 +40,9 @@ export default async function Page({ params }: { params: { page: string } }) {
       <Prose className="mb-8" html={page.body as string} />
       <p className="text-sm italic">
         {`This document was last updated on ${new Intl.DateTimeFormat(undefined, {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
+          year: "numeric",
+          month: "long",
+          day: "numeric",
         }).format(new Date(page.updatedAt))}.`}
       </p>
     </>
