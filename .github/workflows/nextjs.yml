@@ -83,9 +83,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pnpm-store-${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/pnpm-lock.yaml') }}-
       - name: Use variables
-        run: echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> $GITHUB_ENV
+        run: echo "NEXT_PUBLIC_API_URL=${{ secrets.SITE_NAME }}" >> $GITHUB_ENV
         env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           SITE_NAME: ${{ secrets.SITE_NAME }}
           COMPANY_NAME: ${{ secrets.COMPANY_NAME }}
           SHOPIFY_REVALIDATION_SECRET: ${{ secrets.SHOPIFY_REVALIDATION_SECRET }}
