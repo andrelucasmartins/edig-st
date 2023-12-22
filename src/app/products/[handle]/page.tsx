@@ -1,13 +1,13 @@
-import { getProductRecommendations } from '@/app/data/get-product-recommendations'
-import { Button } from '@/components/ui/button'
-import { HIDDEN_PRODUCT_TAG } from '@/lib/constants'
-import { getProduct } from '@/lib/shopify'
-import { storefront } from '@/utils/storefront'
-import { format } from 'date-fns'
+import { getProductRecommendations } from "@/app/data/get-product-recommendations"
+import { Button } from "@/components/ui/button"
+import { HIDDEN_PRODUCT_TAG } from "@/lib/constants"
+import { getProduct } from "@/lib/shopify"
+import { storefront } from "@/utils/storefront"
+import { format } from "date-fns"
 
-import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-export const dynamic = 'force-dynamic'
+import type { Metadata } from "next"
+import { notFound } from "next/navigation"
+// export const dynamic = 'force-dynamic'
 
 // type Props = {
 //   params: { handle: string };
@@ -48,16 +48,16 @@ export async function generateMetadata({ params }: { params: { handle: string } 
   }
 }
 
-import { ProductList } from '@/components/ProductList'
-import { Carousel } from '@/components/carousel'
-import { AddToCart } from '@/components/cart/add-to-cart'
-import Price from '@/components/price'
-import { ProductReviews } from '@/components/product-reviews'
-import { VariantSelector } from '@/components/product/variant-selector'
-import { ThumbsGallery } from '@/components/thumbs-gallery'
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { Image } from '@/lib/shopify/types'
-import { Suspense } from 'react'
+import { ProductList } from "@/components/ProductList"
+import { Carousel } from "@/components/carousel"
+import { AddToCart } from "@/components/cart/add-to-cart"
+import Price from "@/components/price"
+import { ProductReviews } from "@/components/product-reviews"
+import { VariantSelector } from "@/components/product/variant-selector"
+import { ThumbsGallery } from "@/components/thumbs-gallery"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Image } from "@/lib/shopify/types"
+import { Suspense } from "react"
 
 // const SingleProductQuery = `#graphql
 //   query getProductByHandle($handle: String!) {
@@ -237,14 +237,14 @@ export default async function ProductsPage({ params }: { params: { handle: strin
   const productRecommendations = recommendations?.data?.productRecommendations
 
   const productJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
+    "@context": "https://schema.org",
+    "@type": "Product",
     name: product.title,
     description: product.description,
     image: product.featuredImage.url,
     offers: {
-      '@type': 'AggregateOffer',
-      availability: product.availableForSale ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      "@type": "AggregateOffer",
+      availability: product.availableForSale ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
       priceCurrency: product.priceRange.minVariantPrice.currencyCode,
       highPrice: product.priceRange.maxVariantPrice.amount,
       lowPrice: product.priceRange.minVariantPrice.amount,
@@ -286,8 +286,8 @@ export default async function ProductsPage({ params }: { params: { handle: strin
                 </h2>
 
                 <p className="mt-2 text-sm text-gray-500">
-                  Version {product.tags[0]} &middot; Updated{' '}
-                  <time dateTime={product.updatedAt}>{format(new Date(product.updatedAt), 'dd MMM yyyy')}</time>
+                  Version {product.tags[0]} &middot; Updated{" "}
+                  <time dateTime={product.updatedAt}>{format(new Date(product.updatedAt), "dd MMM yyyy")}</time>
                 </p>
 
                 <div className="mt-4 flex flex-col">
@@ -324,7 +324,7 @@ export default async function ProductsPage({ params }: { params: { handle: strin
               >
                 Adicionar ao carrinho
               </Button> */}
-              <Button className="bg-green-500 py-6 uppercase hover:bg-green-600 hover:text-white" size={'lg'}>
+              <Button className="bg-green-500 py-6 uppercase hover:bg-green-600 hover:text-white" size={"lg"}>
                 Comprar Agora
               </Button>
             </div>
@@ -352,4 +352,8 @@ export default async function ProductsPage({ params }: { params: { handle: strin
       </section>
     </>
   )
+}
+
+export async function generateStaticParams({ params }: { params: { handle: string } }) {
+  return params.handle ? [{ handle: params.handle }] : []
 }

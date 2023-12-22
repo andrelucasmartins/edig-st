@@ -1,8 +1,8 @@
 /* eslint-disable jsx-a11y/alt-text */
-import clsx from "clsx";
-import Image from "next/image";
-import { ComponentProps } from "react";
-import Label from "../label";
+import clsx from "clsx"
+import Image from "next/image"
+import { ComponentProps } from "react"
+import Label from "../label"
 
 export function GridTileImage({
   isInteractive = true,
@@ -10,14 +10,14 @@ export function GridTileImage({
   label,
   ...props
 }: {
-  isInteractive?: boolean;
-  active?: boolean;
+  isInteractive?: boolean
+  active?: boolean
   label?: {
-    title: string;
-    amount: string;
-    currencyCode: string;
-    position?: "bottom" | "center";
-  };
+    title: string
+    amount: string
+    currencyCode: string
+    position?: "bottom" | "center"
+  }
 } & ComponentProps<typeof Image>) {
   return (
     <div>
@@ -31,23 +31,14 @@ export function GridTileImage({
         >
           <Image
             className={clsx("relative h-full w-full object-contain", {
-              "shadow-md transition duration-300 ease-in-out group-hover:scale-105 ":
-                isInteractive,
+              "shadow-md transition duration-300 ease-in-out group-hover:scale-105 ": isInteractive,
             })}
-            fill
             sizes="(100%, 100%)"
             {...props}
           />
         </div>
       ) : null}
-      {label ? (
-        <Label
-          title={label.title}
-          amount={label.amount}
-          currencyCode={label.currencyCode}
-          position={label.position}
-        />
-      ) : null}
+      {label ? <Label title={label.title} amount={label.amount} currencyCode={label.currencyCode} position={label.position} /> : null}
     </div>
-  );
+  )
 }

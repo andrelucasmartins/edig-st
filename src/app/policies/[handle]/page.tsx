@@ -1,6 +1,6 @@
-import { Breadcrumb } from '@/components/ui/breadcrumb'
-import { storefront } from '@/utils/storefront'
-import { Suspense } from 'react'
+import { Breadcrumb } from "@/components/ui/breadcrumb"
+import { storefront } from "@/utils/storefront"
+import { Suspense } from "react"
 
 const PoliciesQuery = `#graphql
 query getPageByHandle($handle: String!) {
@@ -12,7 +12,7 @@ query getPageByHandle($handle: String!) {
 }
 `
 
-export const dynamic = 'force-dynamic'
+// export const dynamic = 'force-dynamic'
 
 export default async function PoliciesPage({
   params,
@@ -37,4 +37,8 @@ export default async function PoliciesPage({
       </Suspense>
     </div>
   )
+}
+
+export async function generateStaticParams({ params }: { params: { handle: string } }) {
+  return params.handle ? [{ handle: params.handle }] : []
 }

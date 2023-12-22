@@ -1,18 +1,18 @@
-import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
-import { Suspense } from 'react'
+import type { Metadata } from "next"
+import { notFound } from "next/navigation"
+import { Suspense } from "react"
 
-import { GridTileImage } from '@/components/grid/tile'
-import { Gallery } from '@/components/product/gallery'
-import { ProductDescription } from '@/components/product/product-description'
-import { Breadcrumb } from '@/components/ui/breadcrumb'
-import { HIDDEN_PRODUCT_TAG } from '@/lib/constants'
-import { getProduct, getProductRecommendations } from '@/lib/shopify'
-import { Image } from '@/lib/shopify/types'
-import { format } from 'date-fns'
-import Link from 'next/link'
+import { GridTileImage } from "@/components/grid/tile"
+import { Gallery } from "@/components/product/gallery"
+import { ProductDescription } from "@/components/product/product-description"
+import { Breadcrumb } from "@/components/ui/breadcrumb"
+import { HIDDEN_PRODUCT_TAG } from "@/lib/constants"
+import { getProduct, getProductRecommendations } from "@/lib/shopify"
+import { Image } from "@/lib/shopify/types"
+import { format } from "date-fns"
+import Link from "next/link"
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic"
 
 export async function generateMetadata({ params }: { params: { handle: string } }): Promise<Metadata> {
   const product = await getProduct(params.handle)
@@ -54,14 +54,14 @@ export default async function ProductPage({ params }: { params: { handle: string
   if (!product) return notFound()
 
   const productJsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
+    "@context": "https://schema.org",
+    "@type": "Product",
     name: product.title,
     description: product.description,
     image: product.featuredImage.url,
     offers: {
-      '@type': 'AggregateOffer',
-      availability: product.availableForSale ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      "@type": "AggregateOffer",
+      availability: product.availableForSale ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
       priceCurrency: product.priceRange.minVariantPrice.currencyCode,
       highPrice: product.priceRange.maxVariantPrice.amount,
       lowPrice: product.priceRange.minVariantPrice.amount,
@@ -101,8 +101,8 @@ export default async function ProductPage({ params }: { params: { handle: string
                   Product information
                 </h2>
                 <p className="mt-2 text-sm text-gray-500">
-                  Version {product.tags[0]} &middot; Updated{' '}
-                  <time dateTime={product.updatedAt}>{format(new Date(product.updatedAt), 'dd MMM yyyy')}</time>
+                  Version {product.tags[0]} &middot; Updated{" "}
+                  <time dateTime={product.updatedAt}>{format(new Date(product.updatedAt), "dd MMM yyyy")}</time>
                 </p>
               </div>
             </div>
@@ -146,4 +146,8 @@ async function RelatedProducts({ id }: { id: string }) {
       </ul>
     </div>
   )
+}
+
+export async function generateStaticParams({ params }: { params: { handle: string } }) {
+  return params.handle ? [{ handle: params.handle }] : []
 }

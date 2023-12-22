@@ -1,10 +1,10 @@
 import { HIDDEN_PRODUCT_TAG, SHOPIFY_GRAPHQL_API_ENDPOINT, TAGS } from "@/lib/constants"
 import { isShopifyError } from "@/lib/type-guards"
-import { ensureStartsWith } from "@/lib/utils"
 import { revalidateTag } from "next/cache"
 // import { headers } from "next/headers";
 import { headers } from "next/dist/client/components/headers"
 import { NextRequest, NextResponse } from "next/server"
+import process from "process"
 import { addToCartMutation, createCartMutation, editCartItemsMutation, removeFromCartMutation } from "./mutations/cart"
 import { getCartQuery } from "./queries/cart"
 import {
@@ -43,8 +43,8 @@ import {
   ShopifyUpdateCartOperation,
 } from "./types"
 
-const domain = process.env.SHOPIFY_STORE_DOMAIN ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, "https://") : ""
-const endpoint = `${domain}${SHOPIFY_GRAPHQL_API_ENDPOINT}`
+// const domain = process.env.SHOPIFY_STORE_DOMAIN ? ensureStartsWith(process.env.SHOPIFY_STORE_DOMAIN, "https://") : ""
+const endpoint = `${process.env.SHOPIFY_STORE_DOMAIN}${SHOPIFY_GRAPHQL_API_ENDPOINT}`
 const key = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN!
 
 type ExtractVariables<T> = T extends { variables: object } ? T["variables"] : never
@@ -369,7 +369,7 @@ export async function getMenu(handle: string): Promise<Menu[]> {
   return (
     res.body?.data?.menu?.items.map((item: { title: string; url: string }) => ({
       title: item.title,
-      path: item.url.replace(domain, "").replace("/collections", "/search").replace("/pages", ""),
+      path: item.url.replace(String(process.env.SHOPIFY_STORE_DOMAIN), "").replace("/collections", "/search").replace("/pages", ""),
     })) || []
   )
 }

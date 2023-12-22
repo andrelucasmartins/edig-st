@@ -1,181 +1,184 @@
 import { sorting } from "@/lib/constants"
 import { storefront } from "@/utils/storefront"
 
-const SingleProductQueryNextPage = `#graphql
+const SingleProductQueryNextPage = /* GraphQL */ `
   query getProductsOfProductTypeInCollection($handle: String!, $afterPage: String, $sortKey: ProductCollectionSortKeys, $reverse: Boolean) {
-  shop {
-    name
-  }
-	collection(handle: $handle) {
-		id
-		title
-    handle
-    description
-    metafields(identifiers: {key: "banner", namespace: "custom"}) {
+    shop {
+      name
+    }
+    collection(handle: $handle) {
       id
-      reference {
-        ... on MediaImage {
-          id
-          image {
-            src
-            altText
+      title
+      handle
+      description
+      metafields(identifiers: { key: "banner", namespace: "custom" }) {
+        id
+        reference {
+          ... on MediaImage {
+            id
+            image {
+              src
+              altText
+            }
           }
         }
       }
-    }      
 
-		products(first: 10, after: $afterPage, sortKey: $sortKey, reverse: $reverse) {    
-      pageInfo {
-        hasNextPage
-        startCursor
-        endCursor
-        hasPreviousPage
-      }    
-			edges {
-        cursor
-				node {
-					id
-					title
-          handle
-          tags
-					vendor
-					priceRange {
-            minVariantPrice {
-              amount
-              currencyCode
-            }
-            maxVariantPrice {
-              amount
-              currencyCode
-            }
-          }
-          images(first: 1) {
-            edges {
-              node {
-                transformedSrc
-                altText
-              }
-            }
-          }
-          variants(first: 3) {
-            edges {
-              cursor
-              node {
-                id
-                title
-                quantityAvailable
-                price {
-                  amount
-                  currencyCode
-                }
-                compareAtPrice {
-                  amount
-                  currencyCode
-                }
-              }
-            }            
-          }
-				}
-			}
-      filters {
-        values {
-          id
-          label
-          count
+      products(first: 10, after: $afterPage, sortKey: $sortKey, reverse: $reverse) {
+        pageInfo {
+          hasNextPage
+          startCursor
+          endCursor
+          hasPreviousPage
         }
-      } 
-                      
-		}    
-	}
-}
+        edges {
+          cursor
+          node {
+            id
+            title
+            handle
+            tags
+            vendor
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+              maxVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            images(first: 1) {
+              edges {
+                node {
+                  transformedSrc
+                  altText
+                }
+              }
+            }
+            variants(first: 3) {
+              edges {
+                cursor
+                node {
+                  id
+                  title
+                  quantityAvailable
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  compareAtPrice {
+                    amount
+                    currencyCode
+                  }
+                }
+              }
+            }
+          }
+        }
+        filters {
+          values {
+            id
+            label
+            count
+          }
+        }
+      }
+    }
+  }
 `
-const SingleProductQueryPrevPage = `#graphql
-  query getProductsOfProductTypeInCollection($handle: String!,  $beforePage: String, $sortKey: ProductCollectionSortKeys, $reverse: Boolean) {
-  shop {
-    name
-  }
-	collection(handle: $handle) {
-		id
-		title
-    handle
-    description
-    metafields(identifiers: {key: "banner", namespace: "custom"}) {
+const SingleProductQueryPrevPage = /* GraphQL */ `
+  query getProductsOfProductTypeInCollection(
+    $handle: String!
+    $beforePage: String
+    $sortKey: ProductCollectionSortKeys
+    $reverse: Boolean
+  ) {
+    shop {
+      name
+    }
+    collection(handle: $handle) {
       id
-      reference {
-        ... on MediaImage {
-          id
-          image {
-            src
-            altText
+      title
+      handle
+      description
+      metafields(identifiers: { key: "banner", namespace: "custom" }) {
+        id
+        reference {
+          ... on MediaImage {
+            id
+            image {
+              src
+              altText
+            }
           }
         }
       }
-    }      
 
-		products(last: 10, before: $beforePage, sortKey: $sortKey, reverse: $reverse) {    
-      pageInfo {
-        hasNextPage
-        startCursor
-        endCursor
-        hasPreviousPage
-      }    
-			edges {
-        cursor
-				node {
-					id
-					title
-          handle
-          tags
-					vendor
-					priceRange {
-            minVariantPrice {
-              amount
-              currencyCode
-            }
-            maxVariantPrice {
-              amount
-              currencyCode
-            }
-          }
-          images(first: 1) {
-            edges {
-              node {
-                transformedSrc
-                altText
-              }
-            }
-          }
-          variants(first: 3) {
-            edges {
-              cursor
-              node {
-                id
-                title
-                quantityAvailable
-                price {
-                  amount
-                  currencyCode
-                }
-                compareAtPrice {
-                  amount
-                  currencyCode
-                }
-              }
-            }            
-          }
-				}
-			}
-      filters {
-        values {
-          id
-          label
-          count
+      products(last: 10, before: $beforePage, sortKey: $sortKey, reverse: $reverse) {
+        pageInfo {
+          hasNextPage
+          startCursor
+          endCursor
+          hasPreviousPage
         }
-      } 
-                      
-		}    
-	}
-}
+        edges {
+          cursor
+          node {
+            id
+            title
+            handle
+            tags
+            vendor
+            priceRange {
+              minVariantPrice {
+                amount
+                currencyCode
+              }
+              maxVariantPrice {
+                amount
+                currencyCode
+              }
+            }
+            images(first: 1) {
+              edges {
+                node {
+                  transformedSrc
+                  altText
+                }
+              }
+            }
+            variants(first: 3) {
+              edges {
+                cursor
+                node {
+                  id
+                  title
+                  quantityAvailable
+                  price {
+                    amount
+                    currencyCode
+                  }
+                  compareAtPrice {
+                    amount
+                    currencyCode
+                  }
+                }
+              }
+            }
+          }
+        }
+        filters {
+          values {
+            id
+            label
+            count
+          }
+        }
+      }
+    }
+  }
 `
 
 let pageCount = 1

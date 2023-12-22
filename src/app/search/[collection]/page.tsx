@@ -1,12 +1,12 @@
-import { getCollection, getCollectionProducts } from '@/lib/shopify'
-import { Metadata } from 'next'
-import { notFound } from 'next/navigation'
+import { getCollection, getCollectionProducts } from "@/lib/shopify"
+import { Metadata } from "next"
+import { notFound } from "next/navigation"
 
-import Grid from '@/components/grid'
-import ProductGridItems from '@/components/layout/product-grid-items'
-import { defaultSort, sorting } from '@/lib/constants'
+import Grid from "@/components/grid"
+import ProductGridItems from "@/components/layout/product-grid-items"
+import { defaultSort, sorting } from "@/lib/constants"
 
-export const dynamic = 'force-dynamic'
+// export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({ params }: { params: { collection: string } }): Promise<Metadata> {
   const collection = await getCollection(params.collection)
@@ -46,4 +46,8 @@ export default async function CategoryPage({
       )}
     </section>
   )
+}
+
+export async function generateStaticParams({ params }: { params: { collection: string } }) {
+  return params.collection ? [{ collection: params.collection }] : []
 }

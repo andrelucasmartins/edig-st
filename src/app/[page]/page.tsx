@@ -6,13 +6,6 @@ import { notFound } from "next/navigation"
 
 export const revalidate = 43200 // 12 hours in seconds
 
-export async function generateStaticParams({ params }: { params: { page: string } }) {
-  const pages = await getPage(params.page)
-  return pages.map((page: string) => ({
-    page: page,
-  }))
-}
-
 export async function generateMetadata({ params }: { params: { page: string } }): Promise<Metadata> {
   const page = await getPage(params.page)
 
@@ -47,4 +40,8 @@ export default async function Page({ params }: { params: { page: string } }) {
       </p>
     </>
   )
+}
+
+export async function generateStaticParams({ params }: { params: { page: string } }) {
+  return params.page ? [{ page: params.page }] : []
 }

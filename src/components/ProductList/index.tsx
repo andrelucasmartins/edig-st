@@ -1,15 +1,59 @@
-"use client";
+"use client"
 
-import { formatPrice } from "@/utils/formatPrice";
-import Link from "next/link";
-import "swiper/css";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { formatPrice } from "@/utils/formatPrice"
+import Link from "next/link"
+import "swiper/css"
+import { Swiper, SwiperSlide } from "swiper/react"
 
-interface ProductListProps {
-  products: any[];
-  title?: string;
-  slide?: boolean;
-  total?: number;
+interface ProductProps {
+  products: Array<{
+    node: {
+      id: string
+      title: string
+      handle: string
+      vendor: string
+      tags: string[]
+      availableForSale: boolean
+      priceRange: {
+        minVariantPrice: { amount: number }
+      }
+      images: {
+        edges: [
+          {
+            node: {
+              id: string
+              url: string
+              transformedSrc: string
+              width: number | string
+              height: number | string
+              altText: string
+            }
+          },
+        ]
+      }
+      variants: {
+        edges: [
+          {
+            cursor: string
+            node: {
+              id: string
+              title: string
+              quantityAvailable: number
+              price: {
+                amount: string
+                currencyCode: string
+              }
+            }
+          },
+        ]
+      }
+    }
+  }>
+}
+
+interface ProductListProps extends ProductProps {
+  title?: string
+  slide?: boolean
 }
 
 // const productsTest = `#graphql
@@ -125,18 +169,18 @@ interface ProductListProps {
 // `;
 
 // Import Swiper styles
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import "swiper/css/thumbs";
+import "swiper/css"
+import "swiper/css/free-mode"
+import "swiper/css/navigation"
+import "swiper/css/thumbs"
 
-import "./style.css";
+import "./style.css"
 
 // import required modules
-import clsx from "clsx";
-import Image from "next/image";
-import { Suspense } from "react";
-import { FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules";
+import clsx from "clsx"
+import Image from "next/image"
+import { Suspense } from "react"
+import { FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules"
 // interface Products {
 //   node: {
 //     id: string;
@@ -175,61 +219,16 @@ import { FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules";
 //     };
 //   };
 // }
-interface ProductProps {
-  products: Array<{
-    node: {
-      id: string;
-      title: string;
-      handle: string;
-      vendor: string;
-      tags: string[];
-      availableForSale: boolean;
-      priceRange: {
-        minVariantPrice: { amount: number };
-      };
-      images: {
-        edges: [
-          {
-            node: {
-              id: string;
-              url: string;
-              transformedSrc: string;
-              width: number | string;
-              height: number | string;
-              altText: string;
-            };
-          },
-        ];
-      };
-      variants: {
-        edges: [
-          {
-            cursor: string;
-            node: {
-              id: string;
-              title: string;
-              quantityAvailable: number;
-              price: {
-                amount: string;
-                currencyCode: string;
-              };
-            };
-          },
-        ];
-      };
-    };
-  }>;
-}
 
 const Product = ({ products }: ProductProps) => {
   return (
     <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 xl:gap-x-8">
       {products?.map((item) => {
-        const product = item && item?.node;
-        const title = product.title;
-        const handle = product.handle;
-        const image = product?.images?.edges[0].node;
-        const price = product?.priceRange?.minVariantPrice.amount;
+        const product = item && item?.node
+        const title = product.title
+        const handle = product.handle
+        const image = product?.images?.edges[0].node
+        const price = product?.priceRange?.minVariantPrice.amount
 
         return (
           <Link key={handle} href={`/products/${handle}`} legacyBehavior>
@@ -245,12 +244,8 @@ const Product = ({ products }: ProductProps) => {
                 />
               </div>
               <div className="mt-4 flex flex-col space-y-2 text-base font-medium text-gray-950">
-                <h3 className="line-clamp-2  text-lg/6 dark:text-white">
-                  {title}
-                </h3>
-                <p className="text-purple-800 dark:text-purple-500">
-                  {formatPrice(price)}
-                </p>
+                <h3 className="line-clamp-2  text-lg/6 dark:text-white">{title}</h3>
+                <p className="text-purple-800 dark:text-purple-500">{formatPrice(price)}</p>
               </div>
 
               {/* <div className="mt-10 grid grid-cols-1 gap-x-6 ga´-y-4 sm:grid-cols-1 gap-4">
@@ -268,18 +263,16 @@ const Product = ({ products }: ProductProps) => {
                         Comprar Agora
                       </Button>
                     </div> */}
-              <p className="mt-1 text-sm italic text-gray-500">
-                {product?.tags[0]}
-              </p>
+              <p className="mt-1 text-sm italic text-gray-500">{product?.tags[0]}</p>
             </a>
           </Link>
-        );
+        )
       })}
     </div>
-  );
-};
+  )
+}
 
-const Slider = ({ products }: { products: string[] }) => {
+const Slider = ({ products }: ProductProps) => {
   return (
     <Swiper
       slidesPerView={1}
@@ -304,19 +297,13 @@ const Slider = ({ products }: { products: string[] }) => {
       className="mySwiper2"
     >
       {products?.map((item: any[] | any) => {
-        const product = item || item?.node;
-        const image = product?.images?.edges[0].node;
-        const price =
-          product?.variants?.edges[0].node.price.amount ||
-          product.priceRange.minVariantPrice.amount;
+        const product = item || item?.node
+        const image = product?.images?.edges[0].node
+        const price = product?.variants?.edges[0].node.price.amount || product.priceRange.minVariantPrice.amount
 
         return (
           <SwiperSlide key={product.id}>
-            <Link
-              key={product.handle}
-              href={`/products/${product.handle}`}
-              legacyBehavior
-            >
+            <Link key={product.handle} href={`/products/${product.handle}`} legacyBehavior>
               <a className="group">
                 <div className="aspect-w-4 aspect-h-4 w-full overflow-hidden rounded-lg shadow-lg shadow-gray-950/20">
                   <Image
@@ -329,37 +316,25 @@ const Slider = ({ products }: { products: string[] }) => {
                   />
                 </div>
                 <div className="mt-4 flex flex-col space-y-2 text-base font-medium text-gray-950">
-                  <h3 className="line-clamp-2  text-lg/6 dark:text-white">
-                    {product.title}
-                  </h3>
+                  <h3 className="line-clamp-2  text-lg/6 dark:text-white">{product.title}</h3>
                   <p className="text-purple-800 dark:text-purple-500">
                     <span>Por:</span> {formatPrice(price)}
                   </p>
                 </div>
-                <p className="mt-1 text-sm italic text-gray-500">
-                  {product.tags[0]}
-                </p>
+                <p className="mt-1 text-sm italic text-gray-500">{product.tags[0]}</p>
               </a>
             </Link>
           </SwiperSlide>
-        );
+        )
       })}
     </Swiper>
-  );
-};
+  )
+}
 
-export async function ProductList({
-  products,
-  title,
-  slide,
-}: ProductListProps) {
+export async function ProductList({ products, title, slide }: ProductListProps) {
   return (
     <>
-      {title && (
-        <h2 className="my-8 text-center text-xl font-semibold uppercase text-gray-900 dark:text-white">
-          {title}
-        </h2>
-      )}
+      {title && <h2 className="my-8 text-center text-xl font-semibold uppercase text-gray-900 dark:text-white">{title}</h2>}
 
       {!slide ? (
         <Suspense fallback={<div>Loading...</div>}>
@@ -371,5 +346,5 @@ export async function ProductList({
         </Suspense>
       )}
     </>
-  );
+  )
 }
