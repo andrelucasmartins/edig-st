@@ -39,6 +39,6 @@ export default async function PoliciesPage({
   )
 }
 
-export async function generateStaticParams({ params }: { params: { handle: string } }) {
-  return params.handle ? [{ handle: params.handle }] : []
-}
+// export async function generateStaticParams({ params }: { params: { handle: string } }) {
+//   return params.handle ? [{ handle: params.handle }] : []
+// }

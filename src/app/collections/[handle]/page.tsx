@@ -249,6 +249,6 @@ export default async function PageCollections({
   )
 }
 
-export async function generateStaticParams({ params }: { params: { handle: string } }) {
-  return params.handle ? [{ handle: params.handle }] : []
-}
+// export async function generateStaticParams({ params }: { params: { handle: string } }) {
+//   return params.handle ? [{ handle: params.handle }] : []
+// }

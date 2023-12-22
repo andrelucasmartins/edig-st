@@ -1,7 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // output: process.env.NODE_ENV === "production" ? "export" : undefined,
-  // distDir: "dist",
+  output: process.env.NODE_ENV === "production" ? "export" : undefined,
+  distDir: "dist",
   reactStrictMode: true,
   images: {
     unoptimized: true,

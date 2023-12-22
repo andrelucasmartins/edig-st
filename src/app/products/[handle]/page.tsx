@@ -354,6 +354,6 @@ export default async function ProductsPage({ params }: { params: { handle: strin
   )
 }
 
-export async function generateStaticParams({ params }: { params: { handle: string } }) {
-  return params.handle ? [{ handle: params.handle }] : []
-}
+// export async function generateStaticParams({ params }: { params: { handle: string } }) {
+//   return params.handle ? [{ handle: params.handle }] : []
+// }

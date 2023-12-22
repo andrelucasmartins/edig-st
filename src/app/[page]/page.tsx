@@ -42,6 +42,6 @@ export default async function Page({ params }: { params: { page: string } }) {
   )
 }
 
-export async function generateStaticParams({ params }: { params: { page: string } }) {
-  return params.page ? [{ page: params.page }] : []
-}
+// export async function generateStaticParams({ params }: { params: { page: string } }) {
+//   return params.page ? [{ page: params.page }] : []
+// }

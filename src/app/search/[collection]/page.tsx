@@ -48,6 +48,6 @@ export default async function CategoryPage({
   )
 }
 
-export async function generateStaticParams({ params }: { params: { collection: string } }) {
-  return params.collection ? [{ collection: params.collection }] : []
-}
+// export async function generateStaticParams({ params }: { params: { collection: string } }) {
+//   return params.collection ? [{ collection: params.collection }] : []
+// }
