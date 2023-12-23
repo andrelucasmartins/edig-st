@@ -1,7 +1,7 @@
 import { BannerHome } from "@/components/banner-home"
+import { BestSelling } from "@/components/best-selling"
 import { Carousel } from "@/components/carousel"
 import { CategoriesTop } from "@/components/categories-top"
-import { ThreeItemGrid } from "@/components/grid/three-items"
 import type { Metadata } from "next"
 import { Suspense } from "react"
 
@@ -21,7 +21,7 @@ export default async function Home() {
         <CategoriesTop />
       </Suspense>
       <Suspense fallback={<div>Loading...</div>}>
-        <ThreeItemGrid />
+        <BestSelling />
       </Suspense>
       <Suspense fallback={<div>Loading...</div>}>
         <Carousel collection="hidden-homepage-carousel-main" />

@@ -1,22 +1,21 @@
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
-import { CookiesConsent } from "@/components/cookies-consent";
-import Navbar from "@/components/layout/navbar";
-import { Heart, Package2, ShoppingCart } from "lucide-react";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import Script from "next/script";
-import { ReactNode, Suspense } from "react";
-import "./globals.css";
-import { Providers } from "./providers";
+import { Footer } from "@/components/Footer"
+import { CookiesConsent } from "@/components/cookies-consent"
+import Navbar from "@/components/layout/navbar"
+import { Heart, Package2, ShoppingCart } from "lucide-react"
+import type { Metadata } from "next"
+import { Inter } from "next/font/google"
+import Script from "next/script"
+import { ReactNode, Suspense } from "react"
+import "./globals.css"
+import { Providers } from "./providers"
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://store.aedigi.com.br/"),
   title: "AE Digi Store",
   description: "O melhor lugar para você fazer suas compras",
-};
+}
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -44,7 +43,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <html lang="en">
         <body className={inter.className}>
           <Providers>
-            <div className="bg-gray-900">
+            <div className="bg-purple-800">
               <p className="mx-auto  flex  max-w-7xl items-center justify-between px-4 py-2 text-sm font-medium text-white sm:px-6 lg:px-8">
                 <span className="hidden select-none items-center justify-between gap-2  sm:flex">
                   <ShoppingCart /> Trocas e Devoluções em até 7 dias
@@ -58,7 +57,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               </p>
             </div>
             <Navbar />
-            <Header />
+            {/* <Header /> */}
             <Suspense>
               <main>{children}</main>
             </Suspense>
@@ -68,5 +67,5 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </body>
       </html>
     </>
-  );
+  )
 }

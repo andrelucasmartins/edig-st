@@ -1,3 +1,5 @@
+"use server"
+
 import { HIDDEN_PRODUCT_TAG, SHOPIFY_GRAPHQL_API_ENDPOINT, TAGS } from "@/lib/constants"
 import { isShopifyError } from "@/lib/type-guards"
 import { revalidateTag } from "next/cache"
@@ -123,23 +125,31 @@ const reshapeCart = (cart: ShopifyCart): Cart => {
   }
 }
 
-const reshapeCollection = (collection: ShopifyCollection): Collection | undefined => {
+const reshapeCollection = (collection: ShopifyCollection, pathname = "search"): Collection | undefined => {
   if (!collection) {
     return undefined
   }
 
   return {
     ...collection,
-    path: `/search/${collection.handle}`,
+    path: `/${pathname}/${collection.handle}`,
   }
 }
 
-const reshapeCollections = (collections: ShopifyCollection[]) => {
+const reshapeCollections = (collections: ShopifyCollection[], pathname = "") => {
   const reshapedCollections = []
 
   for (const collection of collections) {
-    if (collection) {
+    if (collection && pathname === "") {
       const reshapedCollection = reshapeCollection(collection)
+
+      if (reshapedCollection) {
+        reshapedCollections.push(reshapedCollection)
+      }
+    }
+
+    if (collection && pathname !== "") {
+      const reshapedCollection = reshapeCollection(collection, pathname)
 
       if (reshapedCollection) {
         reshapedCollections.push(reshapedCollection)
@@ -352,6 +362,32 @@ export async function getCollections(): Promise<Collection[]> {
     // Filter out the `hidden` collections.
     // Collections that start with `hidden-*` need to be hidden on the search page.
     ...reshapeCollections(shopifyCollections).filter((collection) => !collection.handle.startsWith("hidden")),
+  ]
+
+  return collections
+}
+
+export async function getCollectionsMenu(): Promise<Collection[]> {
+  const res = await shopifyFetch<ShopifyCollectionsOperation>({
+    query: getCollectionsQuery,
+    tags: [TAGS.collections],
+  })
+  const shopifyCollections = removeEdgesAndNodes(res.body?.data?.collections)
+  const collections = [
+    {
+      handle: "",
+      title: "Todas",
+      description: "Todos os produtos",
+      seo: {
+        title: "Todas",
+        description: "Todos os produtos",
+      },
+      path: "/search",
+      updatedAt: new Date().toISOString(),
+    },
+    // Filter out the `hidden` collections.
+    // Collections that start with `hidden-*` need to be hidden on the search page.
+    ...reshapeCollections(shopifyCollections, "collections").filter((collection) => !collection.handle.startsWith("hidden")),
   ]
 
   return collections
