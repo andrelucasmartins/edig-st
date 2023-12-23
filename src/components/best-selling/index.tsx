@@ -1,3 +1,4 @@
+import Price from "@/components/price"
 import { storefront } from "@/utils/storefront"
 import Image from "next/image"
 import Link from "next/link"
@@ -85,7 +86,12 @@ export const BestSelling = async () => {
                 </div>
                 <figcaption className="flex flex-col gap-2">
                   <h1>{products?.[0]?.node?.title}</h1>
-                  <div className="text-xl text-gray-300">{products?.[0]?.node?.featuredImage.altText}</div>
+                  <div className="text-xl text-gray-500">
+                    <Price
+                      amount={String(products?.[0]?.node.priceRange.minVariantPrice.amount)}
+                      currencyCode={products?.[0]?.node.priceRange.minVariantPrice.currencyCode}
+                    />
+                  </div>
                 </figcaption>
               </figure>
             </Link>
@@ -112,8 +118,10 @@ export const BestSelling = async () => {
                       />
                     </div>
                     <figcaption>
-                      <h2 className="line-clamp-1 text-xs">{title}</h2>
-                      <div className="text-md text-gray-500">R$ {priceRange.minVariantPrice.amount}</div>
+                      <h2 className="line-clamp-2 text-xs">{title}</h2>
+                      <div className="text-md text-gray-500">
+                        <Price amount={String(priceRange.minVariantPrice.amount)} currencyCode={priceRange.minVariantPrice.currencyCode} />
+                      </div>
                     </figcaption>
                   </figure>
                 </Link>
