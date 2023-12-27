@@ -122,6 +122,7 @@ import { ProductList } from "@/components/ProductList"
 // import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 // import { sorting } from "@/lib/constants"
 import { Divider } from "@nextui-org/react"
+
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu"
 import { ActionButtonNext, ActionButtonPrev } from "../ActionButton"
 import { getCollectionData } from "../actions"
@@ -134,6 +135,7 @@ export default async function PageCollections({
   searchParams: { [key: string]: string | string[] }
 }) {
   // const { pageCount } = await getPageCount();
+  console.log(searchParams)
 
   const { data } = await getCollectionData(params.handle, searchParams.page)
 
@@ -158,6 +160,8 @@ export default async function PageCollections({
   //   revalidatePath(`/collections/${params.handle}`)
   // }
 
+  console.log(pagination)
+
   return (
     <>
       <div className="mt-4 min-h-min w-full">
@@ -181,7 +185,9 @@ export default async function PageCollections({
         </figure>
         <p className="sr-only">{collection?.description}</p>
       </div>
-      <h1 className="my-2 text-xl font-bold text-purple-900 dark:text-purple-500">{collection?.title}</h1>
+      <h1 className="my-2 text-xl font-bold text-purple-900 dark:text-purple-500">
+        {collection?.title}
+      </h1>
       <Divider className="my-4 h-[1px] bg-gray-300" />
       <Breadcrumb currentPage={collection?.title} back />
       {/* <form className="my-6 flex items-center justify-between">
@@ -217,8 +223,8 @@ export default async function PageCollections({
             {/* <div className="flex self-center">
               {pageCount ?? pageCount} / {Math.ceil(productsCount / 10)}
             </div> */}
+
             <ActionButtonNext
-              link={`/collections/${params.handle}?page=${pagination?.endCursor}`}
               cursor={pagination?.endCursor}
               disabled={!pagination?.hasNextPage}
             >
@@ -244,7 +250,11 @@ export default async function PageCollections({
           </div>
         </div>
       </div>
-      <ProductList products={productRecommendations} title="Novidades que chegaram pra você" slide />
+      <ProductList
+        products={productRecommendations}
+        title="Novidades que chegaram pra você"
+        slide
+      />
     </>
   )
 }

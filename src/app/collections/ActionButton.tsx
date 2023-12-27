@@ -1,68 +1,98 @@
-"use client";
+"use client"
 
-import Link from "next/link";
+import Link from "next/link"
 
-import { Button } from "@nextui-org/react";
+import { Button } from "@/components/ui/button"
 
-import { cn } from "@/lib/utils2";
-import { ReactNode, useTransition } from "react";
-import { pageNextCount, pagePrevCount } from "./actions";
+import { cn } from "@/lib/utils2"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { ReactNode, useCallback, useTransition } from "react"
+import { pagePrevCount } from "./actions"
 
 interface ActionButtonProps {
-  children: ReactNode;
-  link: string;
-  cursor: string;
-  disabled: boolean;
+  children: ReactNode
+  link?: string
+  cursor: string
+  disabled: boolean
 }
 
 export const ActionButtonNext = ({
   children,
-  link,
   cursor,
   disabled,
   ...props
 }: ActionButtonProps) => {
-  const [, startTransition] = useTransition();
+  // const [, startTransition] = useTransition();
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()!
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams)
+      params.set(name, value)
+
+      return params.toString()
+    },
+    [searchParams],
+  )
 
   return (
     <Button
       {...props}
-      as={Link}
-      href={link}
-      isDisabled={disabled}
-      onClick={() =>
-        startTransition(async () => void (await pageNextCount(cursor)))
-      }
+      disabled={disabled}
+      asChild
+      size="icon"
+      // onClick={() =>
+      //   startTransition(async () => void (await pageNextCount(cursor)))
+      // }
+      onClick={() => {
+        console.log(cursor)
+        router.push(pathname + "?" + createQueryString("page", cursor))
+      }}
       color="primary"
-      variant="solid"
       className={cn("rounded p-2 hover:opacity-80", disabled && "opacity-50")}
     >
-      {children}
+      <Link href={pathname + "?" + createQueryString("page", cursor)}>
+        {children}
+      </Link>
     </Button>
-  );
-};
+  )
+}
 export const ActionButtonPrev = ({
   children,
   cursor,
-  link,
   disabled,
   ...props
 }: ActionButtonProps) => {
-  const [, startTransition] = useTransition();
+  const [, startTransition] = useTransition()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()!
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams)
+      params.set(name, value)
+
+      return params.toString()
+    },
+    [searchParams],
+  )
+
   return (
     <Button
       {...props}
-      href={link}
-      isDisabled={disabled}
-      as={Link}
+      disabled={disabled}
       color="primary"
-      variant="solid"
+      size="icon"
       className={cn("rounded p-2 hover:opacity-80", disabled && "opacity-50")}
       onClick={() =>
         startTransition(async () => void (await pagePrevCount(cursor)))
       }
     >
-      {children}
+      <Link href={pathname + "?" + createQueryString("page", cursor)}>
+        {children}
+      </Link>
     </Button>
-  );
-};
+  )
+}

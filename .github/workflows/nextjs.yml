@@ -77,11 +77,11 @@ jobs:
           path: |
             .next/cache
 
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/pnpm-lock.yaml') }} ${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/pnpm-lock.yaml') }} ${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
 
           # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
-            ${{ runner.os }}-pnpm-store-${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/pnpm-lock.yaml') }}-
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock', '**/pnpm-lock.yaml') }}-
       - name: Use variables
         run: echo "NEXT_PUBLIC_API_URL=${{ secrets.SITE_NAME }}" >> $GITHUB_ENV
         env:
