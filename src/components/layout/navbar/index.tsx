@@ -20,9 +20,19 @@ export default async function Navbar() {
       </div>
       <div className="flex w-full items-center">
         <div className="flex w-full ">
-          <Link href="/" className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6">
-            <Image src="/logo.png" alt="logo - AE Digi Store" width={100} height={100} />
-            <div className="sr-only ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">{SITE_NAME}</div>
+          <Link
+            href="/"
+            className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
+          >
+            <Image
+              src="/logo.png"
+              alt="logo - AE Digi Store"
+              width={100}
+              height={100}
+            />
+            <div className="sr-only ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">
+              {SITE_NAME}
+            </div>
           </Link>
           {menu.length ? (
             <ul className="hidden gap-6 text-sm md:flex md:items-center">
