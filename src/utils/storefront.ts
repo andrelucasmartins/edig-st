@@ -1,6 +1,7 @@
 export interface ShopifyFetchProps {
   query: string
   variables: object
+  cache?: RequestCache
 }
 
 export async function storefront(query: string, variables = {}) {
@@ -15,7 +16,7 @@ export async function storefront(query: string, variables = {}) {
         "X-Shopify-Storefront-Access-Token": key,
       },
       body: { query, variables } && JSON.stringify({ query, variables }),
-      cache: "force-cache",
+      cache: "no-store",
     })
 
     return result.json()

@@ -244,8 +244,12 @@ const Product = ({ products }: ProductProps) => {
                 />
               </div>
               <div className="mt-4 flex flex-col space-y-2 text-base font-medium text-gray-950">
-                <h3 className="line-clamp-2  text-lg/6 dark:text-white">{title}</h3>
-                <p className="text-purple-800 dark:text-purple-500">{formatPrice(price)}</p>
+                <h3 className="text-md  line-clamp-2 dark:text-white">
+                  {title}
+                </h3>
+                <p className="text-purple-800 dark:text-purple-500">
+                  {formatPrice(price)}
+                </p>
               </div>
 
               {/* <div className="mt-10 grid grid-cols-1 gap-x-6 ga´-y-4 sm:grid-cols-1 gap-4">
@@ -263,7 +267,9 @@ const Product = ({ products }: ProductProps) => {
                         Comprar Agora
                       </Button>
                     </div> */}
-              <p className="mt-1 text-sm italic text-gray-500">{product?.tags[0]}</p>
+              <p className="mt-1 text-sm italic text-gray-500">
+                {product?.tags[0]}
+              </p>
             </a>
           </Link>
         )
@@ -299,11 +305,17 @@ const Slider = ({ products }: ProductProps) => {
       {products?.map((item: any[] | any) => {
         const product = item || item?.node
         const image = product?.images?.edges[0].node
-        const price = product?.variants?.edges[0].node.price.amount || product.priceRange.minVariantPrice.amount
+        const price =
+          product?.variants?.edges[0].node.price.amount ||
+          product.priceRange.minVariantPrice.amount
 
         return (
           <SwiperSlide key={product.id}>
-            <Link key={product.handle} href={`/products/${product.handle}`} legacyBehavior>
+            <Link
+              key={product.handle}
+              href={`/products/${product.handle}`}
+              legacyBehavior
+            >
               <a className="group">
                 <div className="aspect-w-4 aspect-h-4 w-full overflow-hidden rounded-lg shadow-lg shadow-gray-950/20">
                   <Image
@@ -316,12 +328,16 @@ const Slider = ({ products }: ProductProps) => {
                   />
                 </div>
                 <div className="mt-4 flex flex-col space-y-2 text-base font-medium text-gray-950">
-                  <h3 className="line-clamp-2  text-lg/6 dark:text-white">{product.title}</h3>
+                  <h3 className="line-clamp-2  text-lg/6 dark:text-white">
+                    {product.title}
+                  </h3>
                   <p className="text-purple-800 dark:text-purple-500">
                     <span>Por:</span> {formatPrice(price)}
                   </p>
                 </div>
-                <p className="mt-1 text-sm italic text-gray-500">{product.tags[0]}</p>
+                <p className="mt-1 text-sm italic text-gray-500">
+                  {product.tags[0]}
+                </p>
               </a>
             </Link>
           </SwiperSlide>
@@ -331,10 +347,18 @@ const Slider = ({ products }: ProductProps) => {
   )
 }
 
-export async function ProductList({ products, title, slide }: ProductListProps) {
+export async function ProductList({
+  products,
+  title,
+  slide,
+}: ProductListProps) {
   return (
     <>
-      {title && <h2 className="my-8 text-center text-xl font-semibold uppercase text-gray-900 dark:text-white">{title}</h2>}
+      {title && (
+        <h2 className="my-8 text-center text-xl font-semibold uppercase text-gray-900 dark:text-white">
+          {title}
+        </h2>
+      )}
 
       {!slide ? (
         <Suspense fallback={<div>Loading...</div>}>

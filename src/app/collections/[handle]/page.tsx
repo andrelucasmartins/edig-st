@@ -135,7 +135,6 @@ export default async function PageCollections({
   searchParams: { [key: string]: string | string[] }
 }) {
   // const { pageCount } = await getPageCount();
-  console.log(searchParams)
 
   const { data } = await getCollectionData(params.handle, searchParams.page)
 
@@ -159,8 +158,6 @@ export default async function PageCollections({
 
   //   revalidatePath(`/collections/${params.handle}`)
   // }
-
-  console.log(pagination)
 
   return (
     <>
