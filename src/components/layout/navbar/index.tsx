@@ -49,7 +49,7 @@ export default async function Navbar() {
             </ul>
           ) : null}
         </div>
-        <div className="hidden justify-center md:flex md:w-1/3">
+        <div className="mr-2 hidden justify-center md:flex md:w-4">
           <Search />
         </div>
         <div className="flex justify-end">

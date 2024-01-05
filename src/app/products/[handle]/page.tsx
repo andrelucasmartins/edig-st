@@ -7,14 +7,14 @@ import { format } from "date-fns"
 
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-// export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic"
 
-// type Props = {
-//   params: { handle: string };
-//   searchParams: { [key: string]: string | string[] | undefined };
-// };
+type Props = {
+  params: { handle: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
 
-export async function generateMetadata({ params }: { params: { handle: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await getProduct(params.handle)
 
   if (!product) return notFound()
@@ -55,7 +55,13 @@ import Price from "@/components/price"
 import { ProductReviews } from "@/components/product-reviews"
 import { VariantSelector } from "@/components/product/variant-selector"
 import { ThumbsGallery } from "@/components/thumbs-gallery"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { PoliciesQuery } from "@/lib/shopify/queries/policies"
 import { Image } from "@/lib/shopify/types"
 import { Suspense } from "react"
 
@@ -225,8 +231,19 @@ import { Suspense } from "react"
 //   };
 // }
 
-export default async function ProductsPage({ params }: { params: { handle: string }; searchParams: { [key: string]: string | string[] } }) {
+export default async function ProductsPage({
+  params,
+}: {
+  params: { handle: string }
+  searchParams: { [key: string]: string | string[] }
+}) {
   const product = await getProduct(params.handle)
+
+  const shippingPolicyData = await storefront(PoliciesQuery, {
+    handle: "politica-de-trocas-e-devolucao",
+  })
+
+  const shippingPolicy = shippingPolicyData?.data?.page
 
   if (!product) return notFound()
 
@@ -244,7 +261,9 @@ export default async function ProductsPage({ params }: { params: { handle: strin
     image: product.featuredImage.url,
     offers: {
       "@type": "AggregateOffer",
-      availability: product.availableForSale ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      availability: product.availableForSale
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
       priceCurrency: product.priceRange.minVariantPrice.currencyCode,
       highPrice: product.priceRange.maxVariantPrice.amount,
       lowPrice: product.priceRange.minVariantPrice.amount,
@@ -279,7 +298,9 @@ export default async function ProductsPage({ params }: { params: { handle: strin
           <div className="mx-auto mt-14 max-w-2xl sm:mt-16 lg:col-span-3 lg:mt-0 lg:max-w-none">
             <div className="flex flex-col-reverse">
               <div>
-                <h1 className="text-2x1 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-3xl">{product.title}</h1>
+                <h1 className="text-2x1 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-3xl">
+                  {product.title}
+                </h1>
 
                 <h2 id="information-heading" className="sr-only">
                   Product information
@@ -287,20 +308,26 @@ export default async function ProductsPage({ params }: { params: { handle: strin
 
                 <p className="mt-2 text-sm text-gray-500">
                   Version {product.tags[0]} &middot; Updated{" "}
-                  <time dateTime={product.updatedAt}>{format(new Date(product.updatedAt), "dd MMM yyyy")}</time>
+                  <time dateTime={product.updatedAt}>
+                    {format(new Date(product.updatedAt), "dd MMM yyyy")}
+                  </time>
                 </p>
 
                 <div className="mt-4 flex flex-col">
                   <small className="text-sm text-gray-500 line-through dark:text-gray-500">
                     <Price
                       amount={product.priceRange.maxVariantPrice.amount}
-                      currencyCode={product.priceRange.maxVariantPrice.currencyCode}
+                      currencyCode={
+                        product.priceRange.maxVariantPrice.currencyCode
+                      }
                     />
                   </small>
                   <h2 className="text-2x1 font-extrabold tracking-tight text-gray-900 dark:text-purple-500 sm:text-3xl">
                     <Price
                       amount={product.priceRange.minVariantPrice.amount}
-                      currencyCode={product.priceRange.minVariantPrice.currencyCode}
+                      currencyCode={
+                        product.priceRange.minVariantPrice.currencyCode
+                      }
                     />
                   </h2>
                   {/* <span className="text-sm text-gray-500 dark:text-gray-50">
@@ -310,13 +337,19 @@ export default async function ProductsPage({ params }: { params: { handle: strin
                     )}{" "}
                     sem juros no cartão
                   </span> */}
-                  <VariantSelector options={product.options} variants={product.variants} />
+                  <VariantSelector
+                    options={product.options}
+                    variants={product.variants}
+                  />
                 </div>
               </div>
             </div>
 
             <div className="ga´-y-4 mt-10 grid grid-cols-1 gap-4 gap-x-6 sm:grid-cols-1">
-              <AddToCart variants={product.variants} availableForSale={product.availableForSale} />
+              <AddToCart
+                variants={product.variants}
+                availableForSale={product.availableForSale}
+              />
               {/* <Button
                 className="text-green-500 border-2 border-green-500 hover:border-green-500 hover:bg-green-500 hover:text-white py-6 uppercase"
                 size={"lg"}
@@ -324,7 +357,10 @@ export default async function ProductsPage({ params }: { params: { handle: strin
               >
                 Adicionar ao carrinho
               </Button> */}
-              <Button className="bg-green-500 py-6 uppercase hover:bg-green-600 hover:text-white" size={"lg"}>
+              <Button
+                className="bg-green-500 py-6 uppercase hover:bg-green-600 hover:text-white"
+                size={"lg"}
+              >
                 Comprar Agora
               </Button>
             </div>
@@ -340,14 +376,42 @@ export default async function ProductsPage({ params }: { params: { handle: strin
                   />
                 </AccordionContent>
               </AccordionItem>
+              {product?.metafields[0]?.value !== undefined && (
+                <AccordionItem value="item-2">
+                  <AccordionTrigger>Avaliações</AccordionTrigger>
+                  <AccordionContent>
+                    <ProductReviews
+                      productIdx={product?.metafields[0]?.value}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+              )}
+              <AccordionItem value="item-3">
+                <AccordionTrigger>{shippingPolicy?.title}</AccordionTrigger>
+                <AccordionContent>
+                  {shippingPolicy?.body && (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: shippingPolicy?.body,
+                      }}
+                    />
+                  )}
+                </AccordionContent>
+              </AccordionItem>
             </Accordion>
           </div>
         </div>
-        <ProductReviews productId={product.id} />
 
-        <ProductList products={productRecommendations} title="Novidades que chegaram pra você" slide />
+        <ProductList
+          products={productRecommendations}
+          title="Novidades que chegaram pra você"
+          slide
+        />
         <Suspense fallback={<div>Loading...</div>}>
-          <Carousel title="Mais vendidos" collection="hidden-homepage-carousel-main" />
+          <Carousel
+            title="Mais vendidos"
+            collection="hidden-homepage-carousel-main"
+          />
         </Suspense>
       </section>
     </>

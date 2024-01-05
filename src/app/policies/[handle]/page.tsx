@@ -1,18 +1,9 @@
 import { Breadcrumb } from "@/components/ui/breadcrumb"
+import { PoliciesQuery } from "@/lib/shopify/queries/policies"
 import { storefront } from "@/utils/storefront"
 import { Suspense } from "react"
 
-const PoliciesQuery = `#graphql
-query getPageByHandle($handle: String!) {
-	page(handle: $handle) {
-		id
-		title
-    body # The description of the page, complete with HTML formatting.
-	}
-}
-`
-
-// export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic"
 
 export default async function PoliciesPage({
   params,

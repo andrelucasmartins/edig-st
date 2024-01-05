@@ -119,13 +119,23 @@ import { Breadcrumb } from "@/components/ui/breadcrumb"
 
 import { getProductRecommendations } from "@/app/data/get-product-recommendations"
 import { ProductList } from "@/components/ProductList"
-// import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
-// import { sorting } from "@/lib/constants"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import { sorting } from "@/lib/constants"
 import { Divider } from "@nextui-org/react"
 
+import { FeaturedProducts } from "@/components/featured-products"
+import { revalidatePath } from "next/cache"
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu"
 import { ActionButtonNext, ActionButtonPrev } from "../ActionButton"
-import { getCollectionData } from "../actions"
+import { filterType, getCollectionData } from "../actions"
 
 export default async function PageCollections({
   params,
@@ -153,11 +163,12 @@ export default async function PageCollections({
 
   const productsCount = collection?.products.filters[0]?.values[0]?.count
 
-  // async function actionHandleSelect(e: any) {
-  //   await filterType(e)
+  async function actionHandleSelect(e: any) {
+    "use server"
+    await filterType(e)
 
-  //   revalidatePath(`/collections/${params.handle}`)
-  // }
+    revalidatePath(`/collections/${params.handle}`)
+  }
 
   return (
     <>
@@ -187,7 +198,7 @@ export default async function PageCollections({
       </h1>
       <Divider className="my-4 h-[1px] bg-gray-300" />
       <Breadcrumb currentPage={collection?.title} back />
-      {/* <form className="my-6 flex items-center justify-between">
+      <form className="my-6 flex items-center justify-between">
         <Select onValueChange={actionHandleSelect}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Filtrar por" />
@@ -205,10 +216,10 @@ export default async function PageCollections({
           </SelectContent>
         </Select>{" "}
         <span>{productsCount} Item(s)</span>
-      </form> */}
+      </form>
       <ProductList products={products} />
       {productsCount && (
-        <div className="flex items-end justify-center gap-4">
+        <div className="mt-2 flex items-end justify-center gap-4">
           <form className="flex justify-center gap-2">
             <ActionButtonPrev
               link={`/collections/${params.handle}?page=${pagination?.startCursor}`}
@@ -222,6 +233,7 @@ export default async function PageCollections({
             </div> */}
 
             <ActionButtonNext
+              link={`/collections/${params.handle}?page=${pagination?.endCursor}`}
               cursor={pagination?.endCursor}
               disabled={!pagination?.hasNextPage}
             >
@@ -247,6 +259,7 @@ export default async function PageCollections({
           </div>
         </div>
       </div>
+      <FeaturedProducts collection={params.handle} />
       <ProductList
         products={productRecommendations}
         title="Novidades que chegaram pra você"

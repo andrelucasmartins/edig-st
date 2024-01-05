@@ -15,7 +15,7 @@ interface ProductProps {
       tags: string[]
       availableForSale: boolean
       priceRange: {
-        minVariantPrice: { amount: number }
+        minVariantPrice: { amount: number; currencyCode: string }
       }
       images: {
         edges: [
@@ -177,7 +177,7 @@ import "swiper/css/thumbs"
 import "./style.css"
 
 // import required modules
-import clsx from "clsx"
+import Price from "@/components/price"
 import Image from "next/image"
 import { Suspense } from "react"
 import { FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules"
@@ -228,49 +228,35 @@ const Product = ({ products }: ProductProps) => {
         const title = product.title
         const handle = product.handle
         const image = product?.images?.edges[0].node
-        const price = product?.priceRange?.minVariantPrice.amount
 
         return (
-          <Link key={handle} href={`/products/${handle}`} legacyBehavior>
-            <a className="group">
-              <div className="aspect-w-4 aspect-h-4 w-full overflow-hidden rounded-lg shadow-lg shadow-gray-950/20">
+          <Link key={handle} href={`/products/${handle}`}>
+            <figure className="space-y-4 whitespace-pre-wrap">
+              <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 p-2">
                 <Image
                   src={image?.transformedSrc || image?.url}
                   alt={image?.altText}
-                  width={100}
-                  height={100}
-                  sizes="(100%, auto)"
-                  className={clsx("h-full w-full group-hover:opacity-75")}
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  quality="90"
+                  width={1000}
+                  height={1000}
+                  className="aspect-h-1 aspect-w-1 rounded-lg object-contain mix-blend-multiply"
                 />
               </div>
-              <div className="mt-4 flex flex-col space-y-2 text-base font-medium text-gray-950">
-                <h3 className="text-md  line-clamp-2 dark:text-white">
-                  {title}
-                </h3>
-                <p className="text-purple-800 dark:text-purple-500">
-                  {formatPrice(price)}
-                </p>
-              </div>
-
-              {/* <div className="mt-10 grid grid-cols-1 gap-x-6 ga´-y-4 sm:grid-cols-1 gap-4">
-                      <Button
-                        className="text-green-500 border-2 border-green-500 hover:border-green-500 hover:bg-green-500 hover:text-white py-6 uppercase"
-                        size={"sm"}
-                        variant={"outline"}
-                      >
-                        Adicionar ao carrinho
-                      </Button>
-                      <Button
-                        className="bg-green-500 hover:bg-green-600 hover:text-white py-6 uppercase"
-                        size={"lg"}
-                      >
-                        Comprar Agora
-                      </Button>
-                    </div> */}
-              <p className="mt-1 text-sm italic text-gray-500">
-                {product?.tags[0]}
-              </p>
-            </a>
+              <figcaption className="space-y-2">
+                <h2 className="line-clamp-2 text-xs">{title}</h2>
+                <div className="text-md text-gray-500">
+                  <Price
+                    amount={String(
+                      product?.priceRange?.minVariantPrice?.amount,
+                    )}
+                    currencyCode={
+                      product?.priceRange?.minVariantPrice?.currencyCode
+                    }
+                  />
+                </div>
+              </figcaption>
+            </figure>
           </Link>
         )
       })}

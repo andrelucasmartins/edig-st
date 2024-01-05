@@ -88,7 +88,7 @@ export const FeaturedProducts = async ({
     <div className="mx-auto my-6 max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="mb-6 flex flex-col">
         <div className="relative my-4 flex select-none flex-col items-center justify-center">
-          <div className="absolute inset-0 -z-10 mx-auto flex items-center justify-center text-center text-6xl font-bold uppercase text-gray-50 md:text-9xl">
+          <div className="absolute inset-0 -z-10 mx-auto flex items-center justify-center text-center text-6xl font-bold uppercase text-gray-200 md:text-9xl">
             {collectionData?.title}
           </div>
           <h1 className="text-lg font-bold md:text-4xl ">Produtos</h1>

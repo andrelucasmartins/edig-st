@@ -31,7 +31,9 @@ describe("<Footer>", () => {
     const spanElementValue = spanElement?.textContent
 
     expect(screen.getByTestId("info-business")).toBeVisible()
-    expect(spanElementValue).toBe("© 2023 AE Digi Solutions Inc. Todos os direitos reservados.")
+    expect(spanElementValue).toBe(
+      "© 2024 AE Digi Solutions Inc. Todos os direitos reservados.",
+    )
   })
 
   it("Should render buniness information", () => {
@@ -40,6 +42,8 @@ describe("<Footer>", () => {
     const businessInfoValue = businessInfo?.textContent
 
     expect(businessInfo).toBeInTheDocument()
-    expect(businessInfoValue).toBe("© 2023 AE Digi Solutions Inc. Todos os direitos reservados.")
+    expect(businessInfoValue).toBe(
+      "© 2024 AE Digi Solutions Inc. Todos os direitos reservados.",
+    )
   })
 })

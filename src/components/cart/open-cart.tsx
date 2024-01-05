@@ -1,12 +1,12 @@
-import { ShoppingBagIcon } from "@heroicons/react/24/outline";
-import clsx from "clsx";
+import clsx from "clsx"
+import { HiOutlineShoppingBag } from "react-icons/hi2"
 
 export default function OpenCart({
   className,
   quantity,
 }: {
-  className?: string;
-  quantity?: number;
+  className?: string
+  quantity?: number
 }) {
   return (
     <div className="relative flex h-11 w-11 items-center justify-center rounded-md text-black transition-colors  dark:text-white">
@@ -15,7 +15,7 @@ export default function OpenCart({
         <a href="#" className="p-2 text-gray-400 hover:text-gray-500">
         </a>
       </div> */}
-      <ShoppingBagIcon
+      <HiOutlineShoppingBag
         aria-hidden="true"
         className={clsx(
           "h-4 transition-all ease-in-out hover:scale-110 ",
@@ -31,5 +31,5 @@ export default function OpenCart({
         </div>
       ) : null}
     </div>
-  );
+  )
 }

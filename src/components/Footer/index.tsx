@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { FaLock, FaShieldHalved, FaWhatsapp } from "react-icons/fa6";
+import Link from "next/link"
+import { FaLock, FaShieldHalved, FaWhatsapp } from "react-icons/fa6"
 
 // const { COMPANY_NAME, SITE_NAME } = process.env;
 
@@ -13,6 +13,10 @@ const LINKS_UTIS = [
     url: "termos-de-servico",
   },
   {
+    name: "Política de frete",
+    url: "politica-de-envio-e-entrega",
+  },
+  {
     name: "Política de Privacidade",
     url: "politica-de-privacidade",
   },
@@ -24,7 +28,7 @@ const LINKS_UTIS = [
     name: "Política de Trocas e Devolução ",
     url: "politica-de-trocas-e-devolucao",
   },
-];
+]
 
 export const Footer = () => {
   // const copyrightName = COMPANY_NAME || SITE_NAME || "";
@@ -261,5 +265,5 @@ export const Footer = () => {
         </div>
       </div>
     </footer>
-  );
-};
+  )
+}

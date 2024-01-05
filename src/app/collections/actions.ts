@@ -1,8 +1,14 @@
+"use server"
 import { sorting } from "@/lib/constants"
 import { storefront } from "@/utils/storefront"
 
 const SingleProductQueryNextPage = /* GraphQL */ `
-  query getProductsOfProductTypeInCollection($handle: String!, $afterPage: String, $sortKey: ProductCollectionSortKeys, $reverse: Boolean) {
+  query getProductsOfProductTypeInCollection(
+    $handle: String!
+    $afterPage: String
+    $sortKey: ProductCollectionSortKeys
+    $reverse: Boolean
+  ) {
     shop {
       name
     }
@@ -24,7 +30,12 @@ const SingleProductQueryNextPage = /* GraphQL */ `
         }
       }
 
-      products(first: 10, after: $afterPage, sortKey: $sortKey, reverse: $reverse) {
+      products(
+        first: 10
+        after: $afterPage
+        sortKey: $sortKey
+        reverse: $reverse
+      ) {
         pageInfo {
           hasNextPage
           startCursor
@@ -116,7 +127,12 @@ const SingleProductQueryPrevPage = /* GraphQL */ `
         }
       }
 
-      products(last: 10, before: $beforePage, sortKey: $sortKey, reverse: $reverse) {
+      products(
+        last: 10
+        before: $beforePage
+        sortKey: $sortKey
+        reverse: $reverse
+      ) {
         pageInfo {
           hasNextPage
           startCursor
@@ -188,7 +204,8 @@ let cursor: string | string[] | undefined
 let sortKey = "RELEVANCE"
 let reverse = false
 
-const filterData = (itemType: string) => sorting.filter((item) => item.slug === itemType)
+const filterData = (itemType: string) =>
+  sorting.filter((item) => item.slug === itemType)
 
 export async function pageNextCount(afterPage: string) {
   cursor = afterPage
@@ -211,7 +228,10 @@ export async function filterType(type: string) {
   reverse = newFilterData[0]?.reverse
 }
 
-export async function getCollectionData(handle: string, cursor?: string | string[] | undefined) {
+export async function getCollectionData(
+  handle: string,
+  cursor?: string | string[] | undefined,
+) {
   // let newFilterData = filterData(sortKey);
   // sortKey = newFilterData[0]?.sortKey;
   // reverse = newFilterData[0]?.reverse;

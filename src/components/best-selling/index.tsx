@@ -61,7 +61,7 @@ export const BestSelling = async () => {
     <div className="mx-auto my-6 max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="mb-6 flex flex-col">
         <div className="relative my-4 flex select-none flex-col items-center justify-center">
-          <div className="absolute inset-0 -z-10 mx-auto flex items-center justify-center text-center text-9xl font-bold uppercase text-gray-50">
+          <div className="absolute inset-0 -z-10 mx-auto flex items-center justify-center text-center text-9xl font-bold uppercase text-gray-200">
             produto
           </div>
           <h1 className="text-4xl font-bold ">Mais vendidos</h1>
@@ -71,7 +71,10 @@ export const BestSelling = async () => {
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className="flex flex-col items-center justify-center">
           {products?.[0]?.node.description && (
-            <Link href={`/products/${products?.[0]?.node?.handle}`} className="flex flex-col items-center justify-center">
+            <Link
+              href={`/products/${products?.[0]?.node?.handle}`}
+              className="flex flex-col items-center justify-center"
+            >
               <figure className="flex flex-col gap-4">
                 <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-50 p-2">
                   <Image
@@ -88,8 +91,13 @@ export const BestSelling = async () => {
                   <h1>{products?.[0]?.node?.title}</h1>
                   <div className="text-xl text-gray-500">
                     <Price
-                      amount={String(products?.[0]?.node.priceRange.minVariantPrice.amount)}
-                      currencyCode={products?.[0]?.node.priceRange.minVariantPrice.currencyCode}
+                      amount={String(
+                        products?.[0]?.node.priceRange.minVariantPrice.amount,
+                      )}
+                      currencyCode={
+                        products?.[0]?.node.priceRange.minVariantPrice
+                          .currencyCode
+                      }
                     />
                   </div>
                 </figcaption>
@@ -120,7 +128,10 @@ export const BestSelling = async () => {
                     <figcaption>
                       <h2 className="line-clamp-2 text-xs">{title}</h2>
                       <div className="text-md text-gray-500">
-                        <Price amount={String(priceRange.minVariantPrice.amount)} currencyCode={priceRange.minVariantPrice.currencyCode} />
+                        <Price
+                          amount={String(priceRange.minVariantPrice.amount)}
+                          currencyCode={priceRange.minVariantPrice.currencyCode}
+                        />
                       </div>
                     </figcaption>
                   </figure>
