@@ -1,5 +1,5 @@
 import { storefront } from "@/utils/storefront"
-import type { Metadata } from "next"
+import type { Metadata, ResolvingMetadata } from "next"
 import Image from "next/image"
 
 export const dynamic = "force-dynamic"
@@ -9,109 +9,122 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined }
 }
 
-const SingleProductQuery = `#graphql
-  query getProductsOfProductTypeInCollection($handle: String!, $afterPage: String, $beforePage: String, $first: Int, $last: Int) {
-  shop {
-    name
-  }
-	collection(handle: $handle) {
-		id
-		title
-    handle
-    description
-    metafields(identifiers: {key: "banner", namespace: "custom"}) {
-      id
-      reference {
-        ... on MediaImage {
-          id
-          image {
-            src
-            altText
-          }
-        }
-      }
-    }      
+// const SingleProductQuery = `#graphql
+//   query getProductsOfProductTypeInCollection($handle: String!, $afterPage: String, $beforePage: String, $first: Int, $last: Int) {
+//   shop {
+//     name
+//   }
+// 	collection(handle: $handle) {
+// 		id
+// 		title
+//     handle
+//     description
+//     metafields(identifiers: {key: "banner", namespace: "custom"}) {
+//       id
+//       reference {
+//         ... on MediaImage {
+//           id
+//           image {
+//             src
+//             altText
+//           }
+//         }
+//       }
+//     }
 
-		products(first: $first, last: $last, after: $afterPage, before: $beforePage) {    
-      pageInfo {
-        hasNextPage
-        startCursor
-        endCursor
-        hasPreviousPage
-      }    
-			edges {
-        cursor
-				node {
-					id
-					title
-          handle
-          tags
-					vendor
-					priceRange {
-            minVariantPrice {
-              amount
-              currencyCode
-            }
-            maxVariantPrice {
-              amount
-              currencyCode
-            }
-          }
-          images(first: 1) {
-            edges {
-              node {
-                transformedSrc
-                altText
-              }
-            }
-          }
-          variants(first: 3) {
-            edges {
-              cursor
-              node {
-                id
-                title
-                quantityAvailable
-                price {
-                  amount
-                  currencyCode
-                }
-                compareAtPrice {
-                  amount
-                  currencyCode
-                }
-              }
-            }            
-          }
-				}
-			}
-      filters {
-        values {
-          id
-          label
-          count
-        }
-      } 
-                      
-		}    
-	}
-}
-`
+// 		products(first: $first, last: $last, after: $afterPage, before: $beforePage) {
+//       pageInfo {
+//         hasNextPage
+//         startCursor
+//         endCursor
+//         hasPreviousPage
+//       }
+// 			edges {
+//         cursor
+// 				node {
+// 					id
+// 					title
+//           handle
+//           tags
+// 					vendor
+// 					priceRange {
+//             minVariantPrice {
+//               amount
+//               currencyCode
+//             }
+//             maxVariantPrice {
+//               amount
+//               currencyCode
+//             }
+//           }
+//           images(first: 1) {
+//             edges {
+//               node {
+//                 transformedSrc
+//                 altText
+//               }
+//             }
+//           }
+//           variants(first: 3) {
+//             edges {
+//               cursor
+//               node {
+//                 id
+//                 title
+//                 quantityAvailable
+//                 price {
+//                   amount
+//                   currencyCode
+//                 }
+//                 compareAtPrice {
+//                   amount
+//                   currencyCode
+//                 }
+//               }
+//             }
+//           }
+// 				}
+// 			}
+//       filters {
+//         values {
+//           id
+//           label
+//           count
+//         }
+//       }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const handle = params.handle
+// 		}
+// 	}
+// }
+// `
 
-  const { data } = await storefront(SingleProductQuery, {
-    handle: handle,
-  })
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { data } = await getCollectionData(params.handle, searchParams.page)
 
   const shop_name = data?.shop.name as string
 
   const page = data?.collection
 
+  const previousImages = (await parent).openGraph?.images || []
+  const indexable = true
+
   return {
     title: `${shop_name} | ${page?.title}`,
     description: page?.description,
+    robots: {
+      index: indexable,
+      follow: indexable,
+      googleBot: {
+        index: indexable,
+        follow: indexable,
+      },
+    },
+    openGraph: {
+      images: ["/collection-banners/5.png", ...previousImages],
+    },
   }
 }
 
