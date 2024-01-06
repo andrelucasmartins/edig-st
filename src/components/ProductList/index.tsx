@@ -1,9 +1,14 @@
 "use client"
 
-import { formatPrice } from "@/utils/formatPrice"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel"
 import Link from "next/link"
 import "swiper/css"
-import { Swiper, SwiperSlide } from "swiper/react"
 
 interface ProductProps {
   products: Array<{
@@ -177,10 +182,8 @@ import "swiper/css/thumbs"
 import "./style.css"
 
 // import required modules
-import Price from "@/components/price"
-import Image from "next/image"
 import { Suspense } from "react"
-import { FreeMode, Navigation, Pagination, Thumbs } from "swiper/modules"
+import { ProductCard } from "../product-card/index"
 // interface Products {
 //   node: {
 //     id: string;
@@ -228,35 +231,19 @@ const Product = ({ products }: ProductProps) => {
         const title = product.title
         const handle = product.handle
         const image = product?.images?.edges[0].node
+        const price =
+          product?.variants?.edges[0].node.price.amount ||
+          product.priceRange.minVariantPrice.amount
+        const currencyCode = product?.priceRange?.minVariantPrice?.currencyCode
 
         return (
           <Link key={handle} href={`/products/${handle}`}>
-            <figure className="space-y-4 whitespace-pre-wrap">
-              <div className="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-100 p-2">
-                <Image
-                  src={image?.transformedSrc || image?.url}
-                  alt={image?.altText}
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  quality="90"
-                  width={1000}
-                  height={1000}
-                  className="aspect-h-1 aspect-w-1 rounded-lg object-contain mix-blend-multiply"
-                />
-              </div>
-              <figcaption className="space-y-2">
-                <h2 className="line-clamp-2 text-xs">{title}</h2>
-                <div className="text-md text-gray-500">
-                  <Price
-                    amount={String(
-                      product?.priceRange?.minVariantPrice?.amount,
-                    )}
-                    currencyCode={
-                      product?.priceRange?.minVariantPrice?.currencyCode
-                    }
-                  />
-                </div>
-              </figcaption>
-            </figure>
+            <ProductCard
+              imageUrl={image.transformedSrc}
+              title={title}
+              amount={price}
+              currencyCode={currencyCode}
+            />
           </Link>
         )
       })}
@@ -266,70 +253,39 @@ const Product = ({ products }: ProductProps) => {
 
 const Slider = ({ products }: ProductProps) => {
   return (
-    <Swiper
-      slidesPerView={1}
-      spaceBetween={20}
-      navigation={true}
-      breakpoints={{
-        520: {
-          pagination: true,
-        },
-        640: {
-          slidesPerView: 2,
-        },
-        768: {
-          slidesPerView: 4,
-        },
-        1024: {
-          slidesPerView: 5,
-        },
-      }}
-      // thumbs={{ swiper: thumbsSwiper }}
-      modules={[FreeMode, Navigation, Thumbs, Pagination]}
-      className="mySwiper2"
-    >
-      {products?.map((item: any[] | any) => {
-        const product = item || item?.node
-        const image = product?.images?.edges[0].node
-        const price =
-          product?.variants?.edges[0].node.price.amount ||
-          product.priceRange.minVariantPrice.amount
+    <Carousel className="mx-auto w-full max-w-7xl">
+      <CarouselContent className="-ml-1">
+        {products?.map((item: any[] | any) => {
+          const product = item || item?.node
+          const image = product?.images?.edges[0].node
+          const price =
+            product?.variants?.edges[0].node.price.amount ||
+            product.priceRange.minVariantPrice.amount
+          const currencyCode =
+            product?.priceRange?.minVariantPrice?.currencyCode
 
-        return (
-          <SwiperSlide key={product.id}>
-            <Link
-              key={product.handle}
-              href={`/products/${product.handle}`}
-              legacyBehavior
+          return (
+            <CarouselItem
+              key={product.id}
+              className="basics-1/2 pl-1 md:basis-1/3 lg:basis-1/4"
             >
-              <a className="group">
-                <div className="aspect-w-4 aspect-h-4 w-full overflow-hidden rounded-lg shadow-lg shadow-gray-950/20">
-                  <Image
-                    src={image.transformedSrc}
-                    alt={image.altText}
-                    width={100}
-                    height={100}
-                    sizes="(100%, auto)"
-                    className="h-full w-full object-cover object-center group-hover:opacity-75 "
+              <div className="p-1">
+                <Link key={product.handle} href={`/products/${product.handle}`}>
+                  <ProductCard
+                    imageUrl={image.transformedSrc}
+                    title={product.title}
+                    amount={price}
+                    currencyCode={currencyCode}
                   />
-                </div>
-                <div className="mt-4 flex flex-col space-y-2 text-base font-medium text-gray-950">
-                  <h3 className="line-clamp-2  text-lg/6 dark:text-white">
-                    {product.title}
-                  </h3>
-                  <p className="text-purple-800 dark:text-purple-500">
-                    <span>Por:</span> {formatPrice(price)}
-                  </p>
-                </div>
-                <p className="mt-1 text-sm italic text-gray-500">
-                  {product.tags[0]}
-                </p>
-              </a>
-            </Link>
-          </SwiperSlide>
-        )
-      })}
-    </Swiper>
+                </Link>
+              </div>
+            </CarouselItem>
+          )
+        })}
+      </CarouselContent>
+      <CarouselPrevious size="icon" />
+      <CarouselNext size="icon" />
+    </Carousel>
   )
 }
 

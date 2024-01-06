@@ -1,5 +1,4 @@
 import { getProductRecommendations } from "@/app/data/get-product-recommendations"
-import { Button } from "@/components/ui/button"
 import { HIDDEN_PRODUCT_TAG } from "@/lib/constants"
 import { getProduct } from "@/lib/shopify"
 import { storefront } from "@/utils/storefront"
@@ -357,12 +356,12 @@ export default async function ProductsPage({
               >
                 Adicionar ao carrinho
               </Button> */}
-              <Button
+              {/* <Button
                 className="bg-green-500 py-6 uppercase hover:bg-green-600 hover:text-white"
                 size={"lg"}
               >
                 Comprar Agora
-              </Button>
+              </Button> */}
             </div>
 
             <Accordion type="single" collapsible className="mt-6 text-gray-500">

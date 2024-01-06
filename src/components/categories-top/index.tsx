@@ -51,7 +51,10 @@ export const MenuNavigation = [
 
 const CategoriesTop = () => {
   return (
-    <div className="mx-auto my-6 max-w-7xl px-4 sm:px-6 lg:px-8 " data-testid="categories-top">
+    <div
+      className="mx-auto my-6 max-w-7xl px-4 sm:px-6 lg:px-8 "
+      data-testid="categories-top"
+    >
       <h2 className="sr-only text-xl font-bold text-gray-900">Categorias</h2>
       <div className="flex items-center justify-center">
         <div className="list-items flex flex-row flex-wrap gap-8">
