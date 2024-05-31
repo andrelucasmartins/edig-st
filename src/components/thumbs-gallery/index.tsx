@@ -1,47 +1,47 @@
-"use client";
+"use client"
 
-import { Suspense } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Suspense } from "react"
+import { Swiper, SwiperSlide } from "swiper/react"
 
-import "swiper/css";
-import "swiper/css/free-mode";
-import "swiper/css/navigation";
-import "swiper/css/thumbs";
-import "swiper/css/zoom";
+import "swiper/css"
+import "swiper/css/free-mode"
+import "swiper/css/navigation"
+import "swiper/css/thumbs"
+import "swiper/css/zoom"
 
-import { createUrl } from "@/lib/utils";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
-import { FreeMode, Navigation, Thumbs } from "swiper/modules";
+import { createUrl } from "@/lib/utils"
+import Image from "next/image"
+import Link from "next/link"
+import { usePathname, useSearchParams } from "next/navigation"
+import { FreeMode, Navigation, Thumbs } from "swiper/modules"
 
 interface ThumbsGalleryProps {
   image?: {
-    transformedSrc: string;
-    altText: string;
-  };
+    transformedSrc: string
+    altText: string
+  }
   images: {
-    src: string;
-    altText: string;
-  }[];
+    src: string
+    altText: string
+  }[]
 }
 
 export const ThumbsGallery = ({ images }: ThumbsGalleryProps) => {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const imageSearchParam = searchParams.get("image");
-  const imageIndex = imageSearchParam ? parseInt(imageSearchParam) : 0;
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const imageSearchParam = searchParams.get("image")
+  const imageIndex = imageSearchParam ? parseInt(imageSearchParam) : 0
 
-  const nextSearchParams = new URLSearchParams(searchParams.toString());
-  const nextImageIndex = imageIndex + 1 < images.length ? imageIndex + 1 : 0;
-  nextSearchParams.set("image", nextImageIndex.toString());
+  const nextSearchParams = new URLSearchParams(searchParams.toString())
+  const nextImageIndex = imageIndex + 1 < images.length ? imageIndex + 1 : 0
+  nextSearchParams.set("image", nextImageIndex.toString())
   // const nextUrl = createUrl(pathname, nextSearchParams);
 
-  const previousSearchParams = new URLSearchParams(searchParams.toString());
+  const previousSearchParams = new URLSearchParams(searchParams.toString())
   const previousImageIndex =
-    imageIndex === 0 ? images?.length - 1 : imageIndex - 1;
+    imageIndex === 0 ? images?.length - 1 : imageIndex - 1
   // console.log("Item2: " + imageIndex, "Item1:" + images.length);
-  previousSearchParams.set("image", previousImageIndex.toString());
+  previousSearchParams.set("image", previousImageIndex.toString())
   // const previousUrl = createUrl(pathname, previousSearchParams);
 
   return (
@@ -49,7 +49,7 @@ export const ThumbsGallery = ({ images }: ThumbsGalleryProps) => {
       <Suspense fallback={<div>Loading...</div>}>
         {images[imageIndex] && (
           <Image
-            className="h-full w-full rounded border border-gray-300/40 object-cover object-center"
+            className="h-full w-full rounded border border-gray-300/40 object-cover object-center mix-blend-multiply"
             sizes="(min-width: 100%) 66vw, 100vw"
             width={100}
             height={100}
@@ -108,9 +108,9 @@ export const ThumbsGallery = ({ images }: ThumbsGalleryProps) => {
               // const isActive = index === imageIndex;
               const imageSearchParams = new URLSearchParams(
                 searchParams.toString(),
-              );
+              )
 
-              imageSearchParams.set("image", index.toString());
+              imageSearchParams.set("image", index.toString())
               return (
                 <SwiperSlide key={image.src}>
                   <Link
@@ -130,10 +130,10 @@ export const ThumbsGallery = ({ images }: ThumbsGalleryProps) => {
                     />
                   </Link>
                 </SwiperSlide>
-              );
+              )
             })
           : null}
       </Swiper>
     </div>
-  );
-};
+  )
+}

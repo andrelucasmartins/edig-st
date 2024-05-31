@@ -19,22 +19,58 @@ export default async function Home() {
   return (
     <>
       <BannerHome />
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className="mx-auto px-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">
+            Loading...
+          </div>
+        }
+      >
         <CategoriesTop />
       </Suspense>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className="mx-auto px-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">
+            Loading...
+          </div>
+        }
+      >
         <FeaturedProducts collection="hidden-homepage-carousel" />
       </Suspense>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className="mx-auto px-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">
+            Loading...
+          </div>
+        }
+      >
         <BestSelling />
       </Suspense>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className="mx-auto px-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">
+            Loading...
+          </div>
+        }
+      >
         <FeaturedProducts collection="para-ela" />
       </Suspense>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className="mx-auto px-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">
+            Loading...
+          </div>
+        }
+      >
         <FeaturedProducts collection="para-ele" />
       </Suspense>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <div className="mx-auto px-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:px-8">
+            Loading...
+          </div>
+        }
+      >
         <Carousel collection="hidden-homepage-carousel-main" />
       </Suspense>
       {/* <Categories /> */}

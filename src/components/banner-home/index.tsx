@@ -41,7 +41,7 @@ export const BannerHome = () => {
           <SwiperSlide>
             <Link href="/collections/para-ela">
               <Image
-                src="/banner-home/desktop_large.webp"
+                src="/banner-home/varias_ofertas.png"
                 alt="Para Ela"
                 fill
                 sizes="(max-width: 768px) 100vw, 33vw"
@@ -50,7 +50,18 @@ export const BannerHome = () => {
               />
             </Link>
           </SwiperSlide>
-          <SwiperSlide>Slide 2</SwiperSlide>
+          <SwiperSlide>
+            <Link href="/collections/utilidades">
+              <Image
+                src="/banner-home/variedades_ofertas.png"
+                alt="Variedades"
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="rounded object-cover"
+                quality={100}
+              />
+            </Link>
+          </SwiperSlide>
           <SwiperSlide>Slide 3</SwiperSlide>
           <SwiperSlide>Slide 4</SwiperSlide>
         </Swiper>

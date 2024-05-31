@@ -71,6 +71,7 @@ interface FeaturedProductsProps {
 
 export const FeaturedProducts = async ({
   collection,
+  ...props
 }: {
   collection: string
 }) => {
@@ -95,7 +96,7 @@ export const FeaturedProducts = async ({
           <span className="text-sm md:text-base">em destaque</span>
         </div>
       </div>
-      <Carousel className="mx-auto w-full max-w-7xl">
+      <Carousel className="mx-auto w-full max-w-7xl" {...props}>
         <CarouselContent className="-ml-1">
           {products?.map((product) => {
             const { handle, title, featuredImage, priceRange } = product.node

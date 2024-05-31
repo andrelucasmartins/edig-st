@@ -293,6 +293,7 @@ export async function ProductList({
   products,
   title,
   slide,
+  ...props
 }: ProductListProps) {
   return (
     <>
@@ -304,11 +305,11 @@ export async function ProductList({
 
       {!slide ? (
         <Suspense fallback={<div>Loading...</div>}>
-          <Product products={products} />
+          <Product products={products} {...props} />
         </Suspense>
       ) : (
         <Suspense fallback={<div>Loading...</div>}>
-          <Slider products={products} />
+          <Slider products={products} {...props} />
         </Suspense>
       )}
     </>

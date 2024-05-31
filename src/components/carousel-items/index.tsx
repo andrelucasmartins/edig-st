@@ -3,18 +3,14 @@
 import { formatPrice } from "@/utils/formatPrice"
 import Image from "next/image"
 import Link from "next/link"
-import "swiper/css"
-import "swiper/css/pagination"
-import "swiper/css/scrollbar"
-import {
-  Autoplay,
-  FreeMode,
-  Navigation,
-  Pagination,
-  Thumbs,
-} from "swiper/modules"
 
-import { Swiper, SwiperSlide } from "swiper/react"
+import Autoplay from "embla-carousel-autoplay"
+
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel"
 
 type Product = {
   [x: string]: any
@@ -46,7 +42,7 @@ export const CarouselItems = ({ title, products }: CarouselItemsProps) => {
         </h2>
       )}
       <div className="mx-auto my-6 max-w-none px-4  sm:px-0 lg:px-0">
-        <Swiper
+        {/* <Swiper
           slidesPerView={1}
           spaceBetween={20}
           loop={true}
@@ -111,7 +107,55 @@ export const CarouselItems = ({ title, products }: CarouselItemsProps) => {
               </SwiperSlide>
             )
           })}
-        </Swiper>
+        </Swiper> */}
+        <Carousel
+          plugins={[
+            Autoplay({
+              delay: 3000,
+              loop: true,
+              stopOnInteraction: false,
+            }),
+          ]}
+        >
+          <CarouselContent className="min-w-full">
+            {products?.map((product: Product) => {
+              return (
+                <CarouselItem
+                  key={product.id}
+                  className="-ml-1 pl-4 md:basis-1/2 lg:basis-1/3"
+                >
+                  <Link
+                    key={product.handle}
+                    href={`/products/${product.handle}`}
+                  >
+                    <figure className="flex flex-col rounded-xl border-2 border-gray-50 bg-gray-50/50 p-0 dark:bg-slate-800  md:h-[208px] md:flex-row ">
+                      <Image
+                        src={product.featuredImage?.url}
+                        alt={product.featuredImage?.altText}
+                        width={200}
+                        height={200}
+                        sizes="(100%, 100%)"
+                        className="aspect-h-1 aspect-w-1 rounded-lg object-contain mix-blend-multiply"
+                      />
+                      <div className="text-md flex flex-col gap-2 bg-white">
+                        <blockquote className="mt-2 px-4">
+                          <p className="text-sm font-medium">{product.title}</p>
+                        </blockquote>
+                        <figcaption className="px-4 font-medium">
+                          <div className="text-gray-400 dark:text-gray-400">
+                            {formatPrice(
+                              product.priceRange.maxVariantPrice.amount,
+                            )}
+                          </div>
+                        </figcaption>
+                      </div>
+                    </figure>
+                  </Link>
+                </CarouselItem>
+              )
+            })}
+          </CarouselContent>
+        </Carousel>
       </div>
     </>
   )
